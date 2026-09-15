@@ -4,17 +4,26 @@
  */
 package vistas;
 
+import java.awt.Color;
+
 /**
  *
  * @author oscar
  */
 public class vSesion extends javax.swing.JPanel {
 
+    // Variable global para almacenar el carácter de máscara original
+    private char echoCharOriginal;
     /**
      * Creates new form vSesion
      */
     public vSesion() {
         initComponents();
+        Entrada.setBackground(Color.decode("#A3C9A8"));
+        btInicioSesion.setBackground(Color.decode("#A3C9A8"));
+        iconos();
+        configurarMostrarContraseña();
+        configurarSoloNumeros();
     }
 
     /**
@@ -26,32 +35,267 @@ public class vSesion extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        Entrada = new javax.swing.JPanel();
+        Icon = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        Usuario = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        txtDocumento = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        cbPerfil = new javax.swing.JComboBox<>();
+        btInicioSesion = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        txtContraseña = new javax.swing.JPasswordField();
+        btVer = new javax.swing.JToggleButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel1.setText("incio de sesion");
+        Entrada.setBackground(new java.awt.Color(204, 255, 204));
+
+        Icon.setPreferredSize(new java.awt.Dimension(340, 340));
+
+        jLabel1.setFont(new java.awt.Font("SansSerif", 1, 42)); // NOI18N
+        jLabel1.setText("<html>PLATAFORMA DE<br>DIAGNOSTICO Y<br>GESTION<br>UNIFICADA</html>");
+
+        javax.swing.GroupLayout EntradaLayout = new javax.swing.GroupLayout(Entrada);
+        Entrada.setLayout(EntradaLayout);
+        EntradaLayout.setHorizontalGroup(
+            EntradaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, EntradaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 368, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(EntradaLayout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(Icon, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        EntradaLayout.setVerticalGroup(
+            EntradaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(EntradaLayout.createSequentialGroup()
+                .addGap(58, 58, 58)
+                .addComponent(Icon, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(148, 148, 148)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        Usuario.setPreferredSize(new java.awt.Dimension(370, 370));
+
+        jLabel2.setFont(new java.awt.Font("SansSerif", 0, 36)); // NOI18N
+        jLabel2.setText("Bienvenido digite sus credenciales");
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel3.setText("Documento de identidad");
+
+        txtDocumento.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        txtDocumento.setMaximumSize(new java.awt.Dimension(500, 49));
+        txtDocumento.setPreferredSize(new java.awt.Dimension(400, 49));
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel4.setText("Contraseña");
+
+        cbPerfil.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        cbPerfil.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Medicina", "Enfermeria", "Administrativo", "Laboratorio" }));
+        cbPerfil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbPerfilActionPerformed(evt);
+            }
+        });
+
+        btInicioSesion.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        btInicioSesion.setText("Iniciar Sesion");
+        btInicioSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btInicioSesionActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
+        jLabel5.setText("Perfil");
+
+        txtContraseña.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        txtContraseña.setMaximumSize(new java.awt.Dimension(500, 49));
+        txtContraseña.setPreferredSize(new java.awt.Dimension(400, 49));
+
+        btVer.setPreferredSize(new java.awt.Dimension(30, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addContainerGap(316, Short.MAX_VALUE))
+                .addComponent(Entrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(565, 565, 565)
+                                .addComponent(Usuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(446, 446, 446)
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 557, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jLabel5)
+                                            .addComponent(jLabel4)
+                                            .addComponent(jLabel3)
+                                            .addComponent(cbPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtContraseña, javax.swing.GroupLayout.DEFAULT_SIZE, 1038, Short.MAX_VALUE)
+                                            .addComponent(txtDocumento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btVer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addContainerGap(448, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btInicioSesion)
+                        .addGap(23, 23, 23))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(Entrada, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addContainerGap(278, Short.MAX_VALUE))
+                .addGap(15, 15, 15)
+                .addComponent(Usuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel2)
+                .addGap(54, 54, 54)
+                .addComponent(jLabel3)
+                .addGap(18, 18, 18)
+                .addComponent(txtDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel4)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btVer, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(9, 9, 9)))
+                .addGap(23, 23, 23)
+                .addComponent(jLabel5)
+                .addGap(23, 23, 23)
+                .addComponent(cbPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(41, 41, 41)
+                .addComponent(btInicioSesion)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void cbPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbPerfilActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbPerfilActionPerformed
+
+    private void btInicioSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btInicioSesionActionPerformed
+        String documento = txtDocumento.getText().trim();
+        String password = new String(txtContraseña.getPassword()).trim();
+
+        if (documento.isEmpty() || password.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "Por favor ingrese su documento y contraseña.", 
+                "Campos requeridos", 
+                javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Obtener la ventana principal contenedora
+        java.awt.Window ventana = javax.swing.SwingUtilities.getWindowAncestor(this);
+        if (ventana instanceof vPrincipal) {
+            vPrincipal principal = (vPrincipal) ventana;
+
+            // Restablece el menú lateral y la barra superior
+            principal.mostrarBarraYMenu(true);
+
+            // Muestra la pantalla de inicio/dashboard
+            java.awt.CardLayout cl = (java.awt.CardLayout) principal.getpBase().getLayout();
+            cl.show(principal.getpBase(), "pantallaInicio");
+        }
+    }//GEN-LAST:event_btInicioSesionActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel Entrada;
+    private javax.swing.JLabel Icon;
+    private javax.swing.JLabel Usuario;
+    private javax.swing.JButton btInicioSesion;
+    private javax.swing.JToggleButton btVer;
+    private javax.swing.JComboBox<String> cbPerfil;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JPasswordField txtContraseña;
+    private javax.swing.JTextField txtDocumento;
     // End of variables declaration//GEN-END:variables
+
+private void ajustarImagenLabel(javax.swing.JLabel label, String rutaImagen) {
+    try {
+        javax.swing.ImageIcon iconoOriginal = new javax.swing.ImageIcon(getClass().getResource(rutaImagen));
+        int ancho = label.getPreferredSize().width;
+        int alto = label.getPreferredSize().height;
+        java.awt.Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(ancho, alto, java.awt.Image.SCALE_SMOOTH);
+        label.setIcon(new javax.swing.ImageIcon(imagenEscalada));
+    } catch (Exception e) {
+        System.out.println("No se pudo cargar la imagen del Label: " + rutaImagen);
+    }
+}
+private void ajustarIcono(javax.swing.JToggleButton boton, String rutaImagen) {
+    try {
+        javax.swing.ImageIcon iconoOriginal = new javax.swing.ImageIcon(getClass().getResource(rutaImagen));
+        java.awt.Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(30, 30   , java.awt.Image.SCALE_SMOOTH);
+        boton.setIcon(new javax.swing.ImageIcon(imagenEscalada));
+    } catch (Exception e) {
+        System.out.println("No se pudo cargar la imagen: " + rutaImagen);
+    }
+}
+
+private void iconos(){
+    ajustarImagenLabel(Icon, "/imagenes/icono.png");
+    ajustarImagenLabel(Usuario, "/imagenes/Usuario.png");
+    ajustarIcono(btVer, "/imagenes/Ojo.png");
+}
+
+//Función que agrupa la configuración y lógica para mostrar/ocultar la contraseña 
+private void configurarMostrarContraseña() {
+        // Guardar el carácter de ocultamiento por defecto
+        echoCharOriginal = txtContraseña.getEchoChar();
+        
+        // Asignar el evento al botón de alternancia btVer
+        btVer.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                if (btVer.isSelected()) {
+                    txtContraseña.setEchoChar((char) 0); // Texto legible
+                } else {
+                    txtContraseña.setEchoChar(echoCharOriginal); // Texto oculto
+                }
+            }
+        });
+    }
+
+//Metodo para que el documento de identidad solo se puedan agegar numeros
+private void configurarSoloNumeros() {
+    txtDocumento.addKeyListener(new java.awt.event.KeyAdapter() {
+        @Override
+        public void keyTyped(java.awt.event.KeyEvent evt) {
+            char c = evt.getKeyChar();
+            // Si el carácter no es un número, cancela la entrada
+            if (!Character.isDigit(c)) {
+                evt.consume();
+            }
+        }
+    });
+}
+
+@Override
+public java.awt.Dimension getPreferredSize() {
+    if (getParent() != null && getParent().getWidth() > 0 && getParent().getHeight() > 0) {
+        return new java.awt.Dimension(getParent().getWidth(), getParent().getHeight());
+    }
+    return super.getPreferredSize();
+}
 }

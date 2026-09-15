@@ -5,6 +5,7 @@
 
 package vistas;
 
+import java.awt.CardLayout;
 import java.awt.Color;
 /**
  *
@@ -201,6 +202,9 @@ public class vPrincipal extends javax.swing.JFrame {
             menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(menuLayout.createSequentialGroup()
                 .addGroup(menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, menuLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(menuLayout.createSequentialGroup()
                         .addGroup(menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(menuLayout.createSequentialGroup()
@@ -214,21 +218,14 @@ public class vPrincipal extends javax.swing.JFrame {
                                     .addComponent(btFacturacion, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(menuLayout.createSequentialGroup()
                                 .addGap(41, 41, 41)
-                                .addComponent(image, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, menuLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(image, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(menuLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btAgenda, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(menuLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, menuLayout.createSequentialGroup()
-                    .addContainerGap(16, Short.MAX_VALUE)
-                    .addComponent(btAgenda, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap()))
         );
         menuLayout.setVerticalGroup(
             menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -245,16 +242,13 @@ public class vPrincipal extends javax.swing.JFrame {
                 .addComponent(btPACS, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btFacturacion, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btAgenda, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
+                .addGap(59, 59, 59)
                 .addComponent(btCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21))
-            .addGroup(menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(menuLayout.createSequentialGroup()
-                    .addGap(696, 696, 696)
-                    .addComponent(btAgenda, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(299, Short.MAX_VALUE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pBase.setBackground(new java.awt.Color(255, 255, 255));
@@ -648,7 +642,13 @@ public class vPrincipal extends javax.swing.JFrame {
     private javax.swing.JTable tblPacientes;
     // End of variables declaration//GEN-END:variables
 
-private void inicializarVistas(){
+//Metodo para ocultar el menu lateral al momento de poner el programa
+public void mostrarBarraYMenu(boolean visible) {
+    menu.setVisible(visible);
+    pPerfil.setVisible(visible);
+}
+    
+    private void inicializarVistas(){
     //Se agrega el objeto vHistoriaClinica
     vHistoriaClinica vistaHistoria = new vHistoriaClinica();
     //Se agrega el objeto vFacturacion
@@ -673,9 +673,13 @@ private void inicializarVistas(){
     pBase.add(vistaLaboratorio,"pantallaLaboratorio");
     pBase.add(vistaPACS,"pantallaPACS");
     pBase.add(vistaSesion,"pantallaSesion");  
-    pBase.add(vistaUsuario,"pantallaUsuario"); 
+    pBase.add(vistaUsuario,"pantallaUsuario");
+    // Oculta la barra y menú al inicio
+    mostrarBarraYMenu(false);
+    // Muestra la pantalla de inicio de sesión por defecto
+    CardLayout cl = (CardLayout) pBase.getLayout();
+    cl.show(pBase, "pantallaSesion");
 }
-
 
 //Metodo para ajustar las imagenes a los botones
 private void ajustarIcono(javax.swing.JButton boton, String rutaImagen) {
@@ -747,5 +751,9 @@ private void configurarTarjetas() {
     lbCantidadPendientes.setText(String.valueOf(enEspera));
     lbCantidadAlerta.setText(alertasLab);
     lbCantidadIA.setText(String.valueOf(sugerenciasIA));
+}
+
+public javax.swing.JPanel getpBase() {
+        return pBase;
 }
 }
