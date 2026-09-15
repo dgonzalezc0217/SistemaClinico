@@ -19,39 +19,11 @@ public class vPrincipal extends javax.swing.JFrame {
         initComponents();
         this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         menu.setBackground(Color.decode("#A3C9A8"));
-        ajustarImagenLabel(image, "/imagenes/icono.png");
-        ajustarImagenLabel(Icono, "/imagenes/medico.png");
-        ajustarIcono(btInicio, "/imagenes/casa.png");
-        ajustarIcono(btHistoria,"/imagenes/historia clinica.png");
-        ajustarIcono(btLaboratorio,"/imagenes/laboratorio.png");
-        ajustarIcono(btPACS,"/imagenes/PACS.png");
-        ajustarIcono(btFacturacion,"/imagenes/facturacion.png");
-        ajustarIcono(btAgenda,"/imagenes/agenda.png");
-        ajustarIcono(btCerrar,"/imagenes/cerrar.png");
+        iconos();
         configurarBienvenida();
         iniciarReloj();
-        //Se agrega el objeto vHistoriaClinica
-        vHistoriaClinica vistaHistoria = new vHistoriaClinica();
-        //Se agrega el objeto vFacturacion
-        vFacturacion vistaFacturacion = new vFacturacion();
-        //Se agrega el objeto vAgendamiento
-        vAgendamiento vistaAgendamiento = new vAgendamiento();
-        //Se agrega el objeto vLaboratorio
-        vLaboratorio vistaLaboratorio = new vLaboratorio();
-        //Se agrega el objeto vPACS
-        vPACS vistaPACS = new vPACS();
-        //Se agrega el objeto vSesion
-        vSesion vistaSesion = new vSesion();
-        //Aqui se le dice al panel agregado que agregue la vista del panel vHistoriaclinica y se le pone una etiqueta
-        //Agrega el panel vistaHistoriaClinica al contenedor principal llamado pBase.
-        //Como pBase es un CardLayout, el segundo parametro ("pantallaHistoriaClinica") funciona como un alias o identificador unico.
-        pBase.add(pInicio, "pantallaInicio");
-        pBase.add(vistaHistoria,"pantallaHistoriaClinica");
-        pBase.add(vistaFacturacion,"pantallaFacturacion");
-        pBase.add(vistaAgendamiento,"pantallaAgendamiento");
-        pBase.add(vistaLaboratorio,"pantallaLaboratorio");
-        pBase.add(vistaPACS,"pantallaPACS");
-        pBase.add(vistaSesion,"pantallaSesion");
+        configurarTarjetas();
+        inicializarVistas();
     }
 
     /**
@@ -72,17 +44,24 @@ public class vPrincipal extends javax.swing.JFrame {
         btCerrar = new javax.swing.JButton();
         image = new javax.swing.JLabel();
         btAgenda = new javax.swing.JButton();
+        btUsuario = new javax.swing.JButton();
         pBase = new javax.swing.JPanel();
         pInicio = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         pPacienteHoy = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        lbCantidadDia = new javax.swing.JLabel();
         pPacientesEspera = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
+        lbCantidadPendientes = new javax.swing.JLabel();
         pAlerta = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
+        lbCantidadAlerta = new javax.swing.JLabel();
         pPendiente = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
+        lbCantidadIA = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblPacientes = new javax.swing.JTable();
         pPerfil = new javax.swing.JPanel();
         lbBienvenida = new javax.swing.JLabel();
         Icono = new javax.swing.JLabel();
@@ -201,6 +180,21 @@ public class vPrincipal extends javax.swing.JFrame {
             }
         });
 
+        btUsuario.setFont(new java.awt.Font("SansSerif", 1, 36)); // NOI18N
+        btUsuario.setText("Usuarios");
+        btUsuario.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        btUsuario.setBorderPainted(false);
+        btUsuario.setContentAreaFilled(false);
+        btUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btUsuario.setFocusPainted(false);
+        btUsuario.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btUsuario.setIconTextGap(15);
+        btUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btUsuarioActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout menuLayout = new javax.swing.GroupLayout(menu);
         menu.setLayout(menuLayout);
         menuLayout.setHorizontalGroup(
@@ -208,20 +202,27 @@ public class vPrincipal extends javax.swing.JFrame {
             .addGroup(menuLayout.createSequentialGroup()
                 .addGroup(menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(menuLayout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(btPACS, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btLaboratorio, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btHistoria, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
-                                .addComponent(btInicio, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(btFacturacion, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(menuLayout.createSequentialGroup()
-                        .addGap(41, 41, 41)
-                        .addComponent(image, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(menuLayout.createSequentialGroup()
-                        .addContainerGap()
+                            .addGroup(menuLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(btPACS, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(btLaboratorio, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(btHistoria, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
+                                        .addComponent(btInicio, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(btFacturacion, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(menuLayout.createSequentialGroup()
+                                .addGap(41, 41, 41)
+                                .addComponent(image, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, menuLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+            .addGroup(menuLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, menuLayout.createSequentialGroup()
@@ -244,14 +245,16 @@ public class vPrincipal extends javax.swing.JFrame {
                 .addComponent(btPACS, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btFacturacion, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(217, 217, 217)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35)
                 .addComponent(btCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(21, 21, 21))
             .addGroup(menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(menuLayout.createSequentialGroup()
                     .addGap(696, 696, 696)
                     .addComponent(btAgenda, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(814, Short.MAX_VALUE)))
+                    .addContainerGap(299, Short.MAX_VALUE)))
         );
 
         pBase.setBackground(new java.awt.Color(255, 255, 255));
@@ -270,21 +273,31 @@ public class vPrincipal extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Citas del dia");
 
+        lbCantidadDia.setFont(new java.awt.Font("SansSerif", 1, 48)); // NOI18N
+        lbCantidadDia.setText("Cantidad dia");
+
         javax.swing.GroupLayout pPacienteHoyLayout = new javax.swing.GroupLayout(pPacienteHoy);
         pPacienteHoy.setLayout(pPacienteHoyLayout);
         pPacienteHoyLayout.setHorizontalGroup(
             pPacienteHoyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pPacienteHoyLayout.createSequentialGroup()
-                .addGap(85, 85, 85)
-                .addComponent(jLabel1)
-                .addContainerGap(194, Short.MAX_VALUE))
+                .addGroup(pPacienteHoyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pPacienteHoyLayout.createSequentialGroup()
+                        .addGap(150, 150, 150)
+                        .addComponent(lbCantidadDia, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pPacienteHoyLayout.createSequentialGroup()
+                        .addGap(74, 74, 74)
+                        .addComponent(jLabel1)))
+                .addContainerGap(92, Short.MAX_VALUE))
         );
         pPacienteHoyLayout.setVerticalGroup(
             pPacienteHoyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pPacienteHoyLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addContainerGap(159, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(lbCantidadDia)
+                .addContainerGap(79, Short.MAX_VALUE))
         );
 
         jPanel1.add(pPacienteHoy);
@@ -296,21 +309,31 @@ public class vPrincipal extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Pendientes");
 
+        lbCantidadPendientes.setFont(new java.awt.Font("SansSerif", 1, 48)); // NOI18N
+        lbCantidadPendientes.setText("Cantidad pendientes");
+
         javax.swing.GroupLayout pPacientesEsperaLayout = new javax.swing.GroupLayout(pPacientesEspera);
         pPacientesEspera.setLayout(pPacientesEsperaLayout);
         pPacientesEsperaLayout.setHorizontalGroup(
             pPacientesEsperaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pPacientesEsperaLayout.createSequentialGroup()
-                .addGap(86, 86, 86)
-                .addComponent(jLabel2)
-                .addContainerGap(215, Short.MAX_VALUE))
+                .addGroup(pPacientesEsperaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pPacientesEsperaLayout.createSequentialGroup()
+                        .addGap(86, 86, 86)
+                        .addComponent(jLabel2))
+                    .addGroup(pPacientesEsperaLayout.createSequentialGroup()
+                        .addGap(170, 170, 170)
+                        .addComponent(lbCantidadPendientes, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(102, Short.MAX_VALUE))
         );
         pPacientesEsperaLayout.setVerticalGroup(
             pPacientesEsperaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pPacientesEsperaLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel2)
-                .addContainerGap(159, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(lbCantidadPendientes)
+                .addContainerGap(79, Short.MAX_VALUE))
         );
 
         jPanel1.add(pPacientesEspera);
@@ -322,21 +345,31 @@ public class vPrincipal extends javax.swing.JFrame {
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Alertas laboratorio");
 
+        lbCantidadAlerta.setFont(new java.awt.Font("SansSerif", 1, 48)); // NOI18N
+        lbCantidadAlerta.setText("Cantidad Alertas");
+
         javax.swing.GroupLayout pAlertaLayout = new javax.swing.GroupLayout(pAlerta);
         pAlerta.setLayout(pAlertaLayout);
         pAlertaLayout.setHorizontalGroup(
             pAlertaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pAlertaLayout.createSequentialGroup()
-                .addGap(47, 47, 47)
-                .addComponent(jLabel4)
-                .addContainerGap(124, Short.MAX_VALUE))
+                .addGroup(pAlertaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pAlertaLayout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(jLabel4))
+                    .addGroup(pAlertaLayout.createSequentialGroup()
+                        .addGap(181, 181, 181)
+                        .addComponent(lbCantidadAlerta, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
         pAlertaLayout.setVerticalGroup(
             pAlertaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pAlertaLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel4)
-                .addContainerGap(159, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(lbCantidadAlerta)
+                .addContainerGap(79, Short.MAX_VALUE))
         );
 
         jPanel1.add(pAlerta);
@@ -348,6 +381,9 @@ public class vPrincipal extends javax.swing.JFrame {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("IA Pendientes");
 
+        lbCantidadIA.setFont(new java.awt.Font("SansSerif", 1, 48)); // NOI18N
+        lbCantidadIA.setText("Cantidad IA");
+
         javax.swing.GroupLayout pPendienteLayout = new javax.swing.GroupLayout(pPendiente);
         pPendiente.setLayout(pPendienteLayout);
         pPendienteLayout.setHorizontalGroup(
@@ -355,17 +391,36 @@ public class vPrincipal extends javax.swing.JFrame {
             .addGroup(pPendienteLayout.createSequentialGroup()
                 .addGap(60, 60, 60)
                 .addComponent(jLabel3)
-                .addContainerGap(197, Short.MAX_VALUE))
+                .addContainerGap(84, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pPendienteLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lbCantidadIA, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(141, 141, 141))
         );
         pPendienteLayout.setVerticalGroup(
             pPendienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pPendienteLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel3)
-                .addContainerGap(159, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lbCantidadIA)
+                .addContainerGap(85, Short.MAX_VALUE))
         );
 
         jPanel1.add(pPendiente);
+
+        tblPacientes.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        tblPacientes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Hora", "Pacientes", "Cedula", "Motivo", "Estado"
+            }
+        ));
+        tblPacientes.setSelectionBackground(new java.awt.Color(255, 255, 255));
+        jScrollPane1.getViewport().setBackground(java.awt.Color.WHITE);
+        jScrollPane1.setViewportView(tblPacientes);
 
         javax.swing.GroupLayout pInicioLayout = new javax.swing.GroupLayout(pInicio);
         pInicio.setLayout(pInicioLayout);
@@ -373,7 +428,9 @@ public class vPrincipal extends javax.swing.JFrame {
             pInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pInicioLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(pInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1544, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
         );
         pInicioLayout.setVerticalGroup(
@@ -381,7 +438,9 @@ public class vPrincipal extends javax.swing.JFrame {
             .addGroup(pInicioLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(1195, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 646, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pBase.add(pInicio, "pantallaInicio");
@@ -441,13 +500,12 @@ public class vPrincipal extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(menu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(pPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pBase, javax.swing.GroupLayout.PREFERRED_SIZE, 1417, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(pBase, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(menu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -512,6 +570,15 @@ public class vPrincipal extends javax.swing.JFrame {
         layout.show(pBase, "pantallaAgendamiento");
     }//GEN-LAST:event_btAgendaActionPerformed
 
+    private void btUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btUsuarioActionPerformed
+        //Obtiene el diseño actual del panel principal 'pBase' y lo convierte a CardLayout
+        java.awt.CardLayout layout = (java.awt.CardLayout)
+        pBase.getLayout();
+        //Le indica al CardLayout que traiga al frente la tarjeta que fue registrada bajo el nombre "pantallaUsuario".
+        //Esto muestra visualmente la clase vUsuario que habiamos instanciado al inicio.
+        layout.show(pBase, "pantallaUsuario");
+    }//GEN-LAST:event_btUsuarioActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -556,13 +623,19 @@ public class vPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btInicio;
     private javax.swing.JButton btLaboratorio;
     private javax.swing.JButton btPACS;
+    private javax.swing.JButton btUsuario;
     private javax.swing.JLabel image;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     public javax.swing.JLabel lbBienvenida;
+    private javax.swing.JLabel lbCantidadAlerta;
+    private javax.swing.JLabel lbCantidadDia;
+    private javax.swing.JLabel lbCantidadIA;
+    private javax.swing.JLabel lbCantidadPendientes;
     public javax.swing.JLabel lbFechaHora;
     private javax.swing.JPanel menu;
     private javax.swing.JPanel pAlerta;
@@ -572,7 +645,38 @@ public class vPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel pPacientesEspera;
     private javax.swing.JPanel pPendiente;
     private javax.swing.JPanel pPerfil;
+    private javax.swing.JTable tblPacientes;
     // End of variables declaration//GEN-END:variables
+
+private void inicializarVistas(){
+    //Se agrega el objeto vHistoriaClinica
+    vHistoriaClinica vistaHistoria = new vHistoriaClinica();
+    //Se agrega el objeto vFacturacion
+    vFacturacion vistaFacturacion = new vFacturacion();
+    //Se agrega el objeto vAgendamiento
+    vAgendamiento vistaAgendamiento = new vAgendamiento();
+    //Se agrega el objeto vLaboratorio
+    vLaboratorio vistaLaboratorio = new vLaboratorio();
+    //Se agrega el objeto vPACS
+    vPACS vistaPACS = new vPACS();
+    //Se agrega el objeto vSesion
+    vSesion vistaSesion = new vSesion();
+    //Se agrega el objeto vSesion
+    vUsuarios vistaUsuario = new vUsuarios();
+    //Aqui se le dice al panel agregado que agregue la vista del panel vHistoriaclinica y se le pone una etiqueta
+    //Agrega el panel vistaHistoriaClinica al contenedor principal llamado pBase.
+    //Como pBase es un CardLayout, el segundo parametro ("pantallaHistoriaClinica") funciona como un alias o identificador unico.
+    pBase.add(pInicio, "pantallaInicio");
+    pBase.add(vistaHistoria,"pantallaHistoriaClinica");
+    pBase.add(vistaFacturacion,"pantallaFacturacion");
+    pBase.add(vistaAgendamiento,"pantallaAgendamiento");
+    pBase.add(vistaLaboratorio,"pantallaLaboratorio");
+    pBase.add(vistaPACS,"pantallaPACS");
+    pBase.add(vistaSesion,"pantallaSesion");  
+    pBase.add(vistaUsuario,"pantallaUsuario"); 
+}
+
+
 //Metodo para ajustar las imagenes a los botones
 private void ajustarIcono(javax.swing.JButton boton, String rutaImagen) {
     try {
@@ -597,6 +701,19 @@ private void ajustarImagenLabel(javax.swing.JLabel label, String rutaImagen) {
     }
 }
 
+private void iconos(){
+    ajustarImagenLabel(image, "/imagenes/icono.png");
+    ajustarImagenLabel(Icono, "/imagenes/medico.png");
+    ajustarIcono(btInicio, "/imagenes/casa.png");
+    ajustarIcono(btHistoria,"/imagenes/historia clinica.png");
+    ajustarIcono(btLaboratorio,"/imagenes/laboratorio.png");
+    ajustarIcono(btPACS,"/imagenes/PACS.png");
+    ajustarIcono(btFacturacion,"/imagenes/facturacion.png");
+    ajustarIcono(btAgenda,"/imagenes/agenda.png");
+    ajustarIcono(btCerrar,"/imagenes/cerrar.png");
+    ajustarIcono(btUsuario,"/imagenes/usuario.png");
+}
+
 private void configurarBienvenida() {
     //Aqui vamos a agregar los metodos para obtener el que entre
     String nombre = "Dr. Esteban López";
@@ -618,5 +735,17 @@ private void iniciarReloj() {
         }
     });
     timer.start();
+}
+private void configurarTarjetas() {
+    //Agregar metodos
+    //Datos de prueba
+    int pacientesHoy = 12;
+    int enEspera = 3;
+    String alertasLab = "1";
+    int sugerenciasIA = 2;
+    lbCantidadDia.setText(String.valueOf(pacientesHoy));
+    lbCantidadPendientes.setText(String.valueOf(enEspera));
+    lbCantidadAlerta.setText(alertasLab);
+    lbCantidadIA.setText(String.valueOf(sugerenciasIA));
 }
 }
