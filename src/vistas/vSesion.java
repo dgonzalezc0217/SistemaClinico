@@ -212,6 +212,8 @@ public class vSesion extends javax.swing.JPanel {
             // Muestra la pantalla de inicio/dashboard
             java.awt.CardLayout cl = (java.awt.CardLayout) principal.getpBase().getLayout();
             cl.show(principal.getpBase(), "pantallaInicio");
+            txtDocumento.setText("");
+            txtContraseña.setText("");
         }
     }//GEN-LAST:event_btInicioSesionActionPerformed
 

@@ -63,6 +63,7 @@ public class vPrincipal extends javax.swing.JFrame {
         lbCantidadIA = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblPacientes = new javax.swing.JTable();
+        jLabel5 = new javax.swing.JLabel();
         pPerfil = new javax.swing.JPanel();
         lbBienvenida = new javax.swing.JLabel();
         Icono = new javax.swing.JLabel();
@@ -248,7 +249,7 @@ public class vPrincipal extends javax.swing.JFrame {
                 .addComponent(btUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(59, 59, 59)
                 .addComponent(btCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
 
         pBase.setBackground(new java.awt.Color(255, 255, 255));
@@ -416,6 +417,9 @@ public class vPrincipal extends javax.swing.JFrame {
         jScrollPane1.getViewport().setBackground(java.awt.Color.WHITE);
         jScrollPane1.setViewportView(tblPacientes);
 
+        jLabel5.setFont(new java.awt.Font("SansSerif", 1, 36)); // NOI18N
+        jLabel5.setText("Citas");
+
         javax.swing.GroupLayout pInicioLayout = new javax.swing.GroupLayout(pInicio);
         pInicio.setLayout(pInicioLayout);
         pInicioLayout.setHorizontalGroup(
@@ -424,7 +428,10 @@ public class vPrincipal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(pInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1544, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1))
+                    .addComponent(jScrollPane1)
+                    .addGroup(pInicioLayout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         pInicioLayout.setVerticalGroup(
@@ -433,8 +440,10 @@ public class vPrincipal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 646, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 578, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pBase.add(pInicio, "pantallaInicio");
@@ -446,7 +455,7 @@ public class vPrincipal extends javax.swing.JFrame {
         lbBienvenida.setText("Bienvenido usuario");
 
         Icono.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        Icono.setPreferredSize(new java.awt.Dimension(150, 150));
+        Icono.setPreferredSize(new java.awt.Dimension(120, 120));
 
         lbFechaHora.setFont(new java.awt.Font("SansSerif", 0, 36)); // NOI18N
         lbFechaHora.setText("Fecha:");
@@ -461,23 +470,23 @@ public class vPrincipal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lbFechaHora)
                 .addGap(18, 18, 18)
-                .addComponent(Icono, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
+                .addComponent(Icono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39))
         );
         pPerfilLayout.setVerticalGroup(
             pPerfilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pPerfilLayout.createSequentialGroup()
                 .addGroup(pPerfilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pPerfilLayout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addComponent(Icono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pPerfilLayout.createSequentialGroup()
                         .addGap(40, 40, 40)
-                        .addComponent(lbBienvenida))
+                        .addComponent(lbFechaHora))
                     .addGroup(pPerfilLayout.createSequentialGroup()
-                        .addGap(62, 62, 62)
-                        .addComponent(lbFechaHora)))
-                .addContainerGap(16, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addComponent(Icono, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pPerfilLayout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(lbBienvenida)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -496,7 +505,7 @@ public class vPrincipal extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pBase, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(menu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -553,6 +562,7 @@ public class vPrincipal extends javax.swing.JFrame {
         //Le indica al CardLayout que traiga al frente la tarjeta que fue registrada bajo el nombre "pantallaSesion".
         //Esto muestra visualmente la clase vSesion que habiamos instanciado al inicio.
         layout.show(pBase, "pantallaSesion");
+        mostrarBarraYMenu(false);
     }//GEN-LAST:event_btCerrarActionPerformed
 
     private void btAgendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAgendaActionPerformed
@@ -623,6 +633,7 @@ public class vPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     public javax.swing.JLabel lbBienvenida;
