@@ -2,11 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
 package vistas;
 
 import java.awt.CardLayout;
 import java.awt.Color;
+
 /**
  *
  * @author oscar
@@ -18,13 +18,7 @@ public class vPrincipal extends javax.swing.JFrame {
      */
     public vPrincipal() {
         initComponents();
-        this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
-        menu.setBackground(Color.decode("#A3C9A8"));
-        iconos();
-        configurarBienvenida();
-        iniciarReloj();
-        configurarTarjetas();
-        inicializarVistas();
+        estilo();
     }
 
     /**
@@ -520,9 +514,8 @@ public class vPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btInicioActionPerformed
 
     private void btHistoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btHistoriaActionPerformed
-       //Obtiene el diseño actual del panel principal 'pBase' y lo convierte a CardLayout
-        java.awt.CardLayout layout = (java.awt.CardLayout)
-        pBase.getLayout();
+        //Obtiene el diseño actual del panel principal 'pBase' y lo convierte a CardLayout
+        java.awt.CardLayout layout = (java.awt.CardLayout) pBase.getLayout();
         //Le indica al CardLayout que traiga al frente la tarjeta que fue registrada bajo el nombre "pantallaHistoriaClinica".
         //Esto muestra visualmente la clase vHistoriaClinica que habiamos instanciado al inicio.
         layout.show(pBase, "pantallaHistoriaClinica");
@@ -530,35 +523,31 @@ public class vPrincipal extends javax.swing.JFrame {
 
     private void btLaboratorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLaboratorioActionPerformed
         //Obtiene el diseño actual del panel principal 'pBase' y lo convierte a CardLayout
-        java.awt.CardLayout layout = (java.awt.CardLayout)
-        pBase.getLayout();
+        java.awt.CardLayout layout = (java.awt.CardLayout) pBase.getLayout();
         //Le indica al CardLayout que traiga al frente la tarjeta que fue registrada bajo el nombre "pantallaLaboratorio".
         //Esto muestra visualmente la clase vHistoriaClinica que habiamos instanciado al inicio.
         layout.show(pBase, "pantallaLaboratorio");
     }//GEN-LAST:event_btLaboratorioActionPerformed
 
     private void btPACSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btPACSActionPerformed
-       //Obtiene el diseño actual del panel principal 'pBase' y lo convierte a CardLayout
-        java.awt.CardLayout layout = (java.awt.CardLayout)
-        pBase.getLayout();
+        //Obtiene el diseño actual del panel principal 'pBase' y lo convierte a CardLayout
+        java.awt.CardLayout layout = (java.awt.CardLayout) pBase.getLayout();
         //Le indica al CardLayout que traiga al frente la tarjeta que fue registrada bajo el nombre "pantallaPACS".
         //Esto muestra visualmente la clase vPACS que habiamos instanciado al inicio.
         layout.show(pBase, "pantallaPACS");
     }//GEN-LAST:event_btPACSActionPerformed
 
     private void btFacturacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btFacturacionActionPerformed
-       //Obtiene el diseño actual del panel principal 'pBase' y lo convierte a CardLayout
-        java.awt.CardLayout layout = (java.awt.CardLayout)
-        pBase.getLayout();
+        //Obtiene el diseño actual del panel principal 'pBase' y lo convierte a CardLayout
+        java.awt.CardLayout layout = (java.awt.CardLayout) pBase.getLayout();
         //Le indica al CardLayout que traiga al frente la tarjeta que fue registrada bajo el nombre "pantallaFacturacion".
         //Esto muestra visualmente la clase vFacturacion que habiamos instanciado al inicio.
         layout.show(pBase, "pantallaFacturacion");
     }//GEN-LAST:event_btFacturacionActionPerformed
 
     private void btCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCerrarActionPerformed
-       //Obtiene el diseño actual del panel principal 'pBase' y lo convierte a CardLayout
-        java.awt.CardLayout layout = (java.awt.CardLayout)
-        pBase.getLayout();
+        //Obtiene el diseño actual del panel principal 'pBase' y lo convierte a CardLayout
+        java.awt.CardLayout layout = (java.awt.CardLayout) pBase.getLayout();
         //Le indica al CardLayout que traiga al frente la tarjeta que fue registrada bajo el nombre "pantallaSesion".
         //Esto muestra visualmente la clase vSesion que habiamos instanciado al inicio.
         layout.show(pBase, "pantallaSesion");
@@ -566,9 +555,8 @@ public class vPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btCerrarActionPerformed
 
     private void btAgendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAgendaActionPerformed
-       //Obtiene el diseño actual del panel principal 'pBase' y lo convierte a CardLayout
-        java.awt.CardLayout layout = (java.awt.CardLayout)
-        pBase.getLayout();
+        //Obtiene el diseño actual del panel principal 'pBase' y lo convierte a CardLayout
+        java.awt.CardLayout layout = (java.awt.CardLayout) pBase.getLayout();
         //Le indica al CardLayout que traiga al frente la tarjeta que fue registrada bajo el nombre "pantallaAgendamiento".
         //Esto muestra visualmente la clase vAgendamiento que habiamos instanciado al inicio.
         layout.show(pBase, "pantallaAgendamiento");
@@ -576,8 +564,7 @@ public class vPrincipal extends javax.swing.JFrame {
 
     private void btUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btUsuarioActionPerformed
         //Obtiene el diseño actual del panel principal 'pBase' y lo convierte a CardLayout
-        java.awt.CardLayout layout = (java.awt.CardLayout)
-        pBase.getLayout();
+        java.awt.CardLayout layout = (java.awt.CardLayout) pBase.getLayout();
         //Le indica al CardLayout que traiga al frente la tarjeta que fue registrada bajo el nombre "pantallaUsuario".
         //Esto muestra visualmente la clase vUsuario que habiamos instanciado al inicio.
         layout.show(pBase, "pantallaUsuario");
@@ -654,117 +641,134 @@ public class vPrincipal extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
 //Metodo para ocultar el menu lateral al momento de poner el programa
-public void mostrarBarraYMenu(boolean visible) {
-    menu.setVisible(visible);
-    pPerfil.setVisible(visible);
-}
-    
-    private void inicializarVistas(){
-    //Se agrega el objeto vHistoriaClinica
-    vHistoriaClinica vistaHistoria = new vHistoriaClinica();
-    //Se agrega el objeto vFacturacion
-    vFacturacion vistaFacturacion = new vFacturacion();
-    //Se agrega el objeto vAgendamiento
-    vAgendamiento vistaAgendamiento = new vAgendamiento();
-    //Se agrega el objeto vLaboratorio
-    vLaboratorio vistaLaboratorio = new vLaboratorio();
-    //Se agrega el objeto vPACS
-    vPACS vistaPACS = new vPACS();
-    //Se agrega el objeto vSesion
-    vSesion vistaSesion = new vSesion();
-    //Se agrega el objeto vSesion
-    vUsuarios vistaUsuario = new vUsuarios();
-    //Aqui se le dice al panel agregado que agregue la vista del panel vHistoriaclinica y se le pone una etiqueta
-    //Agrega el panel vistaHistoriaClinica al contenedor principal llamado pBase.
-    //Como pBase es un CardLayout, el segundo parametro ("pantallaHistoriaClinica") funciona como un alias o identificador unico.
-    pBase.add(pInicio, "pantallaInicio");
-    pBase.add(vistaHistoria,"pantallaHistoriaClinica");
-    pBase.add(vistaFacturacion,"pantallaFacturacion");
-    pBase.add(vistaAgendamiento,"pantallaAgendamiento");
-    pBase.add(vistaLaboratorio,"pantallaLaboratorio");
-    pBase.add(vistaPACS,"pantallaPACS");
-    pBase.add(vistaSesion,"pantallaSesion");  
-    pBase.add(vistaUsuario,"pantallaUsuario");
-    // Oculta la barra y menú al inicio
-    mostrarBarraYMenu(false);
-    // Muestra la pantalla de inicio de sesión por defecto
-    CardLayout cl = (CardLayout) pBase.getLayout();
-    cl.show(pBase, "pantallaSesion");
-}
+    public void mostrarBarraYMenu(boolean visible) {
+        menu.setVisible(visible);
+        pPerfil.setVisible(visible);
+    }
+//Metodo para inicializar las vistas
+
+    private void inicializarVistas() {
+        //Se agrega el objeto vHistoriaClinica
+        vHistoriaClinica vistaHistoria = new vHistoriaClinica();
+        //Se agrega el objeto vFacturacion
+        vFacturacion vistaFacturacion = new vFacturacion();
+        //Se agrega el objeto vAgendamiento
+        vAgendamiento vistaAgendamiento = new vAgendamiento();
+        //Se agrega el objeto vLaboratorio
+        vLaboratorio vistaLaboratorio = new vLaboratorio();
+        //Se agrega el objeto vPACS
+        vPACS vistaPACS = new vPACS();
+        //Se agrega el objeto vSesion
+        vSesion vistaSesion = new vSesion();
+        //Se agrega el objeto vSesion
+        vUsuarios vistaUsuario = new vUsuarios();
+        //Aqui se le dice al panel agregado que agregue la vista del panel vHistoriaclinica y se le pone una etiqueta
+        //Agrega el panel vistaHistoriaClinica al contenedor principal llamado pBase.
+        //Como pBase es un CardLayout, el segundo parametro ("pantallaHistoriaClinica") funciona como un alias o identificador unico.
+        pBase.add(pInicio, "pantallaInicio");
+        pBase.add(vistaHistoria, "pantallaHistoriaClinica");
+        pBase.add(vistaFacturacion, "pantallaFacturacion");
+        pBase.add(vistaAgendamiento, "pantallaAgendamiento");
+        pBase.add(vistaLaboratorio, "pantallaLaboratorio");
+        pBase.add(vistaPACS, "pantallaPACS");
+        pBase.add(vistaSesion, "pantallaSesion");
+        pBase.add(vistaUsuario, "pantallaUsuario");
+        // Oculta la barra y menú al inicio
+        mostrarBarraYMenu(false);
+        // Muestra la pantalla de inicio de sesión por defecto
+        CardLayout cl = (CardLayout) pBase.getLayout();
+        cl.show(pBase, "pantallaSesion");
+    }
 
 //Metodo para ajustar las imagenes a los botones
-private void ajustarIcono(javax.swing.JButton boton, String rutaImagen) {
-    try {
-        javax.swing.ImageIcon iconoOriginal = new javax.swing.ImageIcon(getClass().getResource(rutaImagen));
-        java.awt.Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(60, 60   , java.awt.Image.SCALE_SMOOTH);
-        boton.setIcon(new javax.swing.ImageIcon(imagenEscalada));
-    } catch (Exception e) {
-        System.out.println("No se pudo cargar la imagen: " + rutaImagen);
+    private void ajustarIcono(javax.swing.JButton boton, String rutaImagen) {
+        try {
+            javax.swing.ImageIcon iconoOriginal = new javax.swing.ImageIcon(getClass().getResource(rutaImagen));
+            java.awt.Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH);
+            boton.setIcon(new javax.swing.ImageIcon(imagenEscalada));
+        } catch (Exception e) {
+            System.out.println("No se pudo cargar la imagen: " + rutaImagen);
+        }
     }
-}
 
 //Metodo para ajustar las imagenes al label
-private void ajustarImagenLabel(javax.swing.JLabel label, String rutaImagen) {
-    try {
-        javax.swing.ImageIcon iconoOriginal = new javax.swing.ImageIcon(getClass().getResource(rutaImagen));
-        int ancho = label.getPreferredSize().width;
-        int alto = label.getPreferredSize().height;
-        java.awt.Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(ancho, alto, java.awt.Image.SCALE_SMOOTH);
-        label.setIcon(new javax.swing.ImageIcon(imagenEscalada));
-    } catch (Exception e) {
-        System.out.println("No se pudo cargar la imagen del Label: " + rutaImagen);
-    }
-}
-
-private void iconos(){
-    ajustarImagenLabel(image, "/imagenes/icono.png");
-    ajustarImagenLabel(Icono, "/imagenes/medico.png");
-    ajustarIcono(btInicio, "/imagenes/casa.png");
-    ajustarIcono(btHistoria,"/imagenes/historia clinica.png");
-    ajustarIcono(btLaboratorio,"/imagenes/laboratorio.png");
-    ajustarIcono(btPACS,"/imagenes/PACS.png");
-    ajustarIcono(btFacturacion,"/imagenes/facturacion.png");
-    ajustarIcono(btAgenda,"/imagenes/agenda.png");
-    ajustarIcono(btCerrar,"/imagenes/cerrar.png");
-    ajustarIcono(btUsuario,"/imagenes/usuario.png");
-}
-
-private void configurarBienvenida() {
-    //Aqui vamos a agregar los metodos para obtener el que entre
-    String nombre = "Dr. Esteban López";
-    String rol = "Médico General";
-
-    lbBienvenida.setText("<html>¡Bienvenido!<br>" + nombre + " | " + rol + "</html>");
-}
-
-private void iniciarReloj() {
-    java.time.format.DateTimeFormatter formato = java.time.format.DateTimeFormatter.ofPattern("EEEE, dd MMM yyyy | hh:mm:ss a");
-    javax.swing.Timer timer = new javax.swing.Timer(1000, new java.awt.event.ActionListener() {
-        @Override
-        public void actionPerformed(java.awt.event.ActionEvent e) {
-            java.time.LocalDateTime ahora = java.time.LocalDateTime.now();
-            String textoFechaHora = ahora.format(formato);
-            textoFechaHora = textoFechaHora.substring(0, 1).toUpperCase() + textoFechaHora.substring(1);
-            
-            lbFechaHora.setText(textoFechaHora);
+    private void ajustarImagenLabel(javax.swing.JLabel label, String rutaImagen) {
+        try {
+            javax.swing.ImageIcon iconoOriginal = new javax.swing.ImageIcon(getClass().getResource(rutaImagen));
+            int ancho = label.getPreferredSize().width;
+            int alto = label.getPreferredSize().height;
+            java.awt.Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(ancho, alto, java.awt.Image.SCALE_SMOOTH);
+            label.setIcon(new javax.swing.ImageIcon(imagenEscalada));
+        } catch (Exception e) {
+            System.out.println("No se pudo cargar la imagen del Label: " + rutaImagen);
         }
-    });
-    timer.start();
-}
-private void configurarTarjetas() {
-    //Agregar metodos
-    //Datos de prueba
-    int pacientesHoy = 12;
-    int enEspera = 3;
-    String alertasLab = "1";
-    int sugerenciasIA = 2;
-    lbCantidadDia.setText(String.valueOf(pacientesHoy));
-    lbCantidadPendientes.setText(String.valueOf(enEspera));
-    lbCantidadAlerta.setText(alertasLab);
-    lbCantidadIA.setText(String.valueOf(sugerenciasIA));
-}
+    }
 
-public javax.swing.JPanel getpBase() {
+//Metodo para poner las imagenes en los label y botones
+    private void iconos() {
+        ajustarImagenLabel(image, "/imagenes/icono.png");
+        ajustarImagenLabel(Icono, "/imagenes/medico.png");
+        ajustarIcono(btInicio, "/imagenes/casa.png");
+        ajustarIcono(btHistoria, "/imagenes/historia clinica.png");
+        ajustarIcono(btLaboratorio, "/imagenes/laboratorio.png");
+        ajustarIcono(btPACS, "/imagenes/PACS.png");
+        ajustarIcono(btFacturacion, "/imagenes/facturacion.png");
+        ajustarIcono(btAgenda, "/imagenes/agenda.png");
+        ajustarIcono(btCerrar, "/imagenes/cerrar.png");
+        ajustarIcono(btUsuario, "/imagenes/usuario.png");
+    }
+
+//Metodo para el panel de bienvendia
+    private void configurarBienvenida() {
+        //Aqui vamos a agregar los metodos para obtener el que entre
+        String nombre = "Dr. Esteban López";
+        String rol = "Médico General";
+
+        lbBienvenida.setText("<html>¡Bienvenido!<br>" + nombre + " | " + rol + "</html>");
+    }
+
+//Metodo para tener la fehca y el reloj
+    private void iniciarReloj() {
+        java.time.format.DateTimeFormatter formato = java.time.format.DateTimeFormatter.ofPattern("EEEE, dd MMM yyyy | hh:mm:ss a");
+        javax.swing.Timer timer = new javax.swing.Timer(1000, new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                java.time.LocalDateTime ahora = java.time.LocalDateTime.now();
+                String textoFechaHora = ahora.format(formato);
+                textoFechaHora = textoFechaHora.substring(0, 1).toUpperCase() + textoFechaHora.substring(1);
+
+                lbFechaHora.setText(textoFechaHora);
+            }
+        });
+        timer.start();
+    }
+
+//Metodo para la configuracion de las tarjetas de resumen
+    private void configurarTarjetas() {
+        //Agregar metodos
+        //Datos de prueba
+        int pacientesHoy = 12;
+        int enEspera = 3;
+        String alertasLab = "1";
+        int sugerenciasIA = 2;
+        lbCantidadDia.setText(String.valueOf(pacientesHoy));
+        lbCantidadPendientes.setText(String.valueOf(enEspera));
+        lbCantidadAlerta.setText(alertasLab);
+        lbCantidadIA.setText(String.valueOf(sugerenciasIA));
+    }
+
+//Funcion para guardar la configuracion de todo el panel
+    public void estilo() {
+        this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+        menu.setBackground(Color.decode("#A3C9A8"));
+        iconos();
+        configurarBienvenida();
+        iniciarReloj();
+        configurarTarjetas();
+        inicializarVistas();
+    }
+
+    public javax.swing.JPanel getpBase() {
         return pBase;
-}
+    }
 }

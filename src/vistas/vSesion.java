@@ -14,16 +14,13 @@ public class vSesion extends javax.swing.JPanel {
 
     // Variable global para almacenar el carácter de máscara original
     private char echoCharOriginal;
+
     /**
      * Creates new form vSesion
      */
     public vSesion() {
         initComponents();
-        Entrada.setBackground(Color.decode("#A3C9A8"));
-        btInicioSesion.setBackground(Color.decode("#A3C9A8"));
-        iconos();
-        configurarMostrarContraseña();
-        configurarSoloNumeros();
+        estilo();
     }
 
     /**
@@ -194,10 +191,10 @@ public class vSesion extends javax.swing.JPanel {
         String password = new String(txtContraseña.getPassword()).trim();
 
         if (documento.isEmpty() || password.isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this, 
-                "Por favor ingrese su documento y contraseña.", 
-                "Campos requeridos", 
-                javax.swing.JOptionPane.WARNING_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Por favor ingrese su documento y contraseña.",
+                    "Campos requeridos",
+                    javax.swing.JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -234,38 +231,48 @@ public class vSesion extends javax.swing.JPanel {
     private javax.swing.JTextField txtDocumento;
     // End of variables declaration//GEN-END:variables
 
-private void ajustarImagenLabel(javax.swing.JLabel label, String rutaImagen) {
-    try {
-        javax.swing.ImageIcon iconoOriginal = new javax.swing.ImageIcon(getClass().getResource(rutaImagen));
-        int ancho = label.getPreferredSize().width;
-        int alto = label.getPreferredSize().height;
-        java.awt.Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(ancho, alto, java.awt.Image.SCALE_SMOOTH);
-        label.setIcon(new javax.swing.ImageIcon(imagenEscalada));
-    } catch (Exception e) {
-        System.out.println("No se pudo cargar la imagen del Label: " + rutaImagen);
+    //Colores del panel
+    public void color() {
+        Entrada.setBackground(Color.decode("#A3C9A8"));
+        btInicioSesion.setBackground(Color.decode("#A3C9A8"));
     }
-}
-private void ajustarIcono(javax.swing.JToggleButton boton, String rutaImagen) {
-    try {
-        javax.swing.ImageIcon iconoOriginal = new javax.swing.ImageIcon(getClass().getResource(rutaImagen));
-        java.awt.Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(30, 30   , java.awt.Image.SCALE_SMOOTH);
-        boton.setIcon(new javax.swing.ImageIcon(imagenEscalada));
-    } catch (Exception e) {
-        System.out.println("No se pudo cargar la imagen: " + rutaImagen);
+
+    //Funcion para ajustar las imagenes insertadas en jlabel
+    private void ajustarImagenLabel(javax.swing.JLabel label, String rutaImagen) {
+        try {
+            javax.swing.ImageIcon iconoOriginal = new javax.swing.ImageIcon(getClass().getResource(rutaImagen));
+            int ancho = label.getPreferredSize().width;
+            int alto = label.getPreferredSize().height;
+            java.awt.Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(ancho, alto, java.awt.Image.SCALE_SMOOTH);
+            label.setIcon(new javax.swing.ImageIcon(imagenEscalada));
+        } catch (Exception e) {
+            System.out.println("No se pudo cargar la imagen del Label: " + rutaImagen);
+        }
     }
-}
 
-private void iconos(){
-    ajustarImagenLabel(Icon, "/imagenes/icono.png");
-    ajustarImagenLabel(Usuario, "/imagenes/Usuario.png");
-    ajustarIcono(btVer, "/imagenes/Ojo.png");
-}
+    //Funcion para ajustar las imagenes a los botones
+    private void ajustarIcono(javax.swing.JToggleButton boton, String rutaImagen) {
+        try {
+            javax.swing.ImageIcon iconoOriginal = new javax.swing.ImageIcon(getClass().getResource(rutaImagen));
+            java.awt.Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
+            boton.setIcon(new javax.swing.ImageIcon(imagenEscalada));
+        } catch (Exception e) {
+            System.out.println("No se pudo cargar la imagen: " + rutaImagen);
+        }
+    }
 
-//Función que agrupa la configuración y lógica para mostrar/ocultar la contraseña 
-private void configurarMostrarContraseña() {
+    //Funcion para poner las imagenes
+    private void iconos() {
+        ajustarImagenLabel(Icon, "/imagenes/icono.png");
+        ajustarImagenLabel(Usuario, "/imagenes/Usuario.png");
+        ajustarIcono(btVer, "/imagenes/Ojo.png");
+    }
+
+    public void estilo() {
+        //Metodo para ocultar la contraseña
         // Guardar el carácter de ocultamiento por defecto
         echoCharOriginal = txtContraseña.getEchoChar();
-        
+
         // Asignar el evento al botón de alternancia btVer
         btVer.addActionListener(new java.awt.event.ActionListener() {
             @Override
@@ -277,27 +284,27 @@ private void configurarMostrarContraseña() {
                 }
             }
         });
-    }
-
-//Metodo para que el documento de identidad solo se puedan agegar numeros
-private void configurarSoloNumeros() {
-    txtDocumento.addKeyListener(new java.awt.event.KeyAdapter() {
-        @Override
-        public void keyTyped(java.awt.event.KeyEvent evt) {
-            char c = evt.getKeyChar();
-            // Si el carácter no es un número, cancela la entrada
-            if (!Character.isDigit(c)) {
-                evt.consume();
+        //Metodo para solo ingresar numeros en el documento de identidad     
+        txtDocumento.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                char c = evt.getKeyChar();
+                // Si el carácter no es un número, cancela la entrada
+                if (!Character.isDigit(c)) {
+                    evt.consume();
+                }
             }
-        }
-    });
-}
-
-@Override
-public java.awt.Dimension getPreferredSize() {
-    if (getParent() != null && getParent().getWidth() > 0 && getParent().getHeight() > 0) {
-        return new java.awt.Dimension(getParent().getWidth(), getParent().getHeight());
+        });
+        color();
+        iconos();
     }
-    return super.getPreferredSize();
-}
+
+//Funcion para ajustar el tamñao de la pantalla
+    @Override
+    public java.awt.Dimension getPreferredSize() {
+        if (getParent() != null && getParent().getWidth() > 0 && getParent().getHeight() > 0) {
+            return new java.awt.Dimension(getParent().getWidth(), getParent().getHeight());
+        }
+        return super.getPreferredSize();
+    }
 }

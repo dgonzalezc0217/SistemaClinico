@@ -15,10 +15,12 @@ public class dlgHistorial extends javax.swing.JDialog {
     /**
      * Creates new form dlgHistorial
      */
-    public dlgHistorial(java.awt.Frame parent, boolean modal) {
+    public dlgHistorial(java.awt.Frame parent, boolean modal, vHistoriaClinica vistaPadre) {
+        //Asocia el JDialog para asociar el JFrame y activar el modo modal
         super(parent, modal);
+        this.vistaPadre = vistaPadre;
         initComponents();
-        this.setLocationRelativeTo(parent); 
+        estilo(parent);
     }
 
     /**
@@ -32,34 +34,35 @@ public class dlgHistorial extends javax.swing.JDialog {
 
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblHistorial = new javax.swing.JTable();
         btCargar = new javax.swing.JButton();
         btCerrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
-        setPreferredSize(new java.awt.Dimension(700, 400));
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         jLabel1.setText("Historial de consultas previas");
 
-        jTable1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblHistorial.setAutoCreateRowSorter(true);
+        tblHistorial.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        tblHistorial.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        tblHistorial.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Fecha", "Medico", "Motivo de consulta", "Examen", "Diagnostico"
+                "Fecha", "Medico", "Signos vitales", "Motivo de consulta", "Examen", "Diagnostico"
             }
         ));
-        jTable1.setSelectionBackground(new java.awt.Color(255, 255, 255));
-        jScrollPane1.setViewportView(jTable1);
+        tblHistorial.setSelectionBackground(new java.awt.Color(255, 255, 255));
+        jScrollPane1.setViewportView(tblHistorial);
 
         btCargar.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
-        btCargar.setText("Cargar");
+        btCargar.setText("Cargar datos de consulta anterior");
         btCargar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btCargarActionPerformed(evt);
@@ -117,7 +120,22 @@ public class dlgHistorial extends javax.swing.JDialog {
     }//GEN-LAST:event_btCerrarActionPerformed
 
     private void btCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCargarActionPerformed
-        // TODO add your handling code here:
+        int fila = tblHistorial.getSelectedRow();
+        if (fila != -1) {
+            String fecha = tblHistorial.getValueAt(fila, 0).toString();
+            String signosVitales = tblHistorial.getValueAt(fila, 2).toString();
+            String motivo = tblHistorial.getValueAt(fila, 3).toString();
+            String diagnostico = tblHistorial.getValueAt(fila, 4).toString();
+
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Cargando antecedentes del " + fecha + ":\n"
+                    + "• Signos vitales previos: " + signosVitales + "\n"
+                    + "• Diagnóstico anterior: " + diagnostico,
+                    "Carga de Antecedentes",
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
+            this.dispose(); // Cierra el modal y vuelve a la historia clínica
+        }
     }//GEN-LAST:event_btCargarActionPerformed
 
     /**
@@ -150,7 +168,7 @@ public class dlgHistorial extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                dlgHistorial dialog = new dlgHistorial(new javax.swing.JFrame(), true);
+                dlgHistorial dialog = new dlgHistorial(new javax.swing.JFrame(), true, null);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -167,10 +185,72 @@ public class dlgHistorial extends javax.swing.JDialog {
     private javax.swing.JButton btCerrar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tblHistorial;
     // End of variables declaration//GEN-END:variables
-public void color(){
-    btCerrar.setBackground(Color.decode("#A3C9A8"));
-    btCargar.setBackground(Color.decode("#A3C9A8"));
-}
+    private vHistoriaClinica vistaPadre;
+
+//Datos simulados
+    private void cargarDatos() {
+        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tblHistorial.getModel();
+        model.setRowCount(0);
+        // Formato resuelto: "P.A | F.C | Temp | Peso"
+        model.addRow(new Object[]{
+            "10/05/2026",
+            "Dr. Roberto Gómez",
+            "120/80 mmHg | 72 bpm | 36.5°C | 70kg",
+            "Control Rutina",
+            "Paciente estable, anemia leve"
+        });
+
+        model.addRow(new Object[]{
+            "22/01/2026",
+            "Dra. Elena Rostova",
+            "130/85 mmHg | 80 bpm | 37.0°C | 72kg",
+            "Chequeo Lipídico",
+            "Colesterol moderadamente alto"
+        });
+    }
+
+//Genera los colores de la plantilla
+    public void color() {
+        //Color del panel y la tabla
+        this.getContentPane().setBackground(Color.WHITE);
+        jScrollPane1.getViewport().setBackground(java.awt.Color.WHITE);
+        //Cambiar el color de cuando se seleciona una fila
+        tblHistorial.setSelectionBackground(Color.decode("#C8E6C9")); 
+        //Cambiar el color de las letras en la selecccion de fila
+        tblHistorial.setSelectionForeground(Color.BLACK);           
+        //Color de los botones
+        btCerrar.setBackground(Color.decode("#A3C9A8"));
+        btCargar.setBackground(Color.decode("#A3C9A8"));
+
+    }
+
+//Generar el estilo de la pantalla
+    public void estilo(java.awt.Frame parent) {
+        color();
+        //Funcion de tamaño de la pantalla
+        this.setSize(800, 550);
+        //Funcion para mostrar el recuadro en el medio de la pantalla
+        this.setLocationRelativeTo(parent);
+        //bloquea las celdas de la tabla
+        javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(
+                new Object[][]{},
+                new String[]{"Fecha", "Médico", "Motivo de consulta", "Examen", "Diagnóstico"}
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Bloquea la edición de todas las celdas
+            }
+        };
+        tblHistorial.setModel(model);
+        cargarDatos();
+        btCargar.setEnabled(false);
+        // Listener para habilitar el botón cuando el médico elija una consulta
+        tblHistorial.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting() && tblHistorial.getSelectedRow() != -1) {
+                btCargar.setEnabled(true);
+            }
+        });
+    }
 }

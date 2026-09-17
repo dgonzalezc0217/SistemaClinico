@@ -17,7 +17,7 @@ public class vHistoriaClinica extends javax.swing.JPanel {
      */
     public vHistoriaClinica() {
         initComponents();
-        color();
+        estilo();
     }
 
     /**
@@ -38,11 +38,11 @@ public class vHistoriaClinica extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         txtCelular = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        txtCelular1 = new javax.swing.JTextField();
+        txtEdad = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        txtCelular2 = new javax.swing.JTextField();
+        txtSangre = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        txtCedula1 = new javax.swing.JTextField();
+        txtAlergias = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         txtIngreso = new javax.swing.JTextField();
         btVerHistorial = new javax.swing.JButton();
@@ -79,6 +79,11 @@ public class vHistoriaClinica extends javax.swing.JPanel {
 
         btBuscar.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         btBuscar.setText("Buscar");
+        btBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btBuscarActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel1.setText("Paciente:");
@@ -113,30 +118,30 @@ public class vHistoriaClinica extends javax.swing.JPanel {
         jLabel4.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel4.setText("Edad:");
 
-        txtCelular1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtCelular1.addActionListener(new java.awt.event.ActionListener() {
+        txtEdad.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtEdad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCelular1ActionPerformed(evt);
+                txtEdadActionPerformed(evt);
             }
         });
 
         jLabel5.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel5.setText("Tipo de sangre:");
 
-        txtCelular2.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        txtCelular2.addActionListener(new java.awt.event.ActionListener() {
+        txtSangre.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        txtSangre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCelular2ActionPerformed(evt);
+                txtSangreActionPerformed(evt);
             }
         });
 
         jLabel6.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel6.setText("Alergias:");
 
-        txtCedula1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        txtCedula1.addActionListener(new java.awt.event.ActionListener() {
+        txtAlergias.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        txtAlergias.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCedula1ActionPerformed(evt);
+                txtAlergiasActionPerformed(evt);
             }
         });
 
@@ -169,13 +174,13 @@ public class vHistoriaClinica extends javax.swing.JPanel {
                             .addGroup(pPacienteLayout.createSequentialGroup()
                                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtCelular2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txtSangre, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
                         .addGroup(pPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pPacienteLayout.createSequentialGroup()
                                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtCedula1))
+                                .addComponent(txtAlergias))
                             .addGroup(pPacienteLayout.createSequentialGroup()
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -187,7 +192,7 @@ public class vHistoriaClinica extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel4)
                                 .addGap(18, 18, 18)
-                                .addComponent(txtCelular1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txtEdad, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(123, 123, 123))
                     .addGroup(pPacienteLayout.createSequentialGroup()
                         .addGap(2, 2, 2)
@@ -216,28 +221,27 @@ public class vHistoriaClinica extends javax.swing.JPanel {
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(btVerHistorial)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(pPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(pPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(pPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(txtCelular, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(txtCelular, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtEdad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(pPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(txtCelular2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtSangre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtCedula1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtAlergias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(19, 19, 19))
                     .addGroup(pPacienteLayout.createSequentialGroup()
                         .addComponent(txtIngreso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtCelular1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
@@ -464,17 +468,17 @@ public class vHistoriaClinica extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCelularActionPerformed
 
-    private void txtCelular1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCelular1ActionPerformed
+    private void txtEdadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEdadActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtCelular1ActionPerformed
+    }//GEN-LAST:event_txtEdadActionPerformed
 
-    private void txtCelular2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCelular2ActionPerformed
+    private void txtSangreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSangreActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtCelular2ActionPerformed
+    }//GEN-LAST:event_txtSangreActionPerformed
 
-    private void txtCedula1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCedula1ActionPerformed
+    private void txtAlergiasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAlergiasActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtCedula1ActionPerformed
+    }//GEN-LAST:event_txtAlergiasActionPerformed
 
     private void txtTAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTAActionPerformed
         // TODO add your handling code here:
@@ -501,16 +505,39 @@ public class vHistoriaClinica extends javax.swing.JPanel {
     }//GEN-LAST:event_btGuardarActionPerformed
 
     private void btVerHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btVerHistorialActionPerformed
-        //Obtenie la ventana Frame principal que contiene a este JPanel
+
         java.awt.Window parentWindow = javax.swing.SwingUtilities.getWindowAncestor(this);
         java.awt.Frame parentFrame = (parentWindow instanceof java.awt.Frame) ? (java.awt.Frame) parentWindow : null;
-
-        //Instanciar el JDialog (pasando la ventana padre y modal = true)
-        dlgHistorial dialogo = new dlgHistorial(parentFrame, true);
-
-        //Mostrar la ventana emergente
+        dlgHistorial dialogo = new dlgHistorial(parentFrame, true, this);
         dialogo.setVisible(true);
     }//GEN-LAST:event_btVerHistorialActionPerformed
+
+    private void btBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBuscarActionPerformed
+        //Se guarda el texto de cedula  
+        String cedula = txtIngreso.getText().trim();
+
+        //Se compara si la variabel cedula contiene texto
+        if (cedula.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Ingrese una cédula válida para realizar la búsqueda.",
+                    "Cédula requerida",
+                    javax.swing.JOptionPane.WARNING_MESSAGE);
+
+            btVerHistorial.setEnabled(false); // Se asegura de mantenerlo bloqueado
+
+            return;
+        }
+        //PruebaAquí se cargan los datos del paciente encontrado
+        txtNombre.setText("Carlos Mendoza"); // Ejemplo de carga
+        txtCedula.setText(cedula);
+        txtCelular.setText("0991234567");
+        txtEdad.setText("34");
+        txtSangre.setText("O+");
+        txtAlergias.setText("Penicilina");
+
+        //Se desbloquea el botón de historial
+        btVerHistorial.setEnabled(true);
+    }//GEN-LAST:event_btBuscarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -541,26 +568,51 @@ public class vHistoriaClinica extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JPanel pPaciente;
     private javax.swing.JPanel pSignos;
+    private javax.swing.JTextField txtAlergias;
     private javax.swing.JTextField txtCedula;
-    private javax.swing.JTextField txtCedula1;
     private javax.swing.JTextField txtCelular;
-    private javax.swing.JTextField txtCelular1;
-    private javax.swing.JTextField txtCelular2;
     private javax.swing.JTextArea txtConsulta;
     private javax.swing.JTextArea txtDiagnostico;
+    private javax.swing.JTextField txtEdad;
     private javax.swing.JTextArea txtExamen;
     private javax.swing.JTextField txtFC;
     private javax.swing.JTextField txtIngreso;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtPeso;
+    private javax.swing.JTextField txtSangre;
     private javax.swing.JTextField txtTA;
     private javax.swing.JTextField txtTemperatura;
     // End of variables declaration//GEN-END:variables
 
-public void color(){
-    btBuscar.setBackground(Color.decode("#A3C9A8"));
-    btVerHistorial.setBackground(Color.decode("#A3C9A8"));
-    btIA.setBackground(Color.decode("#A3C9A8"));
-    btGuardar.setBackground(Color.decode("#A3C9A8"));
-}
+    //Color para los botones
+    public void color() {
+        btBuscar.setBackground(Color.decode("#A3C9A8"));
+        btVerHistorial.setBackground(Color.decode("#A3C9A8"));
+        btIA.setBackground(Color.decode("#A3C9A8"));
+        btGuardar.setBackground(Color.decode("#A3C9A8"));
+    }
+
+    public void estilo() {
+        //Metodo para que solo se puedan agregar numeros al campo
+        txtIngreso.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                char c = evt.getKeyChar();
+                if (!Character.isDigit(c)) {
+                    evt.consume(); // Cancela el evento para no escribir el carácter
+                }
+            }
+        });
+        color();
+        //desabilita el boton de ver historial al abrir la ventana
+        btVerHistorial.setEnabled(false);
+        // Bloquear la edición manual por teclado
+        txtNombre.setEditable(false);
+        txtCedula.setEditable(false);
+        txtCelular.setEditable(false);
+        txtEdad.setEditable(false);
+        txtSangre.setEditable(false);
+        txtAlergias.setEditable(false);
+
+    }
 }

@@ -4,6 +4,8 @@
  */
 package vistas;
 
+import java.awt.Color;
+
 /**
  *
  * @author oscar
@@ -15,6 +17,8 @@ public class vLaboratorio extends javax.swing.JPanel {
      */
     public vLaboratorio() {
         initComponents();
+        estilo();
+
     }
 
     /**
@@ -26,11 +30,256 @@ public class vLaboratorio extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        pPaciente = new javax.swing.JPanel();
+        btBuscar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        txtNombre = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        txtCedula = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        txtCelular = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txtEdad = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        txtSangre = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        txtAlergias = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        txtIngreso = new javax.swing.JTextField();
+        btSincronizar = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblOrdenes = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblDetalle = new javax.swing.JTable();
+        jLabel10 = new javax.swing.JLabel();
+        btVerPDF = new javax.swing.JButton();
+        btAnexar = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel1.setText("Laboratorio");
+        pPaciente.setBackground(new java.awt.Color(255, 255, 255));
+        pPaciente.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        btBuscar.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        btBuscar.setText("Buscar");
+        btBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btBuscarActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        jLabel1.setText("Paciente:");
+
+        txtNombre.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        txtNombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNombreActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        jLabel2.setText("Cc:");
+
+        txtCedula.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        txtCedula.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCedulaActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        jLabel3.setText("Celular:");
+
+        txtCelular.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        txtCelular.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCelularActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        jLabel4.setText("Edad:");
+
+        txtEdad.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtEdad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtEdadActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        jLabel5.setText("Tipo de sangre:");
+
+        txtSangre.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        txtSangre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSangreActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        jLabel6.setText("Alergias:");
+
+        txtAlergias.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        txtAlergias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtAlergiasActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        jLabel7.setText("Ingrese el numero de cedula:");
+
+        txtIngreso.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        btSincronizar.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        btSincronizar.setText("Sincronizar REST");
+        btSincronizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btSincronizarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pPacienteLayout = new javax.swing.GroupLayout(pPaciente);
+        pPaciente.setLayout(pPacienteLayout);
+        pPacienteLayout.setHorizontalGroup(
+            pPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pPacienteLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pPacienteLayout.createSequentialGroup()
+                        .addGroup(pPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pPacienteLayout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pPacienteLayout.createSequentialGroup()
+                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtSangre, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addGroup(pPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pPacienteLayout.createSequentialGroup()
+                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtAlergias))
+                            .addGroup(pPacienteLayout.createSequentialGroup()
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtCedula, javax.swing.GroupLayout.DEFAULT_SIZE, 338, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel3)
+                                .addGap(34, 34, 34)
+                                .addComponent(txtCelular, javax.swing.GroupLayout.DEFAULT_SIZE, 338, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel4)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtEdad, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(pPacienteLayout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtIngreso, javax.swing.GroupLayout.PREFERRED_SIZE, 588, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btSincronizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(149, 149, 149)))
+                .addGap(123, 123, 123))
+        );
+        pPacienteLayout.setVerticalGroup(
+            pPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pPacienteLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pPacienteLayout.createSequentialGroup()
+                        .addGroup(pPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(pPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btBuscar)
+                                .addComponent(btSincronizar)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(pPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(pPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(txtCelular, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtEdad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(pPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(txtSangre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtAlergias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(19, 19, 19))
+                    .addGroup(pPacienteLayout.createSequentialGroup()
+                        .addComponent(txtIngreso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        );
+
+        jLabel8.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        jLabel8.setText("Datos del paciente");
+
+        jLabel9.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        jLabel9.setText("Ordenes");
+
+        tblOrdenes.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        tblOrdenes.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        tblOrdenes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "ID Orden", "Fecha", "Examen", "Area", "Estado"
+            }
+        ));
+        jScrollPane1.setViewportView(tblOrdenes);
+
+        tblDetalle.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        tblDetalle.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        tblDetalle.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Prueba", "Parametro", "Resultado", "Unidad", "Rango", "Referenc", "Alerta"
+            }
+        ));
+        jScrollPane2.setViewportView(tblDetalle);
+
+        jLabel10.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        jLabel10.setText("Detalle Examen");
+
+        btVerPDF.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        btVerPDF.setText("Ver PDF completo");
+        btVerPDF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btVerPDFActionPerformed(evt);
+            }
+        });
+
+        btAnexar.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        btAnexar.setText("Anexar a consulta");
+        btAnexar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btAnexarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -38,20 +287,247 @@ public class vLaboratorio extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addContainerGap(333, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pPaciente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 684, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel9))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel10)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 835, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btVerPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btAnexar, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addContainerGap(278, Short.MAX_VALUE))
+                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(pPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 525, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btVerPDF)
+                    .addComponent(btAnexar))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBuscarActionPerformed
+        //Se guarda el texto de cedula
+        String cedula = txtIngreso.getText().trim();
+
+        //Se compara si la variabel cedula contiene texto
+        if (cedula.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Ingrese una cédula válida para realizar la búsqueda.",
+                    "Cédula requerida",
+                    javax.swing.JOptionPane.WARNING_MESSAGE);
+
+            btSincronizar.setEnabled(false); // Se asegura de mantenerlo bloqueado
+
+            return;
+        }
+        //PruebaAquí se cargan los datos del paciente encontrado
+        txtNombre.setText("Carlos Mendoza"); // Ejemplo de carga
+        txtCedula.setText(cedula);
+        txtCelular.setText("0991234567");
+        txtEdad.setText("34");
+        txtSangre.setText("O+");
+        txtAlergias.setText("Penicilina");
+
+        //Se desbloquea el botón de historial
+        btSincronizar.setEnabled(true);
+    }//GEN-LAST:event_btBuscarActionPerformed
+
+    private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNombreActionPerformed
+
+    private void txtCedulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCedulaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCedulaActionPerformed
+
+    private void txtCelularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCelularActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCelularActionPerformed
+
+    private void txtEdadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEdadActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtEdadActionPerformed
+
+    private void txtSangreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSangreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSangreActionPerformed
+
+    private void txtAlergiasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAlergiasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtAlergiasActionPerformed
+
+    private void btSincronizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSincronizarActionPerformed
+        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tblOrdenes.getModel();
+        model.setRowCount(0); // Limpia filas previas
+        // Simulación de carga de órdenes REST
+        model.addRow(new Object[]{"ORD-101", "16/09/2026", "Hemograma Completo", "Hematología", "Completado"});
+        model.addRow(new Object[]{"ORD-102", "15/09/2026", "Perfil Lipídico", "Bioquímica", "Completado"});
+    }//GEN-LAST:event_btSincronizarActionPerformed
+
+    private void btVerPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btVerPDFActionPerformed
+        try {
+            java.io.File pdfLocal = new java.io.File("src/archivos/reporte_ejemplo.pdf");
+            if (pdfLocal.exists()) {
+                java.awt.Desktop.getDesktop().open(pdfLocal);
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this,
+                        "Cree la carpeta 'src/archivos' y coloque 'reporte_ejemplo.pdf' para la prueba.");
+            }
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Error al abrir el PDF: " + e.getMessage());
+        }
+    }//GEN-LAST:event_btVerPDFActionPerformed
+
+    private void btAnexarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAnexarActionPerformed
+        int fila = tblOrdenes.getSelectedRow();
+        if (fila != -1) {
+            String examen = tblOrdenes.getValueAt(fila, 2).toString();
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Los resultados de '" + examen + "' se anexaron correctamente a la consulta.",
+                    "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_btAnexarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btAnexar;
+    private javax.swing.JButton btBuscar;
+    private javax.swing.JButton btSincronizar;
+    private javax.swing.JButton btVerPDF;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JPanel pPaciente;
+    private javax.swing.JTable tblDetalle;
+    private javax.swing.JTable tblOrdenes;
+    private javax.swing.JTextField txtAlergias;
+    private javax.swing.JTextField txtCedula;
+    private javax.swing.JTextField txtCelular;
+    private javax.swing.JTextField txtEdad;
+    private javax.swing.JTextField txtIngreso;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtSangre;
     // End of variables declaration//GEN-END:variables
+
+//Color del panel y los botones
+    public void color() {
+        this.setBackground(java.awt.Color.WHITE);
+        jScrollPane1.getViewport().setBackground(java.awt.Color.WHITE);
+        jScrollPane2.getViewport().setBackground(java.awt.Color.WHITE);
+//Cambiar el color de cuando se seleciona una fila
+        tblOrdenes.setSelectionBackground(Color.decode("#C8E6C9"));
+        tblDetalle.setSelectionBackground(Color.decode("#C8E6C9"));
+//Cambiar el color de las letras en la selecccion de fila
+        tblOrdenes.setSelectionForeground(Color.BLACK);
+        tblDetalle.setSelectionForeground(Color.BLACK);
+        btBuscar.setBackground(java.awt.Color.decode("#A3C9A8"));
+        btSincronizar.setBackground(java.awt.Color.decode("#A3C9A8"));
+        btVerPDF.setBackground(java.awt.Color.decode("#A3C9A8"));
+        btAnexar.setBackground(java.awt.Color.decode("#A3C9A8"));
+
+    }
+
+    private void cargarDetalle(int fila) {
+        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tblDetalle.getModel();
+        model.setRowCount(0);
+
+        if (fila == 0) { // Fila de Hemograma
+            model.addRow(new Object[]{"Hemograma", "Leucocitos", "11.2", "10^3/uL", "4.0 - 10.0", "Ref. Normal", "ALTO"});
+            model.addRow(new Object[]{"Hemograma", "Hemoglobina", "14.5", "g/dL", "12.0 - 16.0", "Ref. Normal", "Normal"});
+        } else if (fila == 1) { // Fila de Perfil Lipídico
+            model.addRow(new Object[]{"Lipídico", "Colesterol Total", "220", "mg/dL", "< 200", "Ref. Deseable", "ALTO"});
+            model.addRow(new Object[]{"Lipídico", "Triglicéridos", "140", "mg/dL", "< 150", "Ref. Deseable", "Normal"});
+        }
+    }
+
+//Funcion para configurar el estilo del panel    
+    public void estilo() {
+        color();
+
+        //Bloquear celdas de las tablas y que las filas esten vacias
+        javax.swing.table.DefaultTableModel modelOrdenes = new javax.swing.table.DefaultTableModel(
+                new Object[][]{},
+                new String[]{"ID Orden", "Fecha", "Examen Solicitado", "Estado"}
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Bloquea la edición
+            }
+        };
+        tblOrdenes.setModel(modelOrdenes);
+        javax.swing.table.DefaultTableModel modelDetalle = new javax.swing.table.DefaultTableModel(
+                new Object[][]{},
+                new String[]{"Examen", "Parámetro", "Resultado", "Unidades", "Valores Referencia", "Observación", "Estado"}
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Bloquea la edición
+            }
+        };
+        tblDetalle.setModel(modelDetalle);
+
+        // Deshabilitar campos de texto del paciente
+        txtNombre.setEditable(false);
+        txtCedula.setEditable(false);
+        txtCelular.setEditable(false);
+        txtEdad.setEditable(false);
+        txtSangre.setEditable(false);
+        txtAlergias.setEditable(false);
+
+        // Estado inicial de botones
+        btSincronizar.setEnabled(false);
+        btVerPDF.setEnabled(false);
+        btAnexar.setEnabled(false);
+
+        // Listener para selección en la tabla de órdenes
+        tblOrdenes.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting() && tblOrdenes.getSelectedRow() != -1) {
+                cargarDetalle(tblOrdenes.getSelectedRow());
+                btVerPDF.setEnabled(true);
+                btAnexar.setEnabled(true);
+            }
+        });
+
+        // Validar solo números en el campo de cédula 
+        txtIngreso.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                if (!Character.isDigit(evt.getKeyChar())) {
+                    evt.consume();
+                }
+            }
+        });
+    }
+
 }
