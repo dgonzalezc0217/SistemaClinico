@@ -445,10 +445,10 @@ public class vLaboratorio extends javax.swing.JPanel {
         this.setBackground(java.awt.Color.WHITE);
         jScrollPane1.getViewport().setBackground(java.awt.Color.WHITE);
         jScrollPane2.getViewport().setBackground(java.awt.Color.WHITE);
-//Cambiar el color de cuando se seleciona una fila
+        //Cambiar el color de cuando se seleciona una fila
         tblOrdenes.setSelectionBackground(Color.decode("#C8E6C9"));
         tblDetalle.setSelectionBackground(Color.decode("#C8E6C9"));
-//Cambiar el color de las letras en la selecccion de fila
+        //Cambiar el color de las letras en la selecccion de fila
         tblOrdenes.setSelectionForeground(Color.BLACK);
         tblDetalle.setSelectionForeground(Color.BLACK);
         btBuscar.setBackground(java.awt.Color.decode("#A3C9A8"));
