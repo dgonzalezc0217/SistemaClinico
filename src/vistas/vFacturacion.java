@@ -4,6 +4,9 @@
  */
 package vistas;
 
+import java.awt.Color;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author oscar
@@ -15,6 +18,7 @@ public class vFacturacion extends javax.swing.JPanel {
      */
     public vFacturacion() {
         initComponents();
+        estilo();
     }
 
     /**
@@ -31,7 +35,7 @@ public class vFacturacion extends javax.swing.JPanel {
         txtIngreso = new javax.swing.JTextField();
         btBuscar = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
-        txtIngreso1 = new javax.swing.JTextField();
+        txtFecha = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -42,7 +46,7 @@ public class vFacturacion extends javax.swing.JPanel {
         lbFactura = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        lbFactura1 = new javax.swing.JLabel();
+        lbPromedio = new javax.swing.JLabel();
         pGrafica = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -74,7 +78,7 @@ public class vFacturacion extends javax.swing.JPanel {
         jLabel8.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel8.setText("Rango Fecha:");
 
-        txtIngreso1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        txtFecha.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -88,7 +92,7 @@ public class vFacturacion extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtIngreso1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16))
@@ -102,7 +106,7 @@ public class vFacturacion extends javax.swing.JPanel {
                     .addComponent(btBuscar)
                     .addComponent(txtIngreso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtIngreso1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
 
@@ -133,8 +137,8 @@ public class vFacturacion extends javax.swing.JPanel {
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel3Layout.createSequentialGroup()
                     .addGap(208, 208, 208)
-                    .addComponent(lbTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(241, Short.MAX_VALUE)))
+                    .addComponent(lbTotal)
+                    .addContainerGap(229, Short.MAX_VALUE)))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -172,8 +176,8 @@ public class vFacturacion extends javax.swing.JPanel {
                         .addComponent(jLabel1)
                         .addGap(73, 73, 73))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addComponent(lbFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(205, 205, 205))))
+                        .addComponent(lbFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(194, 194, 194))))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -194,8 +198,8 @@ public class vFacturacion extends javax.swing.JPanel {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Promedio por consulta");
 
-        lbFactura1.setFont(new java.awt.Font("SansSerif", 1, 48)); // NOI18N
-        lbFactura1.setText("Pr");
+        lbPromedio.setFont(new java.awt.Font("SansSerif", 1, 48)); // NOI18N
+        lbPromedio.setText("Pr");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -208,8 +212,8 @@ public class vFacturacion extends javax.swing.JPanel {
                         .addComponent(jLabel3)
                         .addGap(54, 54, 54))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                        .addComponent(lbFactura1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(193, 193, 193))))
+                        .addComponent(lbPromedio, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(108, 108, 108))))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -217,7 +221,7 @@ public class vFacturacion extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbFactura1)
+                .addComponent(lbPromedio)
                 .addContainerGap(60, Short.MAX_VALUE))
         );
 
@@ -244,13 +248,13 @@ public class vFacturacion extends javax.swing.JPanel {
         tblFacturas.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         tblFacturas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "N factura", "Fecha", "Paciente", "Servicio", "Monto", "Estado"
+                "N factura", "Fecha", "Paciente", "Cedula", "Servicio", "Monto", "Estado"
             }
         ));
         tblFacturas.setSelectionBackground(new java.awt.Color(255, 255, 255));
@@ -332,9 +336,9 @@ public class vFacturacion extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel12)
-                    .addComponent(jLabel13))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel13)
+                    .addComponent(jLabel12))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
@@ -350,33 +354,139 @@ public class vFacturacion extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBuscarActionPerformed
+        //Se va utilizar el siguiente metodo sorter que sirver para encontrar datos en especificos en la tabla
+        if (tblFacturas.getRowSorter() == null) {
+            return;
+        }
+        @SuppressWarnings("unchecked")
+        javax.swing.table.TableRowSorter<javax.swing.table.DefaultTableModel> sorter
+                = (javax.swing.table.TableRowSorter<javax.swing.table.DefaultTableModel>) tblFacturas.getRowSorter();
+        //Se van a utilizar el campo de fecha y el de cedula
+        String cedula = txtIngreso.getText().trim();
+        String fecha = txtFecha.getText().trim();
 
+        java.util.List<javax.swing.RowFilter<Object, Object>> filtros = new java.util.ArrayList<>();
+
+        // Filtrar por cedula
+        if (!cedula.isEmpty()) {
+            filtros.add(javax.swing.RowFilter.regexFilter("(?i)" + cedula, 3));
+        }
+        // Filtrar por fecha 
+        if (!fecha.isEmpty()) {
+            filtros.add(javax.swing.RowFilter.regexFilter("(?i)" + fecha, 1));
+        }
+
+        //Aplicar filtro combinado o limpia si los campos estan vacios
+        if (filtros.isEmpty()) {
+            sorter.setRowFilter(null); // Muestra todos los datos
+            btGenerar.setEnabled(false); // Deshabilita el botón porque no hay una búsqueda activa
+        } else {
+            sorter.setRowFilter(javax.swing.RowFilter.andFilter(filtros));
+            // Habilita el botón SOLO si se buscó algo Y se encontraron resultados
+            btGenerar.setEnabled(tblFacturas.getRowCount() > 0);
+        }
     }//GEN-LAST:event_btBuscarActionPerformed
 
     private void btNuevaFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNuevaFacturaActionPerformed
+
+    }//GEN-LAST:event_btNuevaFacturaActionPerformed
+
+    private void btCambiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCambiarActionPerformed
+        int fila = tblFacturas.getSelectedRow();
+
+        //Mensaje para el usuario 
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this,
+                    "Seleccione una factura de la tabla para cambiar su estado.",
+                    "Atención", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String numFactura = tblFacturas.getValueAt(fila, 0).toString();
+        String estadoActual = tblFacturas.getValueAt(fila, 6).toString();
+
+        //Opciones disponibles para el usuario
+        String[] opciones = {"Pagado", "Anulado", "Pendiente"};
+
+        String nuevoEstado = (String) JOptionPane.showInputDialog(
+                this,
+                "Seleccione el nuevo estado para la factura " + numFactura + ":\n(Estado actual: " + estadoActual + ")",
+                "Cambiar Estado de Factura",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                opciones,
+                estadoActual
+        );
+
+        if (nuevoEstado != null && !nuevoEstado.equals(estadoActual)) {
+            // Actualizar la tabla
+            tblFacturas.setValueAt(nuevoEstado, fila, 6);
+
+            JOptionPane.showMessageDialog(this,
+                    "El estado de la factura " + numFactura + " cambió a '" + nuevoEstado + "'.",
+                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+            // (Opcional) Aquí puedes llamar a un método para recalcular los KPIs superiores
+            // actualizarKPIs();
+        }
+    }//GEN-LAST:event_btCambiarActionPerformed
+
+    private void btExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExportarActionPerformed
         try {
             java.io.File pdfLocal = new java.io.File("src/archivos/reporte_ejemplo.pdf");
             if (pdfLocal.exists()) {
                 java.awt.Desktop.getDesktop().open(pdfLocal);
             } else {
                 javax.swing.JOptionPane.showMessageDialog(this,
-                    "Cree la carpeta 'src/archivos' y coloque 'reporte_ejemplo.pdf' para la prueba.");
+                        "Cree la carpeta 'src/archivos' y coloque 'reporte_ejemplo.pdf' para la prueba.");
             }
         } catch (Exception e) {
             javax.swing.JOptionPane.showMessageDialog(this, "Error al abrir el PDF: " + e.getMessage());
         }
-    }//GEN-LAST:event_btNuevaFacturaActionPerformed
-
-    private void btCambiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCambiarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btCambiarActionPerformed
-
-    private void btExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExportarActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_btExportarActionPerformed
 
     private void btGenerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btGenerarActionPerformed
-        // TODO add your handling code here:
+        int filasVisibles = tblFacturas.getRowCount();
+
+        if (filasVisibles == 0) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "No hay facturas visibles para generar el reporte.",
+                    "Sin datos", javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        double sumaTotal = 0;
+        int pendientes = 0;
+
+        for (int i = 0; i < filasVisibles; i++) {
+            // Obtener el monto (Columna 5) quitando el símbolo 
+            String montoTexto = tblFacturas.getValueAt(i, 5).toString().replace("$", "").trim();
+            String estado = tblFacturas.getValueAt(i, 6).toString();
+
+            try {
+                sumaTotal += Double.parseDouble(montoTexto);
+            } catch (NumberFormatException e) {
+                // Ignorar errores de conversión si el formato varía
+            }
+
+            if (estado.equalsIgnoreCase("Pendiente")) {
+                pendientes++;
+            }
+        }
+
+        double promedio = sumaTotal / filasVisibles;
+
+        // Mostrar el resumen del reporte
+        String mensaje = String.format(
+                "=== REPORTE DE FACTURACIÓN ===\n\n"
+                + "• Total de registros procesados: %d\n"
+                + "• Facturas pendientes: %d\n"
+                + "• Monto total acumulado: $%.2f\n"
+                + "• Promedio por consulta: $%.2f",
+                filasVisibles, pendientes, sumaTotal, promedio
+        );
+
+        javax.swing.JOptionPane.showMessageDialog(this, mensaje, "Reporte Generado", javax.swing.JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_btGenerarActionPerformed
 
 
@@ -401,11 +511,107 @@ public class vFacturacion extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbFactura;
-    private javax.swing.JLabel lbFactura1;
+    private javax.swing.JLabel lbPromedio;
     private javax.swing.JLabel lbTotal;
     private javax.swing.JPanel pGrafica;
     private javax.swing.JTable tblFacturas;
+    private javax.swing.JTextField txtFecha;
     private javax.swing.JTextField txtIngreso;
-    private javax.swing.JTextField txtIngreso1;
     // End of variables declaration//GEN-END:variables
+
+    //Funcion para el color de los objetos
+    public void color() {
+        this.setBackground(java.awt.Color.WHITE);
+        jScrollPane1.getViewport().setBackground(java.awt.Color.WHITE);
+        //Cambiar el color de cuando se seleciona una fila
+        tblFacturas.setSelectionBackground(Color.decode("#C8E6C9"));
+        //Cambiar el color de las letras en la selecccion de fila
+        tblFacturas.setSelectionForeground(Color.BLACK);
+        btBuscar.setBackground(java.awt.Color.decode("#A3C9A8"));
+        btCambiar.setBackground(java.awt.Color.decode("#A3C9A8"));
+        btExportar.setBackground(java.awt.Color.decode("#A3C9A8"));
+        btGenerar.setBackground(java.awt.Color.decode("#A3C9A8"));
+        btNuevaFactura.setBackground(java.awt.Color.decode("#A3C9A8"));
+
+    }
+
+    public void estilo() {
+        color();
+        btCambiar.setEnabled(false);
+        btGenerar.setEnabled(false);
+
+        //Bloquear celdas de las tablas y que las filas esten vacias
+        javax.swing.table.DefaultTableModel modelFacturas = new javax.swing.table.DefaultTableModel(
+                new Object[][]{},
+                new String[]{"N factura", "Fecha", "Paciente", "Cedula", "Servicio", "Monto", "Estado"}
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Bloquea la edición
+            }
+        };
+        tblFacturas.setModel(modelFacturas);
+        //Sirve para filtar informacion de las tablas
+        tblFacturas.setRowSorter(new javax.swing.table.TableRowSorter<>(modelFacturas));
+        //Metodo para cuando se selecione una fila se pueda cambiar el estado
+        tblFacturas.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                boolean seleccionada = tblFacturas.getSelectedRow() != -1;
+                btCambiar.setEnabled(seleccionada);
+            }
+        });
+        // Insertar cedula y fecha cuando se hace clic en la tabla
+        tblFacturas.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int fila = tblFacturas.getSelectedRow();
+                if (fila != -1) {
+                    // Columna 1: Fecha
+                    String fecha = tblFacturas.getValueAt(fila, 1).toString();
+                    // Columna 2: Paciente / Cédula
+                    String pacienteCedula = tblFacturas.getValueAt(fila, 3).toString();
+
+                    // Cargar los valores en las casillas de texto
+                    txtFecha.setText(fecha);
+                    txtIngreso.setText(pacienteCedula);
+                }
+            }
+        });
+
+        // Validar solo números en el campo de cédula 
+        txtIngreso.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                if (!Character.isDigit(evt.getKeyChar())) {
+                    evt.consume();
+                }
+            }
+        });
+        configurarTarjetas();
+        cargarDatos();
+    }
+
+    //Datos de prueba para las tarjetas
+    private void configurarTarjetas() {
+        //Agregar metodos
+        //Datos de prueba
+        int total = 1200000;
+        int pendiente = 5;
+        int promedio = 12000;
+        lbTotal.setText(String.valueOf(total));
+        lbFactura.setText(String.valueOf(pendiente));
+        lbPromedio.setText(String.valueOf(promedio));
+    }
+
+    //Datos de prueba para la tabla
+    private void cargarDatos() {
+        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tblFacturas.getModel();
+        model.setRowCount(0); // Limpiar filas por defecto
+
+        // Filas de prueba
+        model.addRow(new Object[]{"FAC-001", "18/09/2026", "Carlos Ruiz", "1054", "Consulta General", "$150.00", "Pagado"});
+        model.addRow(new Object[]{"FAC-002", "18/09/2026", "María Gómez", "1011", "Laboratorio", "$85.00", "Pendiente"});
+        model.addRow(new Object[]{"FAC-003", "17/09/2026", "Juan Pérez", "1015", "Radiología", "$210.00", "Pagado"});
+
+    }
 }

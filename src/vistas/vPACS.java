@@ -438,7 +438,7 @@ public class vPACS extends javax.swing.JPanel {
     private javax.swing.JTextField txtSangre;
     // End of variables declaration//GEN-END:variables
 
-    public void color(){
+    public void color() {
         this.setBackground(java.awt.Color.WHITE);
         pVisor.setBackground(Color.decode("#1A1A1A"));
         jScrollPane1.getViewport().setBackground(java.awt.Color.WHITE);
@@ -451,14 +451,14 @@ public class vPACS extends javax.swing.JPanel {
         btVerPDF.setBackground(java.awt.Color.decode("#A3C9A8"));
         btAnexar.setBackground(java.awt.Color.decode("#A3C9A8"));
     }
-   
+
     public void estilo() {
         color();
 
         //Bloquear celdas de las tablas y que las filas esten vacias
         javax.swing.table.DefaultTableModel modelEstudios = new javax.swing.table.DefaultTableModel(
-            new Object [][] {},
-            new String [] { "ID Estudio", "Fecha", "Modalidad", "Descripción", "Radiólogo", "Estado" }
+                new Object[][]{},
+                new String[]{"ID Estudio", "Fecha", "Modalidad", "Descripción", "Radiólogo", "Estado"}
         ) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -498,27 +498,27 @@ public class vPACS extends javax.swing.JPanel {
             }
         });
     }
-    
+
     private void cargarDetalleEstudio(int fila) {
         if (fila == 0) { // RX Tórax
             txtInforme.setText(
-                "ESTUDIO: Radiografía AP y Lateral de Tórax.\n" +
-                "HALLAZGOS: Campos pulmonares bien ventilados sin atrapamiento aéreo.\n" +
-                "Silueta cardiopericárdica de tamaño y morfología normal.\n" +
-                "CONCLUSIÓN: Radiografía de tórax dentro de límites normales."
+                    "ESTUDIO: Radiografía AP y Lateral de Tórax.\n"
+                    + "HALLAZGOS: Campos pulmonares bien ventilados sin atrapamiento aéreo.\n"
+                    + "Silueta cardiopericárdica de tamaño y morfología normal.\n"
+                    + "CONCLUSIÓN: Radiografía de tórax dentro de límites normales."
             );
             lbImagenVisor.setText("[ Vista Previa: RX_TORAX_001.dcm ]");
         } else if (fila == 1) { // RM Rodilla
             txtInforme.setText(
-                "ESTUDIO: Resonancia Magnética de Rodilla Derecha.\n" +
-                "HALLAZGOS: Se aprecia ruptura parcial del ligamento cruzado anterior (LCA).\n" +
-                "Meniscos medial y lateral sin alteraciones estructurales graves.\n" +
-                "CONCLUSIÓN: Lesión grado II de LCA."
+                    "ESTUDIO: Resonancia Magnética de Rodilla Derecha.\n"
+                    + "HALLAZGOS: Se aprecia ruptura parcial del ligamento cruzado anterior (LCA).\n"
+                    + "Meniscos medial y lateral sin alteraciones estructurales graves.\n"
+                    + "CONCLUSIÓN: Lesión grado II de LCA."
             );
             lbImagenVisor.setText("[ Vista Previa: RM_RODILLA_002.dcm ]");
         }
     }
-    
+
     private void cargarEstudios() {
         DefaultTableModel model = (DefaultTableModel) tblEstudio.getModel();
         model.setRowCount(0);
