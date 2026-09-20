@@ -4,6 +4,14 @@
  */
 package vistas;
 
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.RowFilter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+
 /**
  *
  * @author oscar
@@ -15,6 +23,7 @@ public class vAgendamiento extends javax.swing.JPanel {
      */
     public vAgendamiento() {
         initComponents();
+        estilo();
     }
 
     /**
@@ -41,14 +50,14 @@ public class vAgendamiento extends javax.swing.JPanel {
         jLabel9 = new javax.swing.JLabel();
         txtFecha = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        txtFecha1 = new javax.swing.JTextField();
+        txtCedula = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        cbMedico = new javax.swing.JComboBox<>();
+        cbMedico = new javax.swing.JComboBox();
         jLabel12 = new javax.swing.JLabel();
-        cbEspecialidad = new javax.swing.JComboBox<>();
+        cbEspecialidad = new javax.swing.JComboBox();
         btBuscar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblCitas = new javax.swing.JTable();
         btNuevaCita = new javax.swing.JButton();
         btReagendar = new javax.swing.JButton();
         btCancelar = new javax.swing.JButton();
@@ -181,19 +190,17 @@ public class vAgendamiento extends javax.swing.JPanel {
         jLabel10.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel10.setText("Cedula paciente:");
 
-        txtFecha1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        txtCedula.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
 
         jLabel11.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel11.setText("Medico:");
 
         cbMedico.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        cbMedico.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel12.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel12.setText("Especialidad");
 
         cbEspecialidad.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        cbEspecialidad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         btBuscar.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         btBuscar.setText("Buscar");
@@ -215,16 +222,16 @@ public class vAgendamiento extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtFecha1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbEspecialidad, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
                 .addComponent(jLabel11)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cbMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel12)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cbEspecialidad, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(94, 94, 94)
                 .addComponent(btBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -236,7 +243,7 @@ public class vAgendamiento extends javax.swing.JPanel {
                     .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtFecha1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cbMedico)
                     .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -245,19 +252,21 @@ public class vAgendamiento extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblCitas.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        tblCitas.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        tblCitas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "N cita", "Hora", "Paciente", "Cedula", "Medico", "Especialidad", "Estado"
+                "N cita", "Fecha", "Hora", "Paciente", "Cedula", "Medico", "Especialidad", "Estado"
             }
         ));
-        jTable1.setGridColor(new java.awt.Color(255, 255, 255));
-        jScrollPane1.setViewportView(jTable1);
+        tblCitas.setGridColor(new java.awt.Color(255, 255, 255));
+        jScrollPane1.setViewportView(tblCitas);
 
         btNuevaCita.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         btNuevaCita.setText("Nueva Cita");
@@ -336,15 +345,25 @@ public class vAgendamiento extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBuscarActionPerformed
-
+        filtrarTabla();
     }//GEN-LAST:event_btBuscarActionPerformed
 
     private void btNuevaCitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNuevaCitaActionPerformed
-        // TODO add your handling code here:
+        java.awt.Window parentWindow = javax.swing.SwingUtilities.getWindowAncestor(this);
+        java.awt.Frame parentFrame = (parentWindow instanceof java.awt.Frame) ? (java.awt.Frame) parentWindow : null;
+        dlgNuevaCita dialogo = new dlgNuevaCita(parentFrame, true, this);
+        dialogo.setVisible(true);
     }//GEN-LAST:event_btNuevaCitaActionPerformed
 
     private void btReagendarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btReagendarActionPerformed
-        // TODO add your handling code here:
+        java.awt.Frame framePadre = (java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(this);
+        //Instancias el diálogo
+        dlgNuevaCita dialog = new dlgNuevaCita(framePadre, true, vAgendamiento.this);
+
+        // Pasa los datos de la cita seleccionada
+        dialog.prepararModoReagendar("12345678", "2026-10-15", "10:30");
+
+        dialog.setVisible(true);
     }//GEN-LAST:event_btReagendarActionPerformed
 
     private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
@@ -362,8 +381,8 @@ public class vAgendamiento extends javax.swing.JPanel {
     private javax.swing.JButton btCancelar;
     private javax.swing.JButton btNuevaCita;
     private javax.swing.JButton btReagendar;
-    private javax.swing.JComboBox<String> cbEspecialidad;
-    private javax.swing.JComboBox<String> cbMedico;
+    private javax.swing.JComboBox cbEspecialidad;
+    private javax.swing.JComboBox cbMedico;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -378,11 +397,191 @@ public class vAgendamiento extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lbCitasC;
     private javax.swing.JLabel lbCitasP;
     private javax.swing.JLabel lbCitasT;
+    private javax.swing.JTable tblCitas;
+    private javax.swing.JTextField txtCedula;
     private javax.swing.JTextField txtFecha;
-    private javax.swing.JTextField txtFecha1;
     // End of variables declaration//GEN-END:variables
+
+    public void color() {
+        this.setBackground(java.awt.Color.WHITE);
+        jScrollPane1.getViewport().setBackground(java.awt.Color.WHITE);
+        //Cambiar el color de cuando se seleciona una fila
+        tblCitas.setSelectionBackground(Color.decode("#C8E6C9"));
+        //Cambiar el color de las letras en la selecccion de fila
+        tblCitas.setSelectionForeground(Color.BLACK);
+        btBuscar.setBackground(java.awt.Color.decode("#A3C9A8"));
+        btNuevaCita.setBackground(java.awt.Color.decode("#A3C9A8"));
+        btReagendar.setBackground(java.awt.Color.decode("#A3C9A8"));
+        btCancelar.setBackground(java.awt.Color.decode("#A3C9A8"));
+        btAtender.setBackground(java.awt.Color.decode("#A3C9A8"));
+    }
+
+//Cargar datos a las tablas
+    public void cargarCitas() {
+
+    }
+
+    //Datos de prueba para las tarjetas
+    private void configurarTarjetas() {
+        //Agregar metodos
+        //Datos de prueba
+        int total = 21;
+        int pendiente = 10;
+        int Completas = 11;
+        lbCitasT.setText(String.valueOf(total));
+        lbCitasP.setText(String.valueOf(pendiente));
+        lbCitasC.setText(String.valueOf(Completas));
+    }
+
+    private void cargarDatos() {
+        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tblCitas.getModel();
+        model.setRowCount(0);
+
+        model.addRow(new Object[]{"CIT-001", "19/09/2026", "08:00 AM", "Carlos Ruiz", "1054", "Dr. Esteban López", "Medicina General", "Atendida"});
+        model.addRow(new Object[]{"CIT-002", "18/09/2026", "09:30 AM", "María Gómez", "1011", "Dr. Esteban López", "Medicina General", "En espera"});
+        model.addRow(new Object[]{"CIT-003", "17/09/2026", "11:00 AM", "Juan Pérez", "1015", "Dra. Ana Silva", "Pediatría", "Confirmada"});
+    }
+
+    //Metodo para las combobox
+    public class ItemCombo {
+
+        private int id;
+        private String descripcion;
+
+        public ItemCombo(int id, String descripcion) {
+            this.id = id;
+            this.descripcion = descripcion;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public String getDescripcion() {
+            return descripcion;
+        }
+
+        @Override
+        public String toString() {
+            return descripcion; // Swing renderiza únicamente este texto en el combo
+        }
+    }
+
+//Configuracion de los combobox    
+    private void configurarComboBoxes() {
+        //Llenar combo de especialidades
+        DefaultComboBoxModel<ItemCombo> modelEspecialidad = new DefaultComboBoxModel<>();
+        modelEspecialidad.addElement(new ItemCombo(0, "Todas las especialidades"));
+        modelEspecialidad.addElement(new ItemCombo(1, "Medicina General"));
+        modelEspecialidad.addElement(new ItemCombo(2, "Pediatría"));
+        modelEspecialidad.addElement(new ItemCombo(3, "Cardiología"));
+        modelEspecialidad.addElement(new ItemCombo(4, "Odontología"));
+
+        cbEspecialidad.setModel(modelEspecialidad);
+
+        //Cargar médicos inicialmente con el filtro en 0 (Todos)
+        cargarMedicosPorEspecialidad(0);
+
+        //Listener para filtrar el combo de médicos al cambiar la especialidad
+        cbEspecialidad.addActionListener(e -> {
+            ItemCombo seleccion = (ItemCombo) cbEspecialidad.getSelectedItem();
+            if (seleccion != null) {
+                cargarMedicosPorEspecialidad(seleccion.getId());
+            }
+        });
+    }
+
+    private void cargarMedicosPorEspecialidad(int idEspecialidad) {
+        DefaultComboBoxModel<ItemCombo> modelMedico = new DefaultComboBoxModel<>();
+        modelMedico.addElement(new ItemCombo(0, "Todos los médicos"));
+
+        // Simulación de filtro (Luego aquí consultarás a la Base de Datos según el ID)
+        if (idEspecialidad == 0 || idEspecialidad == 1) {
+            modelMedico.addElement(new ItemCombo(101, "Dr. Carlos Mendoza"));
+        }
+        if (idEspecialidad == 0 || idEspecialidad == 2) {
+            modelMedico.addElement(new ItemCombo(102, "Dra. Ana Martínez"));
+        }
+        if (idEspecialidad == 0 || idEspecialidad == 3) {
+            modelMedico.addElement(new ItemCombo(103, "Dr. Roberto Gómez"));
+        }
+        if (idEspecialidad == 0 || idEspecialidad == 4) {
+            modelMedico.addElement(new ItemCombo(104, "Dra. Lucia Fernández"));
+        }
+
+        cbMedico.setModel(modelMedico);
+    }
+
+    private TableRowSorter<DefaultTableModel> sorter;
+
+    public void estilo() {
+        color();
+        configurarTarjetas();
+        btReagendar.setEnabled(false);
+        btCancelar.setEnabled(false);
+        btAtender.setEnabled(false);
+        //Bloquear celdas de las tablas y que las filas esten vacias
+        javax.swing.table.DefaultTableModel modelOrdenes = new javax.swing.table.DefaultTableModel(
+                new Object[][]{},
+                new String[]{"N cita", "Fecha", "Hora", "Paciente", "Cedula", "Medico", "Especialidad", "Estado"}
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Bloquea la edición
+            }
+        };
+        tblCitas.setModel(modelOrdenes);
+        sorter = new TableRowSorter<>(modelOrdenes);
+        tblCitas.setRowSorter(sorter);
+        cargarDatos();
+        // Habilitar acciones al seleccionar una cita
+        tblCitas.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                boolean seleccionada = tblCitas.getSelectedRow() != -1;
+                btReagendar.setEnabled(seleccionada);
+                btCancelar.setEnabled(seleccionada);
+                btAtender.setEnabled(seleccionada);
+            }
+        });
+        // Validar solo números en el campo de cédula 
+        txtCedula.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                if (!Character.isDigit(evt.getKeyChar())) {
+                    evt.consume();
+                }
+            }
+        });
+        configurarComboBoxes();
+    }
+
+    private void filtrarTabla() {
+        List<RowFilter<Object, Object>> filtros = new ArrayList<>();
+
+        //Filtro por Cédula (Columna índice 4)
+        String cedula = txtCedula.getText().trim();
+        if (!cedula.isEmpty()) {
+            filtros.add(RowFilter.regexFilter("(?i)" + cedula, 4));
+        }
+
+        //Filtro por Médico (Columna índice 5)
+        ItemCombo medSeleccionado = (ItemCombo) cbMedico.getSelectedItem();
+        if (medSeleccionado != null && medSeleccionado.getId() != 0) {
+            filtros.add(RowFilter.regexFilter("(?i)" + medSeleccionado.getDescripcion(), 5));
+        }
+
+        //Filtro por Especialidad (Columna índice 6)
+        ItemCombo espSeleccionada = (ItemCombo) cbEspecialidad.getSelectedItem();
+        if (espSeleccionada != null && espSeleccionada.getId() != 0) {
+            filtros.add(RowFilter.regexFilter("(?i)" + espSeleccionada.getDescripcion(), 6));
+        }
+
+        //Aplica la combinación de todos los filtros activos
+        RowFilter<Object, Object> rf = RowFilter.andFilter(filtros);
+        sorter.setRowFilter(rf);
+    }
+
 }

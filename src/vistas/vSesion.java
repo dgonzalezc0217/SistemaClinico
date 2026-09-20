@@ -94,7 +94,7 @@ public class vSesion extends javax.swing.JPanel {
         jLabel4.setText("Contraseña");
 
         cbPerfil.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        cbPerfil.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Medicina", "Enfermeria", "Administrativo", "Laboratorio" }));
+        cbPerfil.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Medico", "Administrador", "Recepcionista" }));
         cbPerfil.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbPerfilActionPerformed(evt);
