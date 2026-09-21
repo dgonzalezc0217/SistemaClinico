@@ -497,7 +497,42 @@ public class vHistoriaClinica extends javax.swing.JPanel {
     }//GEN-LAST:event_txtPesoActionPerformed
 
     private void btIAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btIAActionPerformed
-        // TODO add your handling code here:
+//Validar que haya al menos un motivo de consulta cargado para dar contexto a la IA
+    if (txtCedula.getText().trim().isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this, 
+            "Debe ingresar y buscar un paciente antes de consultar a la IA.", 
+            "Paciente no seleccionado", 
+            javax.swing.JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+    
+    if (txtConsulta.getText().trim().isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this, 
+            "Por favor ingrese el Motivo de consulta para que la IA tenga contexto.", 
+            "Campos incompletos", 
+            javax.swing.JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    //Obtener el Frame contenedor principal
+    java.awt.Frame framePadre = (java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(this);
+
+    //Instanciar tu diálogo modal dlgIA
+    dlgIA asistente = new dlgIA(framePadre, true);
+
+    //Enviar los datos del motivo de consulta y examen físico para generar la sugerencia
+    asistente.cargarDatosParaAnalisis(
+        txtConsulta.getText(),
+        txtExamen.getText()
+    );
+
+    //Desplegar la ventana emergente
+    asistente.setVisible(true);
+
+    //Si presiona "Aceptar Diagnóstico", copiar el resultado a la Historia Clínica
+    if (asistente.isDiagnosticoAceptado()) {
+        txtDiagnostico.setText(asistente.getDiagnosticoSugerido());
+    }
     }//GEN-LAST:event_btIAActionPerformed
 
     private void btGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btGuardarActionPerformed

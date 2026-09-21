@@ -757,6 +757,51 @@ public class vPrincipal extends javax.swing.JFrame {
         lbCantidadIA.setText(String.valueOf(sugerenciasIA));
     }
 
+    public void configurarPermisosSegunRol(String rol) {
+        // 'Inicio' y 'Cerrar Sesión' siempre permanecen activos para todos
+
+        String rolNormalizado = rol.trim().toLowerCase();
+
+        //Bloquear por defecto todos los botones restringidos
+        btHistoria.setEnabled(false);
+        btLaboratorio.setEnabled(false);
+        btPACS.setEnabled(false);
+        btFacturacion.setEnabled(false);
+        btAgenda.setEnabled(false);
+        btUsuario.setEnabled(false);
+
+        //Habilitar únicamente los módulos permitidos según el rol
+        switch (rolNormalizado) {
+            case "administrador":
+            case "admin":
+                btHistoria.setEnabled(true);
+                btLaboratorio.setEnabled(true);
+                btPACS.setEnabled(true);
+                btFacturacion.setEnabled(true);
+                btAgenda.setEnabled(true);
+                btUsuario.setEnabled(true);
+                break;
+
+            case "medico":
+            case "médico":
+                btHistoria.setEnabled(true);
+                btLaboratorio.setEnabled(true);
+                btPACS.setEnabled(true);
+                break;
+
+            case "recepcion":
+            case "recepción":
+            case "recepcionista":
+                btFacturacion.setEnabled(true);
+                btAgenda.setEnabled(true);
+                break;
+
+            default:
+                System.out.println("Rol no reconocido: " + rol);
+                break;
+        }
+    }
+
 //Funcion para guardar la configuracion de todo el panel
     public void estilo() {
         this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);

@@ -197,12 +197,15 @@ public class vSesion extends javax.swing.JPanel {
                     javax.swing.JOptionPane.WARNING_MESSAGE);
             return;
         }
+        //Capturar el rol seleccionado del ComboBox
+        String rolSeleccionado = cbPerfil.getSelectedItem().toString();
 
         // Obtener la ventana principal contenedora
         java.awt.Window ventana = javax.swing.SwingUtilities.getWindowAncestor(this);
         if (ventana instanceof vPrincipal) {
             vPrincipal principal = (vPrincipal) ventana;
-
+            //Bloquea o habilita los botones según el rol
+            principal.configurarPermisosSegunRol(rolSeleccionado);
             // Restablece el menú lateral y la barra superior
             principal.mostrarBarraYMenu(true);
 
