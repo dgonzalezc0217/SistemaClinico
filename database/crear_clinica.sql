@@ -1,11 +1,5 @@
 -- SISTEMA CLINICO | SQLite | versión 1 | 2026-10-06
--- Ejecutar TODO en una base NUEVA y VACIA. Requiere SQLite 3.37.0 o superior.
--- Este archivo crea 40 tablas. No borra tablas ni incluye pacientes de ejemplo.
--- No es una migración para una base que ya tenga datos.
--- Si ocurre un error, DETENER la ejecución, ejecutar ROLLBACK y revisar el mensaje.
--- En la consola sqlite3 puede usarse: sqlite3 -bail clinica.db ".read crear_clinica.sql"
--- En un editor gráfico: abrir una base nueva, pegar TODO y ejecutar el script completo.
---
+
 -- REGLAS SENCILLAS
 -- INTEGER PRIMARY KEY: número identificador automático; omítalo al insertar.
 -- INTEGER 0/1: falso/verdadero. TEXT: palabras o fechas. REAL: medidas aproximadas.
@@ -33,8 +27,6 @@
 -- IMPORTANTE: activar foreign_keys en CADA conexión, también desde Java, antes de BEGIN.
 PRAGMA foreign_keys = ON;
 PRAGMA busy_timeout = 5000;
-
-BEGIN IMMEDIATE;
 
 -- 01. Rol: Tabla del modelo clínico.
 CREATE TABLE Rol (
@@ -1229,3 +1221,20 @@ PRAGMA integrity_check;
 -- https://www.sqlite.org/foreignkeys.html
 -- https://www.sqlite.org/datatype3.html
 -- https://www.sqlite.org/floatingpoint.html
+
+
+-- PRUEBAS
+-- Debe mostrar 40.
+SELECT COUNT(*) AS cantidad_tablas
+FROM sqlite_schema
+WHERE type = 'table'
+  AND name NOT LIKE 'sqlite_%';
+  
+-- Debe mostrar 1: las relaciones están activadas.
+PRAGMA foreign_keys;
+
+-- No debe mostrar ninguna fila.
+PRAGMA foreign_key_check;
+
+-- Debe mostrar: ok.
+PRAGMA integrity_check;
