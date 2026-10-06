@@ -18,31 +18,32 @@ SELECT sqlite_version();
 
 ## 2. Ubicación de los archivos
 
-La carpeta principal del proyecto es aquella que contiene `src`, `nbproject` y `build.xml`.
+La carpeta principal del proyecto contiene `src`, `nbproject` y `build.xml`.
 
-Los archivos deben organizarse así:
+Dentro de ella, la carpeta `database` reúne el script, esta guía y la carpeta de la base local:
 
-| Archivo | Ubicación | Función |
+| Archivo | Ubicación dentro del proyecto | Función |
 |---|---|---|
-| `crear_clinica.sql` | `database/` | Instrucciones para crear la base. |
-| `README.md` | `database/` | Esta guía. |
-| `clinica.db` | `datos/` | Base de datos local que utilizará la aplicación. |
+| Script de creación | `database/crear_clinica.sql` | Crea las tablas y relaciones. |
+| Esta guía | `database/README.md` | Explica la configuración. |
+| Base local | `database/datos/clinica.db` | Guarda las tablas y los datos utilizados en este computador. |
 
-La ruta `datos/clinica.db` significa que el archivo `clinica.db` se encuentra dentro de la carpeta `datos`.
+La ruta `database/datos/clinica.db` significa: entrar en `database`, después en `datos` y abrir `clinica.db`.
 
 ## 3. Crear la base de datos
 
-Estos pasos se realizan una sola vez.
+Estos pasos se realizan una sola vez:
 
-1. Dentro de la carpeta principal del proyecto, crear una carpeta llamada `datos`.
-2. Abrir el programa utilizado para administrar SQLite.
-3. Seleccionar la opción para crear una base de datos nueva.
-4. Guardarla como `clinica.db` dentro de `datos`.
-5. Si el programa solicita crear una tabla manualmente, cancelar ese formulario: las tablas se crearán mediante el script.
-6. Abrir la sección para ejecutar instrucciones SQL.
-7. Guardar cualquier cambio pendiente antes de continuar.
+1. Abrir la carpeta principal del proyecto.
+2. Entrar en `database`.
+3. Crear dentro de ella una carpeta llamada `datos`, si todavía no existe.
+4. Abrir el programa utilizado para administrar SQLite.
+5. Seleccionar la opción para crear una base nueva.
+6. Guardarla como `clinica.db` dentro de `database/datos`.
+7. Si el programa solicita crear una tabla manualmente, cancelar ese formulario: las tablas se crearán mediante el script.
+8. Continuar con el apartado 4, «Ejecutar el script de creación».
 
-**Si ya tienes una base creada con las 40 tablas, no repitas la creación. Continúa con la comprobación del paso 5.**
+**Si `database/datos/clinica.db` ya existe y contiene las 40 tablas, no volver a crearla ni ejecutar el script de creación. Continuar con las comprobaciones del apartado 5.**
 
 ## 4. Ejecutar el script de creación
 
@@ -138,20 +139,20 @@ Estas comprobaciones revisan la estructura y su integridad básica; no sustituye
 
 ## 6. Abrir la base después de crearla
 
-Para continuar trabajando:
-
 1. Abrir el programa de SQLite.
 2. Seleccionar la opción para abrir una base existente.
-3. Elegir `datos/clinica.db`.
-4. Activar las relaciones:
+3. Buscar la carpeta principal del proyecto.
+4. Entrar en `database` y después en `datos`.
+5. Abrir `clinica.db`.
+6. Activar las relaciones:
 
 ```sql
 PRAGMA foreign_keys = ON;
 ```
 
-**No volver a ejecutar `crear_clinica.sql`.** Ese archivo sirve para crear una base nueva.
+No volver a ejecutar `crear_clinica.sql` sobre esta base ya creada.
 
-La instrucción que activa las relaciones también debe ejecutarse en cada conexión que abra Java, antes de iniciar operaciones de guardado.
+La activación de las relaciones también debe realizarse en cada conexión que abra Java, antes de iniciar operaciones de guardado.
 
 ## 7. Reglas para ingresar información
 
@@ -217,19 +218,21 @@ Subir:
 
 - `database/crear_clinica.sql`
 - `database/README.md`
-- El archivo `.gitignore` del proyecto.
+- El archivo `.gitignore` ubicado en la carpeta principal del proyecto.
 
 Conservar localmente:
 
-- `datos/clinica.db`
+- `database/datos/clinica.db`
 - Archivos auxiliares de SQLite.
-- Copias de respaldo.
-- Datos reales de pacientes y credenciales.
+- Copias de respaldo y datos reales de pacientes.
 
-El archivo `.gitignore` debe incluir:
+En el `.gitignore` de la carpeta principal, conservar las reglas existentes y utilizar:
 
 ```gitignore
-/datos/
+# Base de datos local
+/database/datos/
+
+# Archivos SQLite y archivos auxiliares
 *.db
 *.db-journal
 *.db-wal
@@ -238,22 +241,24 @@ El archivo `.gitignore` debe incluir:
 *.sqlite3
 ```
 
-Al cargar archivos desde la página de GitHub, seleccionar manualmente los archivos que se van a compartir.
+Si se había agregado la regla `/datos/`, sustituirla por `/database/datos/`.
+
+**Al subir archivos desde la página de GitHub, seleccionar únicamente `crear_clinica.sql` y `README.md` dentro de `database`. No arrastrar toda la carpeta `database`, porque ahora también contiene la base local.**
 
 ## 10. Conexión con Java y cambios posteriores
 
-La clase `src/Conexion/cConexion.java` debe implementar la conexión con SQLite.
-
-La ruta prevista es:
+La clase `src/Conexion/cConexion.java` debe utilizar esta ruta:
 
 ```text
-jdbc:sqlite:datos/clinica.db
+jdbc:sqlite:database/datos/clinica.db
 ```
 
 Esta ruta supone que la aplicación se ejecuta desde la carpeta principal del proyecto y que el controlador JDBC de SQLite está configurado.
 
+Antes de conectar, comprobar que el archivo existe en esa ubicación. Una ruta equivocada podría provocar la creación de otra base vacía.
+
 Subir el script a GitHub no conecta automáticamente la aplicación ni sincroniza los datos de los integrantes del equipo.
 
-Si la base ya contiene información, no utilizar el script de creación para actualizarla. Preparar un script separado para cada cambio y realizar primero una copia de respaldo.
+Para modificar una base que ya contiene información, preparar un script separado y realizar primero una copia de respaldo. Para copiar el archivo como respaldo, guardar los cambios y cerrar previamente la aplicación y el programa de SQLite.
 
 Para copiar el archivo de la base como respaldo, guardar los cambios y cerrar previamente la aplicación y el programa de SQLite.
