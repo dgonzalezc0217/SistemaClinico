@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -48,9 +47,6 @@ public class cConexion {
             // Enviar el error al código que llamó al método.
             throw error;
         }
-
-        JOptionPane.showMessageDialog(null, "Conexion Exitosa!!!");
-
         return conectar;
     }
 }

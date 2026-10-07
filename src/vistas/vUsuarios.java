@@ -18,6 +18,11 @@ public class vUsuarios extends javax.swing.JPanel {
     public vUsuarios() {
         initComponents();
         estilo();
+        btIngresar.setEnabled(false);
+        btActualizar.setEnabled(false);
+
+        btIngresar.setToolTipText("Registro de personal pendiente de conectar.");
+        btActualizar.setToolTipText("Actualizacion de personal pendiente de conectar.");
     }
 
     /**
@@ -225,8 +230,8 @@ public class vUsuarios extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel8)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -257,9 +262,9 @@ public class vUsuarios extends javax.swing.JPanel {
                             .addComponent(jLabel16)
                             .addComponent(cbRol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel17)
-                            .addComponent(cbTurno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cbTurno, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel17))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel18)
@@ -278,50 +283,50 @@ public class vUsuarios extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btActualizarActionPerformed
-    if (txtCedula.getText().trim().isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(this, 
-            "Por favor, seleccione un usuario de la tabla para actualizar.", 
-            "Selección Requerida", 
-            javax.swing.JOptionPane.WARNING_MESSAGE);
-        return;
-    }
+        if (txtCedula.getText().trim().isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Por favor, seleccione un usuario de la tabla para actualizar.",
+                    "Selección Requerida",
+                    javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-    // Mensaje de éxito (simulación)
-    javax.swing.JOptionPane.showMessageDialog(this, 
-        "¡Información del usuario actualizada correctamente!", 
-        "Éxito", 
-        javax.swing.JOptionPane.INFORMATION_MESSAGE);
-        
-    // Limpiar formulario tras la actualización
-    limpiarCampos();
+        // Mensaje de éxito (simulación)
+        javax.swing.JOptionPane.showMessageDialog(this,
+                "¡Información del usuario actualizada correctamente!",
+                "Éxito",
+                javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
+        // Limpiar formulario tras la actualización
+        limpiarCampos();
     }//GEN-LAST:event_btActualizarActionPerformed
 
     private void btIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btIngresarActionPerformed
         // 1. Validaciones básicas
-    if (txtCedula.getText().trim().isEmpty() || txtNombre.getText().trim().isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(this, 
-            "Por favor, diligencie al menos la Cédula y el Nombre Completo.", 
-            "Campos Obligatorios", 
-            javax.swing.JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-    
-    if (cbRol.getSelectedIndex() == 0) {
-        javax.swing.JOptionPane.showMessageDialog(this, 
-            "Por favor, seleccione un Rol para el usuario.", 
-            "Rol Requerido", 
-            javax.swing.JOptionPane.WARNING_MESSAGE);
-        return;
-    }
+        if (txtCedula.getText().trim().isEmpty() || txtNombre.getText().trim().isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Por favor, diligencie al menos la Cédula y el Nombre Completo.",
+                    "Campos Obligatorios",
+                    javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-    // 2. Mensaje de éxito (simulación)
-    javax.swing.JOptionPane.showMessageDialog(this, 
-        "¡Usuario registrado exitosamente!", 
-        "Éxito", 
-        javax.swing.JOptionPane.INFORMATION_MESSAGE);
-        
-    // 3. Limpiar el formulario
-    limpiarCampos();
+        if (cbRol.getSelectedIndex() == 0) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Por favor, seleccione un Rol para el usuario.",
+                    "Rol Requerido",
+                    javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // 2. Mensaje de éxito (simulación)
+        javax.swing.JOptionPane.showMessageDialog(this,
+                "¡Usuario registrado exitosamente!",
+                "Éxito",
+                javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
+        // 3. Limpiar el formulario
+        limpiarCampos();
     }//GEN-LAST:event_btIngresarActionPerformed
 
     private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
@@ -330,63 +335,73 @@ public class vUsuarios extends javax.swing.JPanel {
 
     private void btBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBuscarActionPerformed
 // 1. Crear los componentes internos del diálogo
-    String[] criterios = {"Cédula", "Tipo de sangre", "Rol", "Turno", "Número Profesional"};
-    javax.swing.JComboBox<String> cbCriterio = new javax.swing.JComboBox<>(criterios);
-    javax.swing.JTextField txtBusqueda = new javax.swing.JTextField();
+        String[] criterios = {"Cédula", "Tipo de sangre", "Rol", "Turno", "Número Profesional"};
+        javax.swing.JComboBox<String> cbCriterio = new javax.swing.JComboBox<>(criterios);
+        javax.swing.JTextField txtBusqueda = new javax.swing.JTextField();
 
-    // 2. Agrupar los componentes dentro de un panel para el JOptionPane
-    Object[] formulario = {
-        "Seleccione el criterio de búsqueda:", cbCriterio,
-        "Ingrese el valor a buscar:", txtBusqueda
-    };
+        // 2. Agrupar los componentes dentro de un panel para el JOptionPane
+        Object[] formulario = {
+            "Seleccione el criterio de búsqueda:", cbCriterio,
+            "Ingrese el valor a buscar:", txtBusqueda
+        };
 
-    // 3. Mostrar el JOptionPane emergente
-    int opcion = javax.swing.JOptionPane.showConfirmDialog(
-        this,
-        formulario,
-        "Buscar Usuario",
-        javax.swing.JOptionPane.OK_CANCEL_OPTION,
-        javax.swing.JOptionPane.QUESTION_MESSAGE
-    );
+        // 3. Mostrar el JOptionPane emergente
+        int opcion = javax.swing.JOptionPane.showConfirmDialog(
+                this,
+                formulario,
+                "Buscar Usuario",
+                javax.swing.JOptionPane.OK_CANCEL_OPTION,
+                javax.swing.JOptionPane.QUESTION_MESSAGE
+        );
 
-    // 4. Procesar la respuesta
-    if (opcion == javax.swing.JOptionPane.OK_OPTION) {
-        String texto = txtBusqueda.getText().trim();
-        
-        // Si el usuario deja la búsqueda vacía, quitar el filtro
-        if (texto.isEmpty()) {
-            quitarFiltroTabla();
-            return;
+        // 4. Procesar la respuesta
+        if (opcion == javax.swing.JOptionPane.OK_OPTION) {
+            String texto = txtBusqueda.getText().trim();
+
+            // Si el usuario deja la búsqueda vacía, quitar el filtro
+            if (texto.isEmpty()) {
+                quitarFiltroTabla();
+                return;
+            }
+
+            // Determinar cuál columna de la tabla corresponde al criterio seleccionado
+            // Columnas: 0: Cédula, 5: Tipo de sangre, 7: Rol, 8: Turno, 9: Número Profesional
+            int columnaIndex = 0;
+            String criterioSeleccionado = (String) cbCriterio.getSelectedItem();
+
+            switch (criterioSeleccionado) {
+                case "Cédula":
+                    columnaIndex = 0;
+                    break;
+                case "Tipo de sangre":
+                    columnaIndex = 5;
+                    break;
+                case "Rol":
+                    columnaIndex = 7;
+                    break;
+                case "Turno":
+                    columnaIndex = 8;
+                    break;
+                case "Número Profesional":
+                    columnaIndex = 9;
+                    break;
+            }
+
+            // Aplicar el filtro a la JTable (insensible a mayúsculas/minúsculas)
+            javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tblUsuarios.getModel();
+            javax.swing.table.TableRowSorter<javax.swing.table.DefaultTableModel> sorter = new javax.swing.table.TableRowSorter<>(model);
+            tblUsuarios.setRowSorter(sorter);
+
+            sorter.setRowFilter(javax.swing.RowFilter.regexFilter("(?i)" + java.util.regex.Pattern.quote(texto), columnaIndex));
+
+            // Si no hay coincidencias, notificar al usuario
+            if (tblUsuarios.getRowCount() == 0) {
+                javax.swing.JOptionPane.showMessageDialog(this,
+                        "No se encontraron coincidencias para: " + texto,
+                        "Sin resultados",
+                        javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            }
         }
-
-        // Determinar cuál columna de la tabla corresponde al criterio seleccionado
-        // Columnas: 0: Cédula, 5: Tipo de sangre, 7: Rol, 8: Turno, 9: Número Profesional
-        int columnaIndex = 0;
-        String criterioSeleccionado = (String) cbCriterio.getSelectedItem();
-
-        switch (criterioSeleccionado) {
-            case "Cédula": columnaIndex = 0; break;
-            case "Tipo de sangre": columnaIndex = 5; break;
-            case "Rol": columnaIndex = 7; break;
-            case "Turno": columnaIndex = 8; break;
-            case "Número Profesional": columnaIndex = 9; break;
-        }
-
-        // Aplicar el filtro a la JTable (insensible a mayúsculas/minúsculas)
-        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tblUsuarios.getModel();
-        javax.swing.table.TableRowSorter<javax.swing.table.DefaultTableModel> sorter = new javax.swing.table.TableRowSorter<>(model);
-        tblUsuarios.setRowSorter(sorter);
-
-        sorter.setRowFilter(javax.swing.RowFilter.regexFilter("(?i)" + java.util.regex.Pattern.quote(texto), columnaIndex));
-
-        // Si no hay coincidencias, notificar al usuario
-        if (tblUsuarios.getRowCount() == 0) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                "No se encontraron coincidencias para: " + texto,
-                "Sin resultados",
-                javax.swing.JOptionPane.INFORMATION_MESSAGE);
-        }
-    }
 
     }//GEN-LAST:event_btBuscarActionPerformed
 
@@ -421,7 +436,7 @@ public class vUsuarios extends javax.swing.JPanel {
     private javax.swing.JTextField txtTipo;
     // End of variables declaration//GEN-END:variables
 
-public void color(){
+    public void color() {
         jScrollPane1.getViewport().setBackground(java.awt.Color.WHITE);
         //Cambiar el color de cuando se seleciona una fila
         tblUsuarios.setSelectionBackground(Color.decode("#C8E6C9"));
@@ -431,116 +446,103 @@ public void color(){
         btActualizar.setBackground(java.awt.Color.decode("#A3C9A8"));
         btCancelar.setBackground(java.awt.Color.decode("#A3C9A8"));
         btBuscar.setBackground(java.awt.Color.decode("#A3C9A8"));
-}
-
-private void cargarComboBoxes() {
-    // Cargar opciones para el Rol
-    cbRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {
-        "Seleccionar Rol...",
-        "Administrador",
-        "Médico",
-        "Recepcionista",
-        "Paciente"
-    }));
-
-    // Cargar opciones para el Turno
-    cbTurno.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {
-        "Seleccionar Turno...",
-        "Mañana (07:00 - 15:00)",
-        "Tarde (15:00 - 23:00)",
-        "Noche (23:00 - 07:00)",
-        "Tiempo Completo"
-    }));
-}
-
-private void actualizarCamposSegunRol() {
-    String rolSeleccionado = cbRol.getSelectedItem() != null ? cbRol.getSelectedItem().toString() : "";
-
-    switch (rolSeleccionado) {
-        case "Médico":
-            // Habilitar datos profesionales y laborales
-            txtNumeroProfesional.setEnabled(true);
-            cbTurno.setEnabled(true);
-
-            // Deshabilitar datos exclusivos de paciente
-            txtTipo.setEnabled(false);
-            txtAlergia.setEnabled(false);
-            
-            // Limpiar campos no aplicables
-            txtTipo.setText("");
-            txtAlergia.setText("");
-            break;
-
-        case "Paciente":
-            // Habilitar datos clínicos
-            txtTipo.setEnabled(true);
-            txtAlergia.setEnabled(true);
-
-            // Deshabilitar datos profesionales
-            txtNumeroProfesional.setEnabled(false);
-            cbTurno.setEnabled(false);
-            
-            // Limpiar campos no aplicables
-            txtNumeroProfesional.setText("");
-            cbTurno.setSelectedIndex(0);
-            break;
-
-        case "Administrador":
-        case "Recepcionista":
-            // Deshabilitar campos especiales que no aplican a personal administrativo
-            txtNumeroProfesional.setEnabled(false);
-            cbTurno.setEnabled(true); // El personal administrativo también puede tener turno
-            txtTipo.setEnabled(false);
-            txtAlergia.setEnabled(false);
-
-            txtNumeroProfesional.setText("");
-            txtTipo.setText("");
-            txtAlergia.setText("");
-            break;
-
-        default:
-            // Si no se ha seleccionado un rol válido, desactivar todo lo especial
-            txtNumeroProfesional.setEnabled(false);
-            cbTurno.setEnabled(false);
-            txtTipo.setEnabled(false);
-            txtAlergia.setEnabled(false);
-            break;
     }
-}
-private void quitarFiltroTabla() {
-    if (tblUsuarios.getRowSorter() != null) {
-        tblUsuarios.setRowSorter(null);
-    }
-}
-private void limpiarCampos() {
-    txtCedula.setText("");
-    txtNombre.setText("");
-    txtCelular.setText("");
-    txtCorreo.setText("");
-    txtFechaNacimiento.setText("");
-    txtTipo.setText("");
-    txtAlergia.setText("");
-    txtNumeroProfesional.setText("");
-    
-    // Reiniciar los ComboBoxes a la primera opción ("Seleccionar...")
-    cbRol.setSelectedIndex(0);
-    cbTurno.setSelectedIndex(0);
-    
-    // Deseleccionar la fila actual de la tabla si hay alguna seleccionada
-    tblUsuarios.clearSelection();
-    
-    // Restablecer el estado bloqueado/desbloqueado de los campos condicionales
-    actualizarCamposSegunRol();
-}
 
-public void estilo(){
-    color();
-    txtNumeroProfesional.setEnabled(false);
-    cbTurno.setEnabled(false);
-     //Bloquear celdas de las tablas y que las filas esten vacias
+    private void cargarComboBoxes() {
+        // Cargar opciones para el Rol
+        cbRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{
+            "Seleccionar Rol...",
+            "Administrador",
+            "Médico",
+            "Recepcionista"
+        }));
+
+        // Cargar opciones para el Turno
+        cbTurno.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{
+            "Seleccionar Turno...",
+            "Mañana (07:00 - 15:00)",
+            "Tarde (15:00 - 23:00)",
+            "Noche (23:00 - 07:00)",
+            "Tiempo Completo"
+        }));
+    }
+
+    private void actualizarCamposSegunRol() {
+        String rolSeleccionado = cbRol.getSelectedItem() != null ? cbRol.getSelectedItem().toString() : "";
+
+        switch (rolSeleccionado) {
+            case "Médico":
+                // Habilitar datos profesionales y laborales
+                txtNumeroProfesional.setEnabled(true);
+                cbTurno.setEnabled(true);
+
+                // Deshabilitar datos exclusivos de paciente
+                txtTipo.setEnabled(false);
+                txtAlergia.setEnabled(false);
+
+                // Limpiar campos no aplicables
+                txtTipo.setText("");
+                txtAlergia.setText("");
+                break;
+
+            case "Administrador":
+            case "Recepcionista":
+                // Deshabilitar campos especiales que no aplican a personal administrativo
+                txtNumeroProfesional.setEnabled(false);
+                cbTurno.setEnabled(true); // El personal administrativo también puede tener turno
+                txtTipo.setEnabled(false);
+                txtAlergia.setEnabled(false);
+
+                txtNumeroProfesional.setText("");
+                txtTipo.setText("");
+                txtAlergia.setText("");
+                break;
+
+            default:
+                // Si no se ha seleccionado un rol válido, desactivar todo lo especial
+                txtNumeroProfesional.setEnabled(false);
+                cbTurno.setEnabled(false);
+                txtTipo.setEnabled(false);
+                txtAlergia.setEnabled(false);
+                break;
+        }
+    }
+
+    private void quitarFiltroTabla() {
+        if (tblUsuarios.getRowSorter() != null) {
+            tblUsuarios.setRowSorter(null);
+        }
+    }
+
+    private void limpiarCampos() {
+        txtCedula.setText("");
+        txtNombre.setText("");
+        txtCelular.setText("");
+        txtCorreo.setText("");
+        txtFechaNacimiento.setText("");
+        txtTipo.setText("");
+        txtAlergia.setText("");
+        txtNumeroProfesional.setText("");
+
+        // Reiniciar los ComboBoxes a la primera opción ("Seleccionar...")
+        cbRol.setSelectedIndex(0);
+        cbTurno.setSelectedIndex(0);
+
+        // Deseleccionar la fila actual de la tabla si hay alguna seleccionada
+        tblUsuarios.clearSelection();
+
+        // Restablecer el estado bloqueado/desbloqueado de los campos condicionales
+        actualizarCamposSegunRol();
+    }
+
+    public void estilo() {
+        color();
+        txtNumeroProfesional.setEnabled(false);
+        cbTurno.setEnabled(false);
+        //Bloquear celdas de las tablas y que las filas esten vacias
         javax.swing.table.DefaultTableModel modelUsuarios = new javax.swing.table.DefaultTableModel(
                 new Object[][]{},
-                new String[]{"Cedula", "Nombre", "Celular", "Correo", "Fecha de nacimiento", "Tipo de sangre", "Alergias", "Rol","Turno","Numero Profesional"}
+                new String[]{"Cedula", "Nombre", "Celular", "Correo", "Fecha de nacimiento", "Tipo de sangre", "Alergias", "Rol", "Turno", "Numero Profesional"}
         ) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -548,27 +550,27 @@ public void estilo(){
             }
         };
         tblUsuarios.setModel(modelUsuarios);
-    //Cargar datos al hacer clic en una fila de la tabla
-    tblUsuarios.addMouseListener(new java.awt.event.MouseAdapter() {
-        @Override
-        public void mouseClicked(java.awt.event.MouseEvent evt) {
-            int fila = tblUsuarios.getSelectedRow();
-            if (fila >= 0) {
-                txtCedula.setText(tblUsuarios.getValueAt(fila, 0).toString());
-                txtNombre.setText(tblUsuarios.getValueAt(fila, 1).toString());
-                txtCelular.setText(tblUsuarios.getValueAt(fila, 2).toString());
-                txtCorreo.setText(tblUsuarios.getValueAt(fila, 3).toString());
-                txtFechaNacimiento.setText(tblUsuarios.getValueAt(fila, 4).toString());
-                txtTipo.setText(tblUsuarios.getValueAt(fila, 5) != null ? tblUsuarios.getValueAt(fila, 5).toString() : "");
-                txtAlergia.setText(tblUsuarios.getValueAt(fila, 6) != null ? tblUsuarios.getValueAt(fila, 6).toString() : "");
-                
-                cbRol.setSelectedItem(tblUsuarios.getValueAt(fila, 7).toString());
-                cbTurno.setSelectedItem(tblUsuarios.getValueAt(fila, 8) != null ? tblUsuarios.getValueAt(fila, 8).toString() : "");
-                txtNumeroProfesional.setText(tblUsuarios.getValueAt(fila, 9) != null ? tblUsuarios.getValueAt(fila, 9).toString() : "");
+        //Cargar datos al hacer clic en una fila de la tabla
+        tblUsuarios.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int fila = tblUsuarios.getSelectedRow();
+                if (fila >= 0) {
+                    txtCedula.setText(tblUsuarios.getValueAt(fila, 0).toString());
+                    txtNombre.setText(tblUsuarios.getValueAt(fila, 1).toString());
+                    txtCelular.setText(tblUsuarios.getValueAt(fila, 2).toString());
+                    txtCorreo.setText(tblUsuarios.getValueAt(fila, 3).toString());
+                    txtFechaNacimiento.setText(tblUsuarios.getValueAt(fila, 4).toString());
+                    txtTipo.setText(tblUsuarios.getValueAt(fila, 5) != null ? tblUsuarios.getValueAt(fila, 5).toString() : "");
+                    txtAlergia.setText(tblUsuarios.getValueAt(fila, 6) != null ? tblUsuarios.getValueAt(fila, 6).toString() : "");
+
+                    cbRol.setSelectedItem(tblUsuarios.getValueAt(fila, 7).toString());
+                    cbTurno.setSelectedItem(tblUsuarios.getValueAt(fila, 8) != null ? tblUsuarios.getValueAt(fila, 8).toString() : "");
+                    txtNumeroProfesional.setText(tblUsuarios.getValueAt(fila, 9) != null ? tblUsuarios.getValueAt(fila, 9).toString() : "");
+                }
             }
-        }
-    });
-    // Validar solo números en el campo de cédula 
+        });
+        // Validar solo números en el campo de cédula 
         txtCedula.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -577,7 +579,7 @@ public void estilo(){
                 }
             }
         });
-          txtCelular.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtCelular.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 if (!Character.isDigit(evt.getKeyChar())) {
@@ -585,7 +587,7 @@ public void estilo(){
                 }
             }
         });
-            txtNumeroProfesional.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtNumeroProfesional.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 if (!Character.isDigit(evt.getKeyChar())) {
@@ -593,16 +595,15 @@ public void estilo(){
                 }
             }
         });
-    cargarComboBoxes();
-    //Vincular el listener al ComboBox de Rol para cambiar los campos en tiempo real
-    cbRol.addActionListener(new java.awt.event.ActionListener() {
-        @Override
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            actualizarCamposSegunRol();
-        }
-    });
-    actualizarCamposSegunRol();
-}
-}
+        cargarComboBoxes();
+        //Vincular el listener al ComboBox de Rol para cambiar los campos en tiempo real
+        cbRol.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                actualizarCamposSegunRol();
+            }
+        });
+        actualizarCamposSegunRol();
+    }
 
-
+}

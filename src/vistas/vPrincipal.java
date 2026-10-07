@@ -665,6 +665,21 @@ public class vPrincipal extends javax.swing.JFrame {
         //Aqui se le dice al panel agregado que agregue la vista del panel vHistoriaclinica y se le pone una etiqueta
         //Agrega el panel vistaHistoriaClinica al contenedor principal llamado pBase.
         //Como pBase es un CardLayout, el segundo parametro ("pantallaHistoriaClinica") funciona como un alias o identificador unico.
+vPacientes vistaPacientes = new vPacientes();
+
+javax.swing.JTabbedPane pestanasPersonas =
+        new javax.swing.JTabbedPane();
+
+// Agrega los campos y botones del formulario a la pestaña.
+pestanasPersonas.addTab(
+        "Pacientes",
+        vistaPacientes.getContentPane()
+);
+
+// Libera la ventana; su contenido ya está en la pestaña.
+vistaPacientes.dispose();
+
+pestanasPersonas.addTab("Personal", vistaUsuario);
         pBase.add(pInicio, "pantallaInicio");
         pBase.add(vistaHistoria, "pantallaHistoriaClinica");
         pBase.add(vistaFacturacion, "pantallaFacturacion");
@@ -672,7 +687,7 @@ public class vPrincipal extends javax.swing.JFrame {
         pBase.add(vistaLaboratorio, "pantallaLaboratorio");
         pBase.add(vistaPACS, "pantallaPACS");
         pBase.add(vistaSesion, "pantallaSesion");
-        pBase.add(vistaUsuario, "pantallaUsuario");
+        pBase.add(pestanasPersonas, "pantallaUsuario");
         // Oculta la barra y menú al inicio
         mostrarBarraYMenu(false);
         // Muestra la pantalla de inicio de sesión por defecto

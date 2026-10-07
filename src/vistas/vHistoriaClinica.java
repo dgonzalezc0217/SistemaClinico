@@ -498,41 +498,41 @@ public class vHistoriaClinica extends javax.swing.JPanel {
 
     private void btIAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btIAActionPerformed
 //Validar que haya al menos un motivo de consulta cargado para dar contexto a la IA
-    if (txtCedula.getText().trim().isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(this, 
-            "Debe ingresar y buscar un paciente antes de consultar a la IA.", 
-            "Paciente no seleccionado", 
-            javax.swing.JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-    
-    if (txtConsulta.getText().trim().isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(this, 
-            "Por favor ingrese el Motivo de consulta para que la IA tenga contexto.", 
-            "Campos incompletos", 
-            javax.swing.JOptionPane.WARNING_MESSAGE);
-        return;
-    }
+        if (txtCedula.getText().trim().isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Debe ingresar y buscar un paciente antes de consultar a la IA.",
+                    "Paciente no seleccionado",
+                    javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-    //Obtener el Frame contenedor principal
-    java.awt.Frame framePadre = (java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(this);
+        if (txtConsulta.getText().trim().isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Por favor ingrese el Motivo de consulta para que la IA tenga contexto.",
+                    "Campos incompletos",
+                    javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-    //Instanciar tu diálogo modal dlgIA
-    dlgIA asistente = new dlgIA(framePadre, true);
+        //Obtener el Frame contenedor principal
+        java.awt.Frame framePadre = (java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(this);
 
-    //Enviar los datos del motivo de consulta y examen físico para generar la sugerencia
-    asistente.cargarDatosParaAnalisis(
-        txtConsulta.getText(),
-        txtExamen.getText()
-    );
+        //Instanciar tu diálogo modal dlgIA
+        dlgIA asistente = new dlgIA(framePadre, true);
 
-    //Desplegar la ventana emergente
-    asistente.setVisible(true);
+        //Enviar los datos del motivo de consulta y examen físico para generar la sugerencia
+        asistente.cargarDatosParaAnalisis(
+                txtConsulta.getText(),
+                txtExamen.getText()
+        );
 
-    //Si presiona "Aceptar Diagnóstico", copiar el resultado a la Historia Clínica
-    if (asistente.isDiagnosticoAceptado()) {
-        txtDiagnostico.setText(asistente.getDiagnosticoSugerido());
-    }
+        //Desplegar la ventana emergente
+        asistente.setVisible(true);
+
+        //Si presiona "Aceptar Diagnóstico", copiar el resultado a la Historia Clínica
+        if (asistente.isDiagnosticoAceptado()) {
+            txtDiagnostico.setText(asistente.getDiagnosticoSugerido());
+        }
     }//GEN-LAST:event_btIAActionPerformed
 
     private void btGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btGuardarActionPerformed
@@ -548,30 +548,23 @@ public class vHistoriaClinica extends javax.swing.JPanel {
     }//GEN-LAST:event_btVerHistorialActionPerformed
 
     private void btBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBuscarActionPerformed
-        //Se guarda el texto de cedula  
-        String cedula = txtIngreso.getText().trim();
+        txtNombre.setText("");
+        txtCedula.setText("");
+        txtCelular.setText("");
+        txtEdad.setText("");
+        txtSangre.setText("");
+        txtAlergias.setText("");
 
-        //Se compara si la variabel cedula contiene texto
-        if (cedula.isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                    "Ingrese una cédula válida para realizar la búsqueda.",
-                    "Cédula requerida",
-                    javax.swing.JOptionPane.WARNING_MESSAGE);
+        btVerHistorial.setEnabled(false);
 
-            btVerHistorial.setEnabled(false); // Se asegura de mantenerlo bloqueado
-
-            return;
-        }
-        //PruebaAquí se cargan los datos del paciente encontrado
-        txtNombre.setText("Carlos Mendoza"); // Ejemplo de carga
-        txtCedula.setText(cedula);
-        txtCelular.setText("0991234567");
-        txtEdad.setText("34");
-        txtSangre.setText("O+");
-        txtAlergias.setText("Penicilina");
-
-        //Se desbloquea el botón de historial
-        btVerHistorial.setEnabled(true);
+        javax.swing.JOptionPane.showMessageDialog(
+                this,
+                "Para buscar un paciente, abre Usuarios y selecciona "
+                + "la pestaña Pacientes.\n"
+                + "Escribe su tipo y numero de documento.",
+                "Busqueda de pacientes",
+                javax.swing.JOptionPane.INFORMATION_MESSAGE
+        );
     }//GEN-LAST:event_btBuscarActionPerformed
 
 

@@ -439,10 +439,6 @@ public class vAgendamiento extends javax.swing.JPanel {
     private void cargarDatos() {
         javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tblCitas.getModel();
         model.setRowCount(0);
-
-        model.addRow(new Object[]{"CIT-001", "19/09/2026", "08:00 AM", "Carlos Ruiz", "1054", "Dr. Esteban López", "Medicina General", "Atendida"});
-        model.addRow(new Object[]{"CIT-002", "18/09/2026", "09:30 AM", "María Gómez", "1011", "Dr. Esteban López", "Medicina General", "En espera"});
-        model.addRow(new Object[]{"CIT-003", "17/09/2026", "11:00 AM", "Juan Pérez", "1015", "Dra. Ana Silva", "Pediatría", "Confirmada"});
     }
 
     //Metodo para las combobox
