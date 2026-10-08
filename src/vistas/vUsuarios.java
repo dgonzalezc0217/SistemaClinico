@@ -18,8 +18,7 @@ public class vUsuarios extends javax.swing.JPanel {
     public vUsuarios() {
         initComponents();
         estilo();
-        btIngresar.setEnabled(false);
-        btActualizar.setEnabled(false);
+
 
         btIngresar.setToolTipText("Registro de personal pendiente de conectar.");
         btActualizar.setToolTipText("Actualizacion de personal pendiente de conectar.");
@@ -227,11 +226,11 @@ public class vUsuarios extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addComponent(jLabel9)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel8)
                             .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -269,16 +268,16 @@ public class vUsuarios extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel18)
                             .addComponent(txtNumeroProfesional, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btIngresar)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btActualizar)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btCancelar)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btBuscar))
-                    .addComponent(jScrollPane1))
-                .addContainerGap(73, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 718, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(85, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -476,13 +475,6 @@ public class vUsuarios extends javax.swing.JPanel {
                 txtNumeroProfesional.setEnabled(true);
                 cbTurno.setEnabled(true);
 
-                // Deshabilitar datos exclusivos de paciente
-                txtTipo.setEnabled(false);
-                txtAlergia.setEnabled(false);
-
-                // Limpiar campos no aplicables
-                txtTipo.setText("");
-                txtAlergia.setText("");
                 break;
 
             case "Administrador":
@@ -490,20 +482,14 @@ public class vUsuarios extends javax.swing.JPanel {
                 // Deshabilitar campos especiales que no aplican a personal administrativo
                 txtNumeroProfesional.setEnabled(false);
                 cbTurno.setEnabled(true); // El personal administrativo también puede tener turno
-                txtTipo.setEnabled(false);
-                txtAlergia.setEnabled(false);
 
                 txtNumeroProfesional.setText("");
-                txtTipo.setText("");
-                txtAlergia.setText("");
                 break;
 
             default:
                 // Si no se ha seleccionado un rol válido, desactivar todo lo especial
                 txtNumeroProfesional.setEnabled(false);
                 cbTurno.setEnabled(false);
-                txtTipo.setEnabled(false);
-                txtAlergia.setEnabled(false);
                 break;
         }
     }
