@@ -6,6 +6,10 @@ package vistas;
 
 import java.awt.Color;
 import javax.swing.DefaultComboBoxModel;
+import Modelo.cAgendamiento;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -13,9 +17,12 @@ import javax.swing.DefaultComboBoxModel;
  */
 public class dlgNuevaCita extends javax.swing.JDialog {
 
+    private final cAgendamiento modeloAgendamiento = new cAgendamiento();
+
     /**
      * Creates new form dlgNuevaCita
      */
+    private boolean agendasConsultadas = false;
     public dlgNuevaCita(java.awt.Frame parent, boolean modal, vAgendamiento vistaPadre) {
         super(parent, modal);
         initComponents();
@@ -36,7 +43,7 @@ public class dlgNuevaCita extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         txtCedula = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        cbPacientes = new javax.swing.JComboBox();
+        cbPacientes = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         txtFecha = new javax.swing.JTextField();
@@ -44,12 +51,20 @@ public class dlgNuevaCita extends javax.swing.JDialog {
         jLabel7 = new javax.swing.JLabel();
         txtHora = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        cbEspecialidad = new javax.swing.JComboBox();
+        cbEspecialidad = new javax.swing.JComboBox<>();
         jLabel9 = new javax.swing.JLabel();
-        cbMedico = new javax.swing.JComboBox();
+        cbMedico = new javax.swing.JComboBox<>();
         btGuardar = new javax.swing.JButton();
         btCancelar = new javax.swing.JButton();
         btLimpiar = new javax.swing.JButton();
+        cbServicio = new javax.swing.JComboBox<>();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        cbAgenda = new javax.swing.JComboBox<>();
+        jLabel12 = new javax.swing.JLabel();
+        txtHoraFin = new javax.swing.JTextField();
+        btConsultarAgendas = new javax.swing.JButton();
+        lblEstadoCita = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -86,7 +101,7 @@ public class dlgNuevaCita extends javax.swing.JDialog {
         txtFecha.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
 
         jLabel6.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel6.setText("Hora:");
+        jLabel6.setText("Hora de inicio:");
 
         jLabel7.setFont(new java.awt.Font("SansSerif", 0, 10)); // NOI18N
         jLabel7.setText("HH:MM");
@@ -132,23 +147,58 @@ public class dlgNuevaCita extends javax.swing.JDialog {
             }
         });
 
+        cbServicio.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+
+        jLabel10.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        jLabel10.setText("Servicio:");
+
+        jLabel11.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        jLabel11.setText("Hora de finalización");
+
+        cbAgenda.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+
+        jLabel12.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        jLabel12.setText("Agenda disponible");
+
+        txtHoraFin.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        txtHoraFin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtHoraFinActionPerformed(evt);
+            }
+        });
+
+        btConsultarAgendas.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        btConsultarAgendas.setText("Consultar Agendas");
+        btConsultarAgendas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btConsultarAgendasActionPerformed(evt);
+            }
+        });
+
+        lblEstadoCita.setText("Busca y selecciona un paciente.");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(131, Short.MAX_VALUE)
+                .addContainerGap(156, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(113, 113, 113))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btGuardar)
-                        .addGap(202, 202, 202)
-                        .addComponent(btLimpiar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btCancelar))
+                        .addGap(203, 203, 203)
+                        .addComponent(btLimpiar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lblEstadoCita)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btCancelar))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
@@ -160,7 +210,8 @@ public class dlgNuevaCita extends javax.swing.JDialog {
                                     .addComponent(jLabel4)
                                     .addComponent(jLabel6)
                                     .addComponent(jLabel8)
-                                    .addComponent(jLabel9))
+                                    .addComponent(jLabel9)
+                                    .addComponent(jLabel10))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(txtCedula)
@@ -168,9 +219,20 @@ public class dlgNuevaCita extends javax.swing.JDialog {
                                     .addComponent(txtFecha)
                                     .addComponent(txtHora)
                                     .addComponent(cbEspecialidad, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(cbMedico, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                                    .addComponent(cbMedico, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(cbServicio, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel12)
+                                .addGap(18, 18, 18)
+                                .addComponent(cbAgenda, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(160, 160, 160)
+                        .addComponent(btConsultarAgendas)
+                        .addGap(52, 52, 52))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel11)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtHoraFin)
+                        .addGap(398, 398, 398))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -191,7 +253,9 @@ public class dlgNuevaCita extends javax.swing.JDialog {
                         .addComponent(jLabel4))
                     .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel5)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(btConsultarAgendas))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
@@ -206,12 +270,29 @@ public class dlgNuevaCita extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(cbMedico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(45, 45, 45)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btGuardar)
-                    .addComponent(btCancelar)
-                    .addComponent(btLimpiar))
-                .addContainerGap(64, Short.MAX_VALUE))
+                    .addComponent(cbServicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cbAgenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(txtHoraFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btCancelar)
+                        .addGap(19, 19, 19))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblEstadoCita)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btGuardar)
+                            .addComponent(btLimpiar)))))
         );
 
         pack();
@@ -222,32 +303,48 @@ public class dlgNuevaCita extends javax.swing.JDialog {
     }//GEN-LAST:event_txtHoraActionPerformed
 
     private void btGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btGuardarActionPerformed
-        comboPaciente pacienteSeleccionado = (comboPaciente) cbPacientes.getSelectedItem();
-        String fecha = txtFecha.getText().trim();
-        String hora = txtHora.getText().trim();
+cAgendamiento.Opcion paciente =
+        (cAgendamiento.Opcion) cbPacientes.getSelectedItem();
 
-        if (pacienteSeleccionado == null || fecha.isEmpty() || hora.isEmpty()
-                || fecha.equals("AAAA-MM-DD") || hora.equals("HH:MM")) {
+cAgendamiento.Opcion especialidad =
+        (cAgendamiento.Opcion) cbEspecialidad.getSelectedItem();
 
-            javax.swing.JOptionPane.showMessageDialog(this,
-                    "Por favor complete todos los datos antes de guardar.",
-                    "Campos Incompletos",
-                    javax.swing.JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+cAgendamiento.Opcion profesional =
+        (cAgendamiento.Opcion) cbMedico.getSelectedItem();
 
-        // Datos listos para guardar o pasar a vistaPadre / DAO:
-        String cedula = pacienteSeleccionado.getCedula();
-        String nombrePaciente = pacienteSeleccionado.getNombre();
-        String especialidad = (String) cbEspecialidad.getSelectedItem();
-        String medico = (String) cbMedico.getSelectedItem();
+cAgendamiento.Opcion servicio =
+        (cAgendamiento.Opcion) cbServicio.getSelectedItem();
 
-        javax.swing.JOptionPane.showMessageDialog(this,
-                "Cita agendada exitosamente para " + nombrePaciente,
-                "Éxito",
-                javax.swing.JOptionPane.INFORMATION_MESSAGE);
+cAgendamiento.Opcion agenda =
+        (cAgendamiento.Opcion) cbAgenda.getSelectedItem();
 
-        this.dispose();
+if (paciente == null || especialidad == null
+        || profesional == null || servicio == null || agenda == null) {
+
+    JOptionPane.showMessageDialog(
+            this,
+            "Selecciona paciente, especialidad, profesional, "
+                    + "servicio y agenda."
+    );
+    return;
+}
+
+long idPaciente = paciente.getId();
+long idEspecialidad = especialidad.getId();
+long idProfesional = profesional.getId();
+long idServicio = servicio.getId();
+long idAgenda = agenda.getId();
+
+JOptionPane.showMessageDialog(
+        this,
+        "Las opciones se leyeron correctamente.\n"
+                + "ID paciente: " + idPaciente + "\n"
+                + "ID especialidad: " + idEspecialidad + "\n"
+                + "ID profesional: " + idProfesional + "\n"
+                + "ID servicio: " + idServicio + "\n"
+                + "ID agenda: " + idAgenda + "\n\n"
+                + "La cita todavía no se ha guardado."
+);
     }//GEN-LAST:event_btGuardarActionPerformed
 
     private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
@@ -255,51 +352,40 @@ public class dlgNuevaCita extends javax.swing.JDialog {
     }//GEN-LAST:event_btCancelarActionPerformed
 
     private void btLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLimpiarActionPerformed
-        txtCedula.setText("");
-        txtFecha.setText("");
-        txtHora.setText("");
+txtCedula.setText("");
+txtFecha.setText("");
+txtHora.setText("");
+txtHoraFin.setText("");
 
-        cbPacientes.setSelectedIndex(-1);
-        if (cbEspecialidad.getItemCount() > 0) {
-            cbEspecialidad.setSelectedIndex(0);
-        }
-        if (cbMedico.getItemCount() > 0) {
-            cbMedico.setSelectedIndex(0);
-        }
+cbPacientes.removeAllItems();
 
-        txtCedula.requestFocus();
+cbEspecialidad.setSelectedIndex(-1);
+cbMedico.removeAllItems();
+cbServicio.setSelectedIndex(-1);
+cbAgenda.removeAllItems();
+
+txtCedula.requestFocusInWindow();
+actualizarEstadoGuardar();
     }//GEN-LAST:event_btLimpiarActionPerformed
 
     private void cbPacientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbPacientesActionPerformed
-        // Obtener el paciente seleccionado
-        comboPaciente seleccionado = (comboPaciente) cbPacientes.getSelectedItem();
-
-        if (seleccionado != null) {
-            // Asignar la cédula del paciente al campo de texto
-            txtCedula.setText(seleccionado.getCedula());
-        }
+ // La opción seleccionada ya conserva el ID del paciente
+ actualizarEstadoGuardar();
     }//GEN-LAST:event_cbPacientesActionPerformed
 
     private void txtCedulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCedulaActionPerformed
-        String cedulaIngresada = txtCedula.getText().trim();
-
-        if (cedulaIngresada.isEmpty()) {
-            cbPacientes.setSelectedIndex(-1); // Deseleccionar si está vacío
-            return;
-        }
-
-        // Recorrer los ítems del combo para buscar la cédula coincidente
-        for (int i = 0; i < cbPacientes.getItemCount(); i++) {
-            comboPaciente p = (comboPaciente) cbPacientes.getItemAt(i);
-            if (p != null && p.getCedula().equals(cedulaIngresada)) {
-                cbPacientes.setSelectedIndex(i); // Selecciona al paciente si coincide la cédula
-                return;
-            }
-        }
-
-        // Si no encuentra coincidencia exacta, se deja sin selección
-        cbPacientes.setSelectedIndex(-1);
+// La opción seleccionada ya conserva el ID del paciente.
+buscarPacientes();
     }//GEN-LAST:event_txtCedulaActionPerformed
+
+    private void txtHoraFinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHoraFinActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtHoraFinActionPerformed
+
+    private void btConsultarAgendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btConsultarAgendasActionPerformed
+        // TODO add your handling code here:
+        consultarAgendas();
+    }//GEN-LAST:event_btConsultarAgendasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -345,12 +431,18 @@ public class dlgNuevaCita extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btCancelar;
+    private javax.swing.JButton btConsultarAgendas;
     private javax.swing.JButton btGuardar;
     private javax.swing.JButton btLimpiar;
-    private javax.swing.JComboBox cbEspecialidad;
-    private javax.swing.JComboBox cbMedico;
-    private javax.swing.JComboBox cbPacientes;
+    private javax.swing.JComboBox<Modelo.cAgendamiento.Opcion> cbAgenda;
+    private javax.swing.JComboBox<Modelo.cAgendamiento.Opcion> cbEspecialidad;
+    private javax.swing.JComboBox<Modelo.cAgendamiento.Opcion> cbMedico;
+    private javax.swing.JComboBox<Modelo.cAgendamiento.Opcion> cbPacientes;
+    private javax.swing.JComboBox<Modelo.cAgendamiento.Opcion> cbServicio;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -359,9 +451,11 @@ public class dlgNuevaCita extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel lblEstadoCita;
     private javax.swing.JTextField txtCedula;
     private javax.swing.JTextField txtFecha;
     private javax.swing.JTextField txtHora;
+    private javax.swing.JTextField txtHoraFin;
     // End of variables declaration//GEN-END:variables
     private vAgendamiento vistaPadre;
 
@@ -371,117 +465,6 @@ public class dlgNuevaCita extends javax.swing.JDialog {
         btGuardar.setBackground(Color.decode("#A3C9A8"));
         btCancelar.setBackground(Color.decode("#A3C9A8"));
         btLimpiar.setBackground(Color.decode("#A3C9A8"));
-    }
-
-//Metodo para definir la combobox paciente pasar a modelos
-    public class comboPaciente {
-
-        private String cedula;
-        private String nombre;
-
-        public comboPaciente(String cedula, String nombre) {
-            this.cedula = cedula;
-            this.nombre = nombre;
-        }
-
-        public String getCedula() {
-            return cedula;
-        }
-
-        public String getNombre() {
-            return nombre;
-        }
-
-        // Este método define qué texto se mostrará en el ComboBox
-        @Override
-        public String toString() {
-            return nombre;
-        }
-    }
-
-//Metodo para las combobox de especialidad y medico
-    public class ItemCombo {
-
-        private int id;
-        private String descripcion;
-
-        public ItemCombo(int id, String descripcion) {
-            this.id = id;
-            this.descripcion = descripcion;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public String getDescripcion() {
-            return descripcion;
-        }
-
-        @Override
-        public String toString() {
-            return descripcion; // Swing renderiza únicamente este texto en el combo
-        }
-    }
-
-    private void cargarPacientes() {
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
-
-        // Aquí cargarías tus datos reales o de prueba
-        model.addElement(new comboPaciente("", ""));
-        model.addElement(new comboPaciente("12345678", "Juan Pérez"));
-        model.addElement(new comboPaciente("87654321", "María López"));
-        model.addElement(new comboPaciente("11223344", "Carlos Rodríguez"));
-
-        cbPacientes.setModel(model);
-
-        // Dejar selección vacía o por defecto si es necesario
-        cbPacientes.setSelectedIndex(-1);
-    }
-
-//Configuracion de los combobox    
-    private void configurarComboBoxes() {
-        //Llenar combo de especialidades
-        DefaultComboBoxModel<ItemCombo> modelEspecialidad = new DefaultComboBoxModel<>();
-        modelEspecialidad.addElement(new ItemCombo(0, "Todas las especialidades"));
-        modelEspecialidad.addElement(new ItemCombo(1, "Medicina General"));
-        modelEspecialidad.addElement(new ItemCombo(2, "Pediatría"));
-        modelEspecialidad.addElement(new ItemCombo(3, "Cardiología"));
-        modelEspecialidad.addElement(new ItemCombo(4, "Odontología"));
-
-        cbEspecialidad.setModel(modelEspecialidad);
-
-        //Cargar médicos inicialmente con el filtro en 0 (Todos)
-        cargarMedicosPorEspecialidad(0);
-
-        //Listener para filtrar el combo de médicos al cambiar la especialidad
-        cbEspecialidad.addActionListener(e -> {
-            ItemCombo seleccion = (ItemCombo) cbEspecialidad.getSelectedItem();
-            if (seleccion != null) {
-                cargarMedicosPorEspecialidad(seleccion.getId());
-            }
-        });
-    }
-
-    private void cargarMedicosPorEspecialidad(int idEspecialidad) {
-        DefaultComboBoxModel<ItemCombo> modelMedico = new DefaultComboBoxModel<>();
-        modelMedico.addElement(new ItemCombo(0, "Todos los médicos"));
-
-        // Simulación de filtro (Luego aquí consultarás a la Base de Datos según el ID)
-        if (idEspecialidad == 0 || idEspecialidad == 1) {
-            modelMedico.addElement(new ItemCombo(101, "Dr. Carlos Mendoza"));
-        }
-        if (idEspecialidad == 0 || idEspecialidad == 2) {
-            modelMedico.addElement(new ItemCombo(102, "Dra. Ana Martínez"));
-        }
-        if (idEspecialidad == 0 || idEspecialidad == 3) {
-            modelMedico.addElement(new ItemCombo(103, "Dr. Roberto Gómez"));
-        }
-        if (idEspecialidad == 0 || idEspecialidad == 4) {
-            modelMedico.addElement(new ItemCombo(104, "Dra. Lucia Fernández"));
-        }
-
-        cbMedico.setModel(modelMedico);
     }
 
     public void prepararModoReagendar(String cedulaPaciente, String fechaActual, String horaActual) {
@@ -503,23 +486,367 @@ public class dlgNuevaCita extends javax.swing.JDialog {
         btGuardar.setText("Confirmar Reagendamiento");
         jLabel1.setText("Reagendar Cita Médica");
     }
+// Coloca objetos completos en el combo, no solamente sus nombres.
 
+    private void llenarCombo(
+            javax.swing.JComboBox<cAgendamiento.Opcion> combo,
+            ArrayList<cAgendamiento.Opcion> opciones) {
+
+        DefaultComboBoxModel<cAgendamiento.Opcion> modelo
+                = new DefaultComboBoxModel<>();
+
+        for (cAgendamiento.Opcion opcion : opciones) {
+            modelo.addElement(opcion);
+        }
+
+        modelo.setSelectedItem(null);
+        combo.setModel(modelo);
+        
+        actualizarEstadoGuardar();
+    }
+
+    private void buscarPacientes() {
+        // Quita cualquier paciente seleccionado en una búsqueda anterior.
+        cbPacientes.removeAllItems();
+
+        try {
+            ArrayList<cAgendamiento.Opcion> pacientes
+                    = modeloAgendamiento.buscarPacientes(
+                            txtCedula.getText()
+                    );
+
+            llenarCombo(cbPacientes, pacientes);
+
+            if (pacientes.isEmpty()) {
+                JOptionPane.showMessageDialog(
+                        this, "No se encontraron pacientes."
+                );
+            }
+
+        } catch (SQLException | IllegalArgumentException error) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No se pudo buscar al paciente.\n" + error.getMessage()
+            );
+        }
+    }
+
+    private void cargarCatalogos() {
+        cbEspecialidad.removeAllItems();
+        cbMedico.removeAllItems();
+        cbServicio.removeAllItems();
+        cbAgenda.removeAllItems();
+
+        try {
+            ArrayList<cAgendamiento.Opcion> especialidades
+                    = modeloAgendamiento.listarEspecialidades();
+
+            ArrayList<cAgendamiento.Opcion> servicios
+                    = modeloAgendamiento.listarServicios();
+
+            llenarCombo(cbEspecialidad, especialidades);
+            llenarCombo(cbServicio, servicios);
+
+        } catch (SQLException error) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No se pudieron cargar los catálogos.\n"
+                    + error.getMessage()
+            );
+        }
+    }
+
+    private void cargarProfesionales() {
+        cbMedico.removeAllItems();
+        invalidarAgendas();
+
+        cAgendamiento.Opcion especialidad
+                = (cAgendamiento.Opcion) cbEspecialidad.getSelectedItem();
+
+        if (especialidad == null) {
+            return;
+        }
+
+        try {
+            ArrayList<cAgendamiento.Opcion> profesionales
+                    = modeloAgendamiento.listarProfesionalesPorEspecialidad(
+                            especialidad.getId()
+                    );
+
+            llenarCombo(cbMedico, profesionales);
+
+            if (profesionales.isEmpty()) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "No hay profesionales activos asociados "
+                        + "a esta especialidad."
+                );
+            }
+
+        } catch (SQLException error) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No se pudieron cargar los profesionales.\n"
+                    + error.getMessage()
+            );
+        }
+    }
+
+    private void invalidarAgendas() {
+            agendasConsultadas = false;
+    cbAgenda.removeAllItems();
+
+    actualizarEstadoGuardar();
+    }
+
+    private String convertirAUTC(String fecha, String hora) {
+        java.time.format.DateTimeFormatter formatoEntrada
+                = java.time.format.DateTimeFormatter
+                        .ofPattern("uuuu-MM-dd HH:mm")
+                        .withResolverStyle(
+                                java.time.format.ResolverStyle.STRICT
+                        );
+
+        try {
+            java.time.LocalDateTime fechaLocal
+                    = java.time.LocalDateTime.parse(
+                            fecha.trim() + " " + hora.trim(),
+                            formatoEntrada
+                    );
+
+            return fechaLocal
+                    .atZone(java.time.ZoneId.of("America/Bogota"))
+                    .withZoneSameInstant(java.time.ZoneOffset.UTC)
+                    .format(java.time.format.DateTimeFormatter.ofPattern(
+                            "uuuu-MM-dd HH:mm:ss"
+                    ));
+
+        } catch (java.time.format.DateTimeParseException error) {
+            throw new IllegalArgumentException(
+                    "Escribe una fecha válida como 2026-10-20 "
+                    + "y una hora como 08:30."
+            );
+        }
+    }
+
+    private void consultarAgendas() {
+        invalidarAgendas();
+
+        cAgendamiento.Opcion profesional
+                = (cAgendamiento.Opcion) cbMedico.getSelectedItem();
+
+        cAgendamiento.Opcion servicio
+                = (cAgendamiento.Opcion) cbServicio.getSelectedItem();
+
+        if (profesional == null || servicio == null) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Selecciona un profesional y un servicio."
+            );
+            return;
+        }
+
+        try {
+            String inicioUTC = convertirAUTC(
+                    txtFecha.getText(), txtHora.getText()
+            );
+
+            String finUTC = convertirAUTC(
+                    txtFecha.getText(), txtHoraFin.getText()
+            );
+
+            ArrayList<cAgendamiento.Opcion> agendas
+                    = modeloAgendamiento.listarAgendasDisponibles(
+                            profesional.getId(),
+                            inicioUTC,
+                            finUTC
+                    );
+agendasConsultadas = true;
+            llenarCombo(cbAgenda, agendas);
+
+            if (agendas.isEmpty()) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "No hay agendas disponibles para ese intervalo."
+                );
+            }
+
+        } catch (SQLException | IllegalArgumentException error) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No se pudieron consultar las agendas.\n"
+                    + error.getMessage()
+            );
+        }
+    }
+private void actualizarEstadoGuardar() {
+    // Guardar permanece bloqueado hasta completar las selecciones.
+    btGuardar.setEnabled(false);
+
+    if (cbPacientes.getItemCount() == 0) {
+        lblEstadoCita.setText(
+                "No hay pacientes cargados: busca uno; si no existe, regístralo."
+        );
+        return;
+    }
+
+    if (cbPacientes.getSelectedItem() == null) {
+        lblEstadoCita.setText("Selecciona un paciente de los resultados.");
+        return;
+    }
+
+    if (cbEspecialidad.getItemCount() == 0) {
+        lblEstadoCita.setText(
+                "No hay especialidades cargadas. Revisa su carga desde SQLite."
+        );
+        return;
+    }
+
+    if (cbEspecialidad.getSelectedItem() == null) {
+        lblEstadoCita.setText("Selecciona una especialidad.");
+        return;
+    }
+
+    if (cbMedico.getItemCount() == 0) {
+        lblEstadoCita.setText(
+                "No hay profesionales disponibles en la especialidad elegida."
+        );
+        return;
+    }
+
+    if (cbMedico.getSelectedItem() == null) {
+        lblEstadoCita.setText("Selecciona un profesional.");
+        return;
+    }
+
+    if (cbServicio.getItemCount() == 0) {
+        lblEstadoCita.setText(
+                "No hay servicios cargados. Revisa su carga y que estén activos."
+        );
+        return;
+    }
+
+    if (cbServicio.getSelectedItem() == null) {
+        lblEstadoCita.setText("Selecciona un servicio.");
+        return;
+    }
+
+    if (txtFecha.getText().trim().isEmpty()
+            || txtHora.getText().trim().isEmpty()
+            || txtHoraFin.getText().trim().isEmpty()) {
+
+        lblEstadoCita.setText(
+                "Completa la fecha, la hora inicial y la hora final."
+        );
+        return;
+    }
+
+    if (!agendasConsultadas) {
+        lblEstadoCita.setText(
+                "Pulsa Consultar agendas para comprobar el horario."
+        );
+        return;
+    }
+
+    if (cbAgenda.getItemCount() == 0) {
+        lblEstadoCita.setText(
+                "No hay agendas disponibles. Cambia el horario o el profesional."
+        );
+        return;
+    }
+
+    if (cbAgenda.getSelectedItem() == null) {
+        lblEstadoCita.setText("Selecciona una agenda disponible.");
+        return;
+    }
+
+    lblEstadoCita.setText("Selección completa.");
+    btGuardar.setEnabled(true);
+}
     public void estilo(java.awt.Frame parent) {
         color();
-        //Funcion de tamaño de la pantalla
-        this.setSize(800, 550);
-        //Funcion para mostrar el recuadro en el medio de la pantalla
-        this.setLocationRelativeTo(parent);
-        // Validar solo números en el campo de cédula 
-        cargarPacientes();
-        configurarComboBoxes();
-        txtCedula.addKeyListener(new java.awt.event.KeyAdapter() {
+
+        cbPacientes.removeAllItems();
+        cbEspecialidad.removeAllItems();
+        cbMedico.removeAllItems();
+        cbServicio.removeAllItems();
+        cbAgenda.removeAllItems();
+
+        cbPacientes.setEditable(false);
+        cbEspecialidad.setEditable(false);
+        cbMedico.setEditable(false);
+        cbServicio.setEditable(false);
+        cbAgenda.setEditable(false);
+
+        txtCedula.setToolTipText(
+                "Escribe un documento o nombre y presiona Enter."
+        );
+
+        txtFecha.setToolTipText("Fecha local: AAAA-MM-DD");
+        txtHora.setToolTipText("Hora de inicio en Colombia: HH:mm");
+        txtHoraFin.setToolTipText("Hora de finalización en Colombia: HH:mm");
+
+        cbAgenda.setToolTipText(
+                "La etiqueta muestra el intervalo completo de la agenda en UTC."
+        );
+
+        cbEspecialidad.addActionListener(evento -> cargarProfesionales());
+
+        cbMedico.addActionListener(evento -> invalidarAgendas());
+        cbServicio.addActionListener(evento -> invalidarAgendas());
+
+        // Si cambias las fechas u horas, debes consultar de nuevo.
+        javax.swing.event.DocumentListener cambiosHorario
+                = new javax.swing.event.DocumentListener() {
+
             @Override
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                if (!Character.isDigit(evt.getKeyChar())) {
-                    evt.consume();
-                }
+            public void insertUpdate(javax.swing.event.DocumentEvent evento) {
+                invalidarAgendas();
+            }
+
+            @Override
+            public void removeUpdate(javax.swing.event.DocumentEvent evento) {
+                invalidarAgendas();
+            }
+
+            @Override
+            public void changedUpdate(javax.swing.event.DocumentEvent evento) {
+                invalidarAgendas();
+            }
+        };
+
+        txtFecha.getDocument().addDocumentListener(cambiosHorario);
+        txtHora.getDocument().addDocumentListener(cambiosHorario);
+        txtHoraFin.getDocument().addDocumentListener(cambiosHorario);
+
+        // Una búsqueda modificada deja de tener un paciente seleccionado.
+        txtCedula.getDocument().addDocumentListener(
+                new javax.swing.event.DocumentListener() {
+
+            @Override
+            public void insertUpdate(javax.swing.event.DocumentEvent evento) {
+                cbPacientes.removeAllItems();
+               actualizarEstadoGuardar();
+            }
+
+            @Override
+            public void removeUpdate(javax.swing.event.DocumentEvent evento) {
+                cbPacientes.removeAllItems();
+                actualizarEstadoGuardar();
+            }
+
+            @Override
+            public void changedUpdate(javax.swing.event.DocumentEvent evento) {
+                cbPacientes.removeAllItems();
+                actualizarEstadoGuardar();
             }
         });
+cbAgenda.addActionListener(evento -> actualizarEstadoGuardar());
+        cargarCatalogos();
+        actualizarEstadoGuardar();
+
+        // Usa las dimensiones que hayas definido en el diseñador.
+        pack();
+        setLocationRelativeTo(parent);
     }
 }

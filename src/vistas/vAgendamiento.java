@@ -356,14 +356,11 @@ public class vAgendamiento extends javax.swing.JPanel {
     }//GEN-LAST:event_btNuevaCitaActionPerformed
 
     private void btReagendarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btReagendarActionPerformed
-        java.awt.Frame framePadre = (java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(this);
-        //Instancias el diálogo
-        dlgNuevaCita dialog = new dlgNuevaCita(framePadre, true, vAgendamiento.this);
-
-        // Pasa los datos de la cita seleccionada
-        dialog.prepararModoReagendar("12345678", "2026-10-15", "10:30");
-
-        dialog.setVisible(true);
+javax.swing.JOptionPane.showMessageDialog(
+        this,
+        "El reagendamiento todavía está pendiente de conectar "
+                + "con la cita seleccionada."
+);
     }//GEN-LAST:event_btReagendarActionPerformed
 
     private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
