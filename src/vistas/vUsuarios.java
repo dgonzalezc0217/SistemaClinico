@@ -5,6 +5,8 @@
 package vistas;
 
 import java.awt.Color;
+import Modelo.cUsuario;
+import java.util.ArrayList;
 
 /**
  *
@@ -12,16 +14,20 @@ import java.awt.Color;
  */
 public class vUsuarios extends javax.swing.JPanel {
 
+    private final cUsuario modeloUsuario = new cUsuario();
+
+    private ArrayList<cUsuario.Datos> usuarios = new ArrayList<>();
+    private ArrayList<cUsuario.DatosTurno> turnos = new ArrayList<>();
+    private ArrayList<cUsuario.DatosRol> roles = new ArrayList<>();
+    private Long idUsuarioSeleccionado = null;
+    private boolean datosCargados = false;
+
     /**
      * Creates new form vUsuarios
      */
     public vUsuarios() {
         initComponents();
         estilo();
-
-
-        btIngresar.setToolTipText("Registro de personal pendiente de conectar.");
-        btActualizar.setToolTipText("Actualizacion de personal pendiente de conectar.");
     }
 
     /**
@@ -35,51 +41,55 @@ public class vUsuarios extends javax.swing.JPanel {
 
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        txtCedula = new javax.swing.JTextField();
+        txtNumeroDocumento = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        txtNombre = new javax.swing.JTextField();
+        txtNombres = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        txtCelular = new javax.swing.JTextField();
+        txtTelefono = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         txtCorreo = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         txtFechaNacimiento = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
-        txtTipo = new javax.swing.JTextField();
+        txtTipoDocumento = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
-        txtAlergia = new javax.swing.JTextField();
+        txtSujetoIdentidad = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
         cbRol = new javax.swing.JComboBox<>();
         jLabel17 = new javax.swing.JLabel();
         cbTurno = new javax.swing.JComboBox<>();
         jLabel18 = new javax.swing.JLabel();
-        txtNumeroProfesional = new javax.swing.JTextField();
+        txtRegistroProfesional = new javax.swing.JTextField();
         btActualizar = new javax.swing.JButton();
-        btIngresar = new javax.swing.JButton();
-        btCancelar = new javax.swing.JButton();
-        btBuscar = new javax.swing.JButton();
+        btRegistrar = new javax.swing.JButton();
+        btLimpiar = new javax.swing.JButton();
+        btListar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblUsuarios = new javax.swing.JTable();
+        jLabel19 = new javax.swing.JLabel();
+        txtApellidos = new javax.swing.JTextField();
+        jLabel20 = new javax.swing.JLabel();
+        cbEstado = new javax.swing.JComboBox<>();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel8.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
-        jLabel8.setText("Cedula:");
+        jLabel8.setText("Número de documento:");
 
         jLabel9.setFont(new java.awt.Font("SansSerif", 1, 48)); // NOI18N
         jLabel9.setText("Usuarios");
 
-        txtCedula.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        txtNumeroDocumento.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
 
         jLabel10.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
-        jLabel10.setText("Nombre Completo:");
+        jLabel10.setText("Nombres:");
 
-        txtNombre.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        txtNombres.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
 
         jLabel11.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
         jLabel11.setText("Celular:");
 
-        txtCelular.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        txtTelefono.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
 
         jLabel12.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
         jLabel12.setText("Correo:");
@@ -92,14 +102,19 @@ public class vUsuarios extends javax.swing.JPanel {
         txtFechaNacimiento.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
 
         jLabel14.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
-        jLabel14.setText("Tipo de sangre:");
+        jLabel14.setText("Tipo de documento:");
 
-        txtTipo.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        txtTipoDocumento.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
 
         jLabel15.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
-        jLabel15.setText("Alergias:");
+        jLabel15.setText("Sujeto de identidad:");
 
-        txtAlergia.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        txtSujetoIdentidad.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        txtSujetoIdentidad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSujetoIdentidadActionPerformed(evt);
+            }
+        });
 
         jLabel16.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
         jLabel16.setText("Rol:");
@@ -114,7 +129,7 @@ public class vUsuarios extends javax.swing.JPanel {
         jLabel18.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
         jLabel18.setText("Numero Profesional:");
 
-        txtNumeroProfesional.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        txtRegistroProfesional.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
 
         btActualizar.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         btActualizar.setText("Actualizar");
@@ -124,27 +139,27 @@ public class vUsuarios extends javax.swing.JPanel {
             }
         });
 
-        btIngresar.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
-        btIngresar.setText("Ingresar");
-        btIngresar.addActionListener(new java.awt.event.ActionListener() {
+        btRegistrar.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        btRegistrar.setText("Registrar");
+        btRegistrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btIngresarActionPerformed(evt);
+                btRegistrarActionPerformed(evt);
             }
         });
 
-        btCancelar.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
-        btCancelar.setText("Cancelar");
-        btCancelar.addActionListener(new java.awt.event.ActionListener() {
+        btLimpiar.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        btLimpiar.setText("Nuevo / Limpiar");
+        btLimpiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btCancelarActionPerformed(evt);
+                btLimpiarActionPerformed(evt);
             }
         });
 
-        btBuscar.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
-        btBuscar.setText("Buscar");
-        btBuscar.addActionListener(new java.awt.event.ActionListener() {
+        btListar.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        btListar.setText("Listar/ Recargar");
+        btListar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btBuscarActionPerformed(evt);
+                btListarActionPerformed(evt);
             }
         });
 
@@ -163,6 +178,16 @@ public class vUsuarios extends javax.swing.JPanel {
         tblUsuarios.setGridColor(new java.awt.Color(255, 255, 255));
         jScrollPane1.setViewportView(tblUsuarios);
 
+        jLabel19.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
+        jLabel19.setText("Apellidos: ");
+
+        txtApellidos.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+
+        jLabel20.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
+        jLabel20.setText("Estado");
+
+        cbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -173,52 +198,61 @@ public class vUsuarios extends javax.swing.JPanel {
                 .addGap(664, 664, 664))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel18)
-                            .addComponent(jLabel17)
-                            .addComponent(jLabel16)
-                            .addComponent(jLabel15)
-                            .addComponent(jLabel14))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cbTurno, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtNumeroProfesional, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cbRol, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtAlergia, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtTipo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addGap(153, 153, 153)
-                        .addComponent(txtCedula))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel10)
-                        .addGap(35, 35, 35)
-                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel13)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel12)
-                        .addGap(158, 158, 158)
-                        .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel11)
-                        .addGap(153, 153, 153)
-                        .addComponent(txtCelular, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btIngresar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel18)
+                                .addComponent(jLabel17)
+                                .addComponent(jLabel16)
+                                .addComponent(jLabel15)
+                                .addComponent(jLabel14))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addGap(18, 18, 18)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(cbRol, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtSujetoIdentidad, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtTipoDocumento, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(18, 18, 18)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(cbTurno, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtRegistroProfesional, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(cbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(6, 6, 6))))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel8)
+                            .addGap(153, 153, 153)
+                            .addComponent(txtNumeroDocumento))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel13)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(txtFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel12)
+                            .addGap(158, 158, 158)
+                            .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel11)
+                            .addGap(153, 153, 153)
+                            .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btRegistrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btListar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel19)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel10)
+                                .addGap(35, 35, 35)
+                                .addComponent(txtNombres, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jLabel20))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1015, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1009, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -227,19 +261,26 @@ public class vUsuarios extends javax.swing.JPanel {
                 .addGap(10, 10, 10)
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 718, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(85, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel8)
-                            .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtNumeroDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel10)
-                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                            .addComponent(txtNombres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel19)
+                            .addComponent(txtApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(30, 30, 30)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel11)
-                            .addComponent(txtCelular, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel12)
@@ -251,11 +292,11 @@ public class vUsuarios extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel14)
-                            .addComponent(txtTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtTipoDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel15)
-                            .addComponent(txtAlergia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtSujetoIdentidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel16)
@@ -264,152 +305,54 @@ public class vUsuarios extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cbTurno, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel17))
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel18)
-                            .addComponent(txtNumeroProfesional, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btIngresar)
+                            .addComponent(txtRegistroProfesional, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel20)
+                            .addComponent(cbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btRegistrar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btActualizar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btCancelar)
+                        .addComponent(btLimpiar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btBuscar))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 718, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(85, Short.MAX_VALUE))
+                        .addComponent(btListar))))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btActualizarActionPerformed
-        if (txtCedula.getText().trim().isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                    "Por favor, seleccione un usuario de la tabla para actualizar.",
-                    "Selección Requerida",
-                    javax.swing.JOptionPane.WARNING_MESSAGE);
-            return;
-        }
 
-        // Mensaje de éxito (simulación)
-        javax.swing.JOptionPane.showMessageDialog(this,
-                "¡Información del usuario actualizada correctamente!",
-                "Éxito",
-                javax.swing.JOptionPane.INFORMATION_MESSAGE);
-
-        // Limpiar formulario tras la actualización
-        limpiarCampos();
+        guardarUsuario(true);
     }//GEN-LAST:event_btActualizarActionPerformed
 
-    private void btIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btIngresarActionPerformed
+    private void btRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRegistrarActionPerformed
         // 1. Validaciones básicas
-        if (txtCedula.getText().trim().isEmpty() || txtNombre.getText().trim().isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                    "Por favor, diligencie al menos la Cédula y el Nombre Completo.",
-                    "Campos Obligatorios",
-                    javax.swing.JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+        guardarUsuario(false);
+    }//GEN-LAST:event_btRegistrarActionPerformed
 
-        if (cbRol.getSelectedIndex() == 0) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                    "Por favor, seleccione un Rol para el usuario.",
-                    "Rol Requerido",
-                    javax.swing.JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        // 2. Mensaje de éxito (simulación)
-        javax.swing.JOptionPane.showMessageDialog(this,
-                "¡Usuario registrado exitosamente!",
-                "Éxito",
-                javax.swing.JOptionPane.INFORMATION_MESSAGE);
-
-        // 3. Limpiar el formulario
+    private void btLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLimpiarActionPerformed
         limpiarCampos();
-    }//GEN-LAST:event_btIngresarActionPerformed
+    }//GEN-LAST:event_btLimpiarActionPerformed
 
-    private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
-        limpiarCampos();
-    }//GEN-LAST:event_btCancelarActionPerformed
+    private void btListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btListarActionPerformed
+        recargarDatos();
+    }//GEN-LAST:event_btListarActionPerformed
 
-    private void btBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBuscarActionPerformed
-// 1. Crear los componentes internos del diálogo
-        String[] criterios = {"Cédula", "Tipo de sangre", "Rol", "Turno", "Número Profesional"};
-        javax.swing.JComboBox<String> cbCriterio = new javax.swing.JComboBox<>(criterios);
-        javax.swing.JTextField txtBusqueda = new javax.swing.JTextField();
-
-        // 2. Agrupar los componentes dentro de un panel para el JOptionPane
-        Object[] formulario = {
-            "Seleccione el criterio de búsqueda:", cbCriterio,
-            "Ingrese el valor a buscar:", txtBusqueda
-        };
-
-        // 3. Mostrar el JOptionPane emergente
-        int opcion = javax.swing.JOptionPane.showConfirmDialog(
-                this,
-                formulario,
-                "Buscar Usuario",
-                javax.swing.JOptionPane.OK_CANCEL_OPTION,
-                javax.swing.JOptionPane.QUESTION_MESSAGE
-        );
-
-        // 4. Procesar la respuesta
-        if (opcion == javax.swing.JOptionPane.OK_OPTION) {
-            String texto = txtBusqueda.getText().trim();
-
-            // Si el usuario deja la búsqueda vacía, quitar el filtro
-            if (texto.isEmpty()) {
-                quitarFiltroTabla();
-                return;
-            }
-
-            // Determinar cuál columna de la tabla corresponde al criterio seleccionado
-            // Columnas: 0: Cédula, 5: Tipo de sangre, 7: Rol, 8: Turno, 9: Número Profesional
-            int columnaIndex = 0;
-            String criterioSeleccionado = (String) cbCriterio.getSelectedItem();
-
-            switch (criterioSeleccionado) {
-                case "Cédula":
-                    columnaIndex = 0;
-                    break;
-                case "Tipo de sangre":
-                    columnaIndex = 5;
-                    break;
-                case "Rol":
-                    columnaIndex = 7;
-                    break;
-                case "Turno":
-                    columnaIndex = 8;
-                    break;
-                case "Número Profesional":
-                    columnaIndex = 9;
-                    break;
-            }
-
-            // Aplicar el filtro a la JTable (insensible a mayúsculas/minúsculas)
-            javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tblUsuarios.getModel();
-            javax.swing.table.TableRowSorter<javax.swing.table.DefaultTableModel> sorter = new javax.swing.table.TableRowSorter<>(model);
-            tblUsuarios.setRowSorter(sorter);
-
-            sorter.setRowFilter(javax.swing.RowFilter.regexFilter("(?i)" + java.util.regex.Pattern.quote(texto), columnaIndex));
-
-            // Si no hay coincidencias, notificar al usuario
-            if (tblUsuarios.getRowCount() == 0) {
-                javax.swing.JOptionPane.showMessageDialog(this,
-                        "No se encontraron coincidencias para: " + texto,
-                        "Sin resultados",
-                        javax.swing.JOptionPane.INFORMATION_MESSAGE);
-            }
-        }
-
-    }//GEN-LAST:event_btBuscarActionPerformed
+    private void txtSujetoIdentidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSujetoIdentidadActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSujetoIdentidadActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btActualizar;
-    private javax.swing.JButton btBuscar;
-    private javax.swing.JButton btCancelar;
-    private javax.swing.JButton btIngresar;
+    private javax.swing.JButton btLimpiar;
+    private javax.swing.JButton btListar;
+    private javax.swing.JButton btRegistrar;
+    private javax.swing.JComboBox<String> cbEstado;
     private javax.swing.JComboBox<String> cbRol;
     private javax.swing.JComboBox<String> cbTurno;
     private javax.swing.JLabel jLabel10;
@@ -421,175 +364,386 @@ public class vUsuarios extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblUsuarios;
-    private javax.swing.JTextField txtAlergia;
-    private javax.swing.JTextField txtCedula;
-    private javax.swing.JTextField txtCelular;
+    private javax.swing.JTextField txtApellidos;
     private javax.swing.JTextField txtCorreo;
     private javax.swing.JTextField txtFechaNacimiento;
-    private javax.swing.JTextField txtNombre;
-    private javax.swing.JTextField txtNumeroProfesional;
-    private javax.swing.JTextField txtTipo;
+    private javax.swing.JTextField txtNombres;
+    private javax.swing.JTextField txtNumeroDocumento;
+    private javax.swing.JTextField txtRegistroProfesional;
+    private javax.swing.JTextField txtSujetoIdentidad;
+    private javax.swing.JTextField txtTelefono;
+    private javax.swing.JTextField txtTipoDocumento;
     // End of variables declaration//GEN-END:variables
 
     public void color() {
-        jScrollPane1.getViewport().setBackground(java.awt.Color.WHITE);
-        //Cambiar el color de cuando se seleciona una fila
+        jScrollPane1.getViewport().setBackground(Color.WHITE);
+
         tblUsuarios.setSelectionBackground(Color.decode("#C8E6C9"));
-        //Cambiar el color de las letras en la selecccion de fila
         tblUsuarios.setSelectionForeground(Color.BLACK);
-        btIngresar.setBackground(java.awt.Color.decode("#A3C9A8"));
-        btActualizar.setBackground(java.awt.Color.decode("#A3C9A8"));
-        btCancelar.setBackground(java.awt.Color.decode("#A3C9A8"));
-        btBuscar.setBackground(java.awt.Color.decode("#A3C9A8"));
+
+        btRegistrar.setBackground(Color.decode("#A3C9A8"));
+        btActualizar.setBackground(Color.decode("#A3C9A8"));
+        btLimpiar.setBackground(Color.decode("#A3C9A8"));
+        btListar.setBackground(Color.decode("#A3C9A8"));
     }
 
-    private void cargarComboBoxes() {
-        // Cargar opciones para el Rol
-        cbRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{
-            "Seleccionar Rol...",
-            "Administrador",
-            "Médico",
-            "Recepcionista"
-        }));
+    private cUsuario.Datos leerFormulario() {
+        cUsuario.Datos datos = new cUsuario.Datos();
 
-        // Cargar opciones para el Turno
-        cbTurno.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{
-            "Seleccionar Turno...",
-            "Mañana (07:00 - 15:00)",
-            "Tarde (15:00 - 23:00)",
-            "Noche (23:00 - 07:00)",
-            "Tiempo Completo"
-        }));
-    }
+        datos.nombres = txtNombres.getText();
+        datos.apellidos = txtApellidos.getText();
+        datos.tipoDocumento = txtTipoDocumento.getText();
+        datos.numeroDocumento = txtNumeroDocumento.getText();
+        datos.sujetoIdentidad = txtSujetoIdentidad.getText();
+        datos.telefono = txtTelefono.getText();
+        datos.correo = txtCorreo.getText();
+        datos.fechaNacimiento = txtFechaNacimiento.getText();
+        datos.registroProfesional = txtRegistroProfesional.getText();
 
-    private void actualizarCamposSegunRol() {
-        String rolSeleccionado = cbRol.getSelectedItem() != null ? cbRol.getSelectedItem().toString() : "";
+        int posicionTurno = cbTurno.getSelectedIndex();
 
-        switch (rolSeleccionado) {
-            case "Médico":
-                // Habilitar datos profesionales y laborales
-                txtNumeroProfesional.setEnabled(true);
-                cbTurno.setEnabled(true);
-
-                break;
-
-            case "Administrador":
-            case "Recepcionista":
-                // Deshabilitar campos especiales que no aplican a personal administrativo
-                txtNumeroProfesional.setEnabled(false);
-                cbTurno.setEnabled(true); // El personal administrativo también puede tener turno
-
-                txtNumeroProfesional.setText("");
-                break;
-
-            default:
-                // Si no se ha seleccionado un rol válido, desactivar todo lo especial
-                txtNumeroProfesional.setEnabled(false);
-                cbTurno.setEnabled(false);
-                break;
+        if (posicionTurno <= 0) {
+            datos.idTurno = null;
+        } else {
+            datos.idTurno = turnos.get(posicionTurno - 1).id;
         }
+        int posicionRol = cbRol.getSelectedIndex();
+
+        if (cbRol.isEnabled() && posicionRol > 0) {
+            long idRol = roles.get(posicionRol - 1).id;
+            datos.idsRoles.add(idRol);
+        }
+        datos.activo = cbEstado.getSelectedIndex() == 0 ? 1 : 0;
+        return datos;
     }
 
-    private void quitarFiltroTabla() {
-        if (tblUsuarios.getRowSorter() != null) {
-            tblUsuarios.setRowSorter(null);
+    private void cargarSeleccion() {
+        if (!datosCargados) {
+            return;
         }
+
+        int filaVisible = tblUsuarios.getSelectedRow();
+
+        if (filaVisible == -1) {
+            return;
+        }
+
+        // Obtiene la posición original, aunque hayas ordenado la tabla.
+        int filaModelo = tblUsuarios.convertRowIndexToModel(filaVisible);
+
+        // Recupera los datos del empleado seleccionado.
+        cUsuario.Datos usuario = usuarios.get(filaModelo);
+
+        // Conserva su ID para actualizar al empleado correcto.
+        idUsuarioSeleccionado = usuario.id;
+
+        // Coloca sus datos en las casillas.
+        txtNombres.setText(usuario.nombres);
+        txtApellidos.setText(usuario.apellidos);
+        txtTipoDocumento.setText(usuario.tipoDocumento);
+        txtNumeroDocumento.setText(usuario.numeroDocumento);
+        txtSujetoIdentidad.setText(usuario.sujetoIdentidad);
+        txtTelefono.setText(usuario.telefono);
+        txtCorreo.setText(usuario.correo);
+        txtFechaNacimiento.setText(usuario.fechaNacimiento);
+        txtRegistroProfesional.setText(usuario.registroProfesional);
+
+        // Inicialmente muestra "Sin asignar".
+        cbTurno.setSelectedIndex(0);
+
+        // Si tiene turno, selecciona la opción con ese mismo ID.
+        if (usuario.idTurno != null) {
+            for (int i = 0; i < turnos.size(); i++) {
+                if (turnos.get(i).id == usuario.idTurno.longValue()) {
+                    cbTurno.setSelectedIndex(i + 1);
+                    break;
+                }
+            }
+        }
+
+        cbEstado.setSelectedIndex(usuario.activo == 1 ? 0 : 1);
+        cbEstado.setEnabled(true);
+
+        btRegistrar.setEnabled(false);
+        btActualizar.setEnabled(true);
+        cbRol.setSelectedIndex(0);
+        cbRol.setEnabled(false);
+        cbRol.setToolTipText(
+                "La modificación de roles todavía no está implementada."
+        );
     }
 
     private void limpiarCampos() {
-        txtCedula.setText("");
-        txtNombre.setText("");
-        txtCelular.setText("");
-        txtCorreo.setText("");
-        txtFechaNacimiento.setText("");
-        txtTipo.setText("");
-        txtAlergia.setText("");
-        txtNumeroProfesional.setText("");
-
-        // Reiniciar los ComboBoxes a la primera opción ("Seleccionar...")
-        cbRol.setSelectedIndex(0);
-        cbTurno.setSelectedIndex(0);
-
-        // Deseleccionar la fila actual de la tabla si hay alguna seleccionada
+        idUsuarioSeleccionado = null;
         tblUsuarios.clearSelection();
 
-        // Restablecer el estado bloqueado/desbloqueado de los campos condicionales
-        actualizarCamposSegunRol();
+        txtNombres.setText("");
+        txtApellidos.setText("");
+        txtTipoDocumento.setText("");
+        txtNumeroDocumento.setText("");
+        txtSujetoIdentidad.setText("");
+        txtTelefono.setText("");
+        txtCorreo.setText("");
+        txtFechaNacimiento.setText("");
+        txtRegistroProfesional.setText("");
+
+        if (cbTurno.getItemCount() > 0) {
+            cbTurno.setSelectedIndex(0);
+        }
+
+        btRegistrar.setEnabled(datosCargados);
+        btActualizar.setEnabled(false);
+        if (cbRol.getItemCount() > 0) {
+            cbRol.setSelectedIndex(0);
+        }
+
+        cbRol.setEnabled(!roles.isEmpty());
+        cbRol.setToolTipText("Selecciona el rol del nuevo empleado.");
+        cbEstado.setSelectedIndex(0);
+        cbEstado.setEnabled(false);
+    }
+
+    private void recargarDatos() {
+        datosCargados = false;
+        limpiarCampos();
+
+        cbRol.setEnabled(false);
+        cbTurno.setEnabled(false);
+
+        try {
+            // Consultar primero toda la información.
+            ArrayList<cUsuario.Datos> nuevosUsuarios
+                    = modeloUsuario.listar();
+
+            ArrayList<cUsuario.DatosTurno> nuevosTurnos
+                    = modeloUsuario.listarTurnos();
+
+            ArrayList<cUsuario.DatosRol> nuevosRoles
+                    = modeloUsuario.listarRoles();
+
+            usuarios = nuevosUsuarios;
+            turnos = nuevosTurnos;
+            roles = nuevosRoles;
+
+            // La posición 0 representa un turno sin asignar.
+            cbTurno.removeAllItems();
+            cbTurno.addItem("Sin asignar");
+
+            for (cUsuario.DatosTurno turno : turnos) {
+                cbTurno.addItem(
+                        turno.nombre + " [ID: " + turno.id + "]"
+                );
+            }
+
+            // La posición 0 no representa un rol real.
+            cbRol.removeAllItems();
+            cbRol.addItem("Seleccione un rol...");
+
+            for (cUsuario.DatosRol rol : roles) {
+                cbRol.addItem(
+                        rol.nombre + " [ID: " + rol.id + "]"
+                );
+            }
+
+            javax.swing.table.DefaultTableModel tabla
+                    = (javax.swing.table.DefaultTableModel) tblUsuarios.getModel();
+
+            tabla.setRowCount(0);
+
+            for (cUsuario.Datos usuario : usuarios) {
+                tabla.addRow(new Object[]{
+                    usuario.id,
+                    usuario.nombres,
+                    usuario.apellidos,
+                    usuario.tipoDocumento,
+                    usuario.numeroDocumento,
+                    usuario.sujetoIdentidad,
+                    usuario.nombreTurno == null
+                    ? "Sin asignar" : usuario.nombreTurno,
+                    usuario.activo == 1 ? "Activo" : "Inactivo"
+                });
+            }
+
+            datosCargados = true;
+            cbTurno.setEnabled(true);
+            limpiarCampos();
+
+            if (roles.isEmpty()) {
+                javax.swing.JOptionPane.showMessageDialog(
+                        this,
+                        "La tabla Rol está vacía.\n"
+                        + "Necesitas roles registrados para crear un empleado."
+                );
+            }
+
+        } catch (java.sql.SQLException error) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "No se pudo cargar la información.\n"
+                    + error.getMessage()
+            );
+        }
     }
 
     public void estilo() {
         color();
-        txtNumeroProfesional.setEnabled(false);
-        cbTurno.setEnabled(false);
-        //Bloquear celdas de las tablas y que las filas esten vacias
-        javax.swing.table.DefaultTableModel modelUsuarios = new javax.swing.table.DefaultTableModel(
-                new Object[][]{},
-                new String[]{"Cedula", "Nombre", "Celular", "Correo", "Fecha de nacimiento", "Tipo de sangre", "Alergias", "Rol", "Turno", "Numero Profesional"}
-        ) {
+        cbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(
+                new String[]{"Activo", "Inactivo"}
+        ));
+
+        cbEstado.setEditable(false);
+        cbTurno.setEditable(false);
+        cbRol.setEditable(false);
+
+        cbTurno.setEnabled(true);
+        txtRegistroProfesional.setEnabled(true);
+
+        txtFechaNacimiento.setToolTipText(
+                "Opcional. Formato: AAAA-MM-DD"
+        );
+
+        txtSujetoIdentidad.setToolTipText(
+                "Identificador único. Para pruebas: demo:empleado-001"
+        );
+
+        javax.swing.table.DefaultTableModel tabla
+                = new javax.swing.table.DefaultTableModel(
+                        new String[]{
+                            "ID",
+                            "Nombres",
+                            "Apellidos",
+                            "Tipo documento",
+                            "Número documento",
+                            "Sujeto identidad",
+                            "Turno",
+                            "Estado"
+                        },
+                        0
+                ) {
             @Override
-            public boolean isCellEditable(int row, int column) {
-                return false; // Bloquea la edición
+            public boolean isCellEditable(int fila, int columna) {
+                return false;
             }
         };
-        tblUsuarios.setModel(modelUsuarios);
-        //Cargar datos al hacer clic en una fila de la tabla
-        tblUsuarios.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                int fila = tblUsuarios.getSelectedRow();
-                if (fila >= 0) {
-                    txtCedula.setText(tblUsuarios.getValueAt(fila, 0).toString());
-                    txtNombre.setText(tblUsuarios.getValueAt(fila, 1).toString());
-                    txtCelular.setText(tblUsuarios.getValueAt(fila, 2).toString());
-                    txtCorreo.setText(tblUsuarios.getValueAt(fila, 3).toString());
-                    txtFechaNacimiento.setText(tblUsuarios.getValueAt(fila, 4).toString());
-                    txtTipo.setText(tblUsuarios.getValueAt(fila, 5) != null ? tblUsuarios.getValueAt(fila, 5).toString() : "");
-                    txtAlergia.setText(tblUsuarios.getValueAt(fila, 6) != null ? tblUsuarios.getValueAt(fila, 6).toString() : "");
 
-                    cbRol.setSelectedItem(tblUsuarios.getValueAt(fila, 7).toString());
-                    cbTurno.setSelectedItem(tblUsuarios.getValueAt(fila, 8) != null ? tblUsuarios.getValueAt(fila, 8).toString() : "");
-                    txtNumeroProfesional.setText(tblUsuarios.getValueAt(fila, 9) != null ? tblUsuarios.getValueAt(fila, 9).toString() : "");
-                }
+        tblUsuarios.setModel(tabla);
+        tblUsuarios.setAutoCreateRowSorter(true);
+
+        tblUsuarios.setSelectionMode(
+                javax.swing.ListSelectionModel.SINGLE_SELECTION
+        );
+
+        // Al seleccionar una fila, llenar el formulario.
+        tblUsuarios.getSelectionModel().addListSelectionListener(evento -> {
+            if (!evento.getValueIsAdjusting()) {
+                cargarSeleccion();
             }
         });
-        // Validar solo números en el campo de cédula 
-        txtCedula.addKeyListener(new java.awt.event.KeyAdapter() {
-            @Override
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                if (!Character.isDigit(evt.getKeyChar())) {
-                    evt.consume();
-                }
-            }
-        });
-        txtCelular.addKeyListener(new java.awt.event.KeyAdapter() {
-            @Override
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                if (!Character.isDigit(evt.getKeyChar())) {
-                    evt.consume();
-                }
-            }
-        });
-        txtNumeroProfesional.addKeyListener(new java.awt.event.KeyAdapter() {
-            @Override
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                if (!Character.isDigit(evt.getKeyChar())) {
-                    evt.consume();
-                }
-            }
-        });
-        cargarComboBoxes();
-        //Vincular el listener al ComboBox de Rol para cambiar los campos en tiempo real
-        cbRol.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                actualizarCamposSegunRol();
-            }
-        });
-        actualizarCamposSegunRol();
+
+        recargarDatos();
     }
 
+    private void guardarUsuario(boolean actualizar) {
+        if (!datosCargados) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Primero pulsa Listar / Recargar para cargar los datos."
+            );
+            return;
+        }
+
+        if (actualizar && idUsuarioSeleccionado == null) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Selecciona el usuario que deseas actualizar."
+            );
+            return;
+        }
+
+        if (!actualizar && idUsuarioSeleccionado != null) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Pulsa Nuevo / Limpiar antes de registrar otro empleado."
+            );
+            return;
+        }
+
+        try {
+            // Reunir lo escrito en las casillas.
+            cUsuario.Datos datos = leerFormulario();
+
+            if (actualizar) {
+
+                if (datos.activo == 0) {
+                    int respuesta = javax.swing.JOptionPane.showConfirmDialog(
+                            this,
+                            "Vas a guardar este empleado como INACTIVO.\n"
+                            + "Sus registros clínicos se conservarán.\n"
+                            + "¿Deseas continuar?",
+                            "Confirmar estado",
+                            javax.swing.JOptionPane.YES_NO_OPTION
+                    );
+
+                    if (respuesta != javax.swing.JOptionPane.YES_OPTION) {
+                        return;
+                    }
+                }
+
+                modeloUsuario.actualizar(idUsuarioSeleccionado, datos);
+            } else {
+                if (datos.idsRoles.isEmpty()) {
+                    javax.swing.JOptionPane.showMessageDialog(
+                            this,
+                            "Selecciona un rol para registrar al empleado."
+                    );
+                    return;
+                }
+
+                // El modelo guarda Usuario y Usuario_Rol
+                // dentro de la misma transacción.
+                modeloUsuario.registrar(datos);
+            }
+
+        } catch (IllegalArgumentException error) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    error.getMessage()
+            );
+            return;
+
+        } catch (java.sql.SQLException error) {
+            String mensaje = error.getMessage();
+
+            if (mensaje != null
+                    && mensaje.contains("UNIQUE constraint failed")
+                    && (mensaje.contains("Usuario.sujeto_identidad")
+                    || mensaje.contains("Usuario.tipo_documento"))) {
+
+                mensaje = "Ya existe un usuario con ese documento "
+                        + "o con ese sujeto de identidad.";
+            }
+
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "No se pudo guardar el usuario.\n" + mensaje
+            );
+            return;
+        }
+
+        // Este mensaje aparece únicamente si el modelo terminó sin error.
+        javax.swing.JOptionPane.showMessageDialog(
+                this,
+                actualizar
+                        ? "Usuario actualizado correctamente."
+                        : "Usuario y rol registrados correctamente."
+        );
+
+        recargarDatos();
+    }
 }
