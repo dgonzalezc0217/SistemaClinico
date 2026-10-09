@@ -407,11 +407,22 @@ public class vPacientes extends javax.swing.JFrame {
         String tipo = cmbTipoDocumento.getSelectedIndex() == 0
                 ? ""
                 : cmbTipoDocumento.getSelectedItem().toString();
-
         String numero = txtNumeroDocumento.getText().replace(".", "").trim();
-
+        String fechaNac = txtFechaNacimiento.getText().trim();
+        String tipoSangre = txtTipoSangre.getText().trim();
+        String factorRh = txtFactor.getText().trim();
+        String sexo = cbSexo.getSelectedIndex() == 0
+                ? ""
+                : cbSexo.getSelectedItem().toString();
+        String telefono = txtTelefono.getText().trim();
+        String correo = txtCorreo.getText().trim(); 
+        java.time.LocalDateTime ahora = java.time.LocalDateTime.now();
+        java.time.format.DateTimeFormatter formato = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String fechaCreacion = ahora.format(formato);
+        
         if (nombres.isEmpty() || apellidos.isEmpty()
-                || tipo.isEmpty() || numero.isEmpty()) {
+                || tipo.isEmpty() || numero.isEmpty() || fechaNac.isEmpty() || tipoSangre.isEmpty() || factorRh.isEmpty() || sexo.isEmpty() 
+                || telefono.isEmpty() || correo.isEmpty() || fechaCreacion.isEmpty()) {
 
             JOptionPane.showMessageDialog(
                     this,
@@ -426,10 +437,17 @@ public class vPacientes extends javax.swing.JFrame {
         try {
 
             cPaciente datos = new cPaciente(
-                    nombres,
-                    apellidos,
-                    tipo,
-                    numero
+                    nombres, 
+                    apellidos, 
+                    tipo, 
+                    numero, 
+                    fechaNac, 
+                    tipoSangre, 
+                    factorRh, 
+                    sexo, 
+                    telefono, 
+                    correo, 
+                    fechaCreacion
             );
 
             long id = modeloPaciente.registrarConHistoria(datos);
@@ -446,6 +464,7 @@ public class vPacientes extends javax.swing.JFrame {
 
             // Evita intentar guardar nuevamente el mismo registro.
             btGuardar.setEnabled(false);
+            modeloPaciente.mostrarPacientes(tblPacientes);
 
         } catch (IllegalArgumentException error) {
 
@@ -468,83 +487,79 @@ public class vPacientes extends javax.swing.JFrame {
     }//GEN-LAST:event_btGuardarActionPerformed
 
     private void btBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBuscarActionPerformed
-        String tipo = cmbTipoDocumento.getSelectedIndex() == 0
-                ? ""
-                : cmbTipoDocumento.getSelectedItem().toString();
+// 1. Crear los componentes internos del diálogo
+        String[] criterios = {"Número de Documento", "Nombres", "Apellidos", "Tipo de sangre", "Correo"};
+        javax.swing.JComboBox<String> cbCriterio = new javax.swing.JComboBox<>(criterios);
+        javax.swing.JTextField txtBusqueda = new javax.swing.JTextField();
 
-        String numero = txtNumeroDocumento.getText().replace(".", "").trim();
+        // 2. Agrupar los componentes dentro de un panel para el JOptionPane
+        Object[] formulario = {
+            "Seleccione el criterio de búsqueda:", cbCriterio,
+            "Ingrese el valor a buscar:", txtBusqueda
+        };
 
-        if (tipo.isEmpty() || numero.isEmpty()) {
+        // 3. Mostrar el JOptionPane emergente
+        int opcion = javax.swing.JOptionPane.showConfirmDialog(
+                this,
+                formulario,
+                "Buscar Paciente",
+                javax.swing.JOptionPane.OK_CANCEL_OPTION,
+                javax.swing.JOptionPane.QUESTION_MESSAGE
+        );
 
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Escribe el tipo y el numero de documento para buscar.",
-                    "Faltan datos",
-                    JOptionPane.WARNING_MESSAGE
-            );
+        // 4. Procesar la respuesta
+        if (opcion == javax.swing.JOptionPane.OK_OPTION) {
+            String texto = txtBusqueda.getText().trim();
 
-            return;
-        }
-
-        try {
-
-            cPaciente paciente = modeloPaciente.buscarPorDocumento(tipo, numero);
-
-            if (paciente == null) {
-
-                // Quita los nombres de una búsqueda anterior.
-                txtNombres.setText("");
-                txtApellidos.setText("");
-
-                btGuardar.setEnabled(true);
-
-                JOptionPane.showMessageDialog(
-                        this,
-                        "No existe un paciente con ese tipo y numero de documento.",
-                        "Sin resultados",
-                        JOptionPane.INFORMATION_MESSAGE
-                );
-
+            // Si el usuario deja la búsqueda vacía, quitar el filtro
+            if (texto.isEmpty()) {
+                quitarFiltroTabla(); // Asegúrate de que este método apunte a tblPacientes
                 return;
             }
 
-            // Llena los campos con información que viene de SQLite.
-            txtNombres.setText(paciente.getNombres());
-            txtApellidos.setText(paciente.getApellidos());
-            cmbTipoDocumento.setSelectedItem(paciente.getTipoDocumento());
-            txtNumeroDocumento.setText(paciente.getNumeroDocumento());
+            // Determinar cuál columna de la tabla corresponde al criterio seleccionado
+            // Columnas según tu tabla: 1: Número documento, 2: Nombres, 3: Apellidos, 5: Tipo de sangre, 9: Correo
+            int columnaIndex = 1; // Valor por defecto
+            String criterioSeleccionado = (String) cbCriterio.getSelectedItem();
 
-            // Buscar muestra un registro existente; no crea uno nuevo.
-            btGuardar.setEnabled(false);
+            switch (criterioSeleccionado) {
+                case "Número de Documento":
+                    columnaIndex = 1;
+                    break;
+                case "Nombres":
+                    columnaIndex = 2;
+                    break;
+                case "Apellidos":
+                    columnaIndex = 3;
+                    break;
+                case "Tipo de sangre":
+                    columnaIndex = 5;
+                    break;
+                case "Correo":
+                    columnaIndex = 9;
+                    break;
+            }
 
-        } catch (IllegalArgumentException error) {
+            // Aplicar el filtro a la JTable (insensible a mayúsculas/minúsculas)
+            javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tblPacientes.getModel();
+            javax.swing.table.TableRowSorter<javax.swing.table.DefaultTableModel> sorter = new javax.swing.table.TableRowSorter<>(model);
+            tblPacientes.setRowSorter(sorter);
 
-            JOptionPane.showMessageDialog(
-                    this,
-                    error.getMessage(),
-                    "Revisa el documento",
-                    JOptionPane.WARNING_MESSAGE
-            );
+            sorter.setRowFilter(javax.swing.RowFilter.regexFilter("(?i)" + java.util.regex.Pattern.quote(texto), columnaIndex));
 
-        } catch (SQLException error) {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "No se pudo realizar la busqueda.\n" + error.getMessage(),
-                    "Error al buscar",
-                    JOptionPane.ERROR_MESSAGE
-            );
-        }        // TODO add your handling code here:
+            // Si no hay coincidencias, notificar al usuario
+            if (tblPacientes.getRowCount() == 0) {
+                javax.swing.JOptionPane.showMessageDialog(this,
+                        "No se encontraron pacientes para: " + texto,
+                        "Sin resultados",
+                        javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            }
+        
+        }
     }//GEN-LAST:event_btBuscarActionPerformed
 
     private void btNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNuevoActionPerformed
-        txtNombres.setText("");
-        txtApellidos.setText("");
-        cmbTipoDocumento.setSelectedIndex(0);
-        txtNumeroDocumento.setText("");
-
-        btGuardar.setEnabled(true);
-        txtNombres.requestFocusInWindow();        // TODO add your handling code here:
+        limpiarCampos();
     }//GEN-LAST:event_btNuevoActionPerformed
 
     private void txtApellidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtApellidosActionPerformed
@@ -580,7 +595,66 @@ public class vPacientes extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCorreoActionPerformed
 
     private void btActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btActualizarActionPerformed
-        // TODO add your handling code here:
+
+    String tipoDoc = cmbTipoDocumento.getSelectedItem().toString();
+    String numDoc = txtNumeroDocumento.getText().trim().replace(".", "");
+    String nombres = txtNombres.getText().trim();
+    String apellidos = txtApellidos.getText().trim();
+    String fechaNac = txtFechaNacimiento.getText().trim();
+    String grupoSang = txtTipoSangre.getText().trim();
+    String factorRh = txtFactor.getText().trim();
+    String sexo = cbSexo.getSelectedItem().toString();
+    String telefono = txtTelefono.getText().trim();
+    String correo = txtCorreo.getText().trim();
+
+    if (numDoc.isEmpty() || nombres.isEmpty() || apellidos.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(
+            this, 
+            "Por favor, complete al menos el documento, nombres y apellidos.", 
+            "Campos obligatorios", 
+            javax.swing.JOptionPane.WARNING_MESSAGE
+        );
+        return;
+    }
+
+    int confirmacion = javax.swing.JOptionPane.showConfirmDialog(
+        this, 
+        "¿Está seguro de que desea actualizar los datos del paciente con documento " + numDoc + "?", 
+        "Confirmar Actualización", 
+        javax.swing.JOptionPane.YES_NO_OPTION
+    );
+
+    if (confirmacion == javax.swing.JOptionPane.YES_OPTION) {
+        // 4. Instanciar el modelo y ejecutar la actualización
+        cPaciente pacienteModelo = new cPaciente();
+        boolean actualizado = pacienteModelo.actualizarPaciente(
+            tipoDoc, numDoc, nombres, apellidos, fechaNac, grupoSang, factorRh, sexo, telefono, correo
+        );
+
+        // 5. Manejar el resultado devuelto por la base de datos
+        if (actualizado) {
+            javax.swing.JOptionPane.showMessageDialog(
+                this, 
+                "Paciente actualizado correctamente.", 
+                "Éxito", 
+                javax.swing.JOptionPane.INFORMATION_MESSAGE
+            );
+
+            // Refrescar la tabla con los nuevos datos
+            btGuardar.setEnabled(false);
+            pacienteModelo.mostrarPacientes(tblPacientes);
+
+            // Limpiar los filtros si existía alguno aplicado
+            quitarFiltroTabla();
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(
+                this, 
+                "No se encontró un paciente registrado con el documento: " + numDoc, 
+                "Error al actualizar", 
+                javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }
     }//GEN-LAST:event_btActualizarActionPerformed
 
     /**
@@ -650,6 +724,8 @@ public class vPacientes extends javax.swing.JFrame {
         btNuevo.setBackground(java.awt.Color.decode("#A3C9A8"));
         btBuscar.setBackground(java.awt.Color.decode("#A3C9A8"));
     }
+    
+    
 
     public void estilo() {
         color();
@@ -677,18 +753,9 @@ public class vPacientes extends javax.swing.JFrame {
                     "Seleccione...",
                     "Hombre", "Mujer", "Otro",}
         ));
- //Bloquear celdas de las tablas y que las filas esten vacias
-        javax.swing.table.DefaultTableModel modelUsuarios = new javax.swing.table.DefaultTableModel(
-                new Object[][]{},
-                new String[]{"Tipo documento", "Numero documento", "Nombre", "Apellido", "Fecha de nacimiento", "Tipo de sangre", "Factor rh", "Sexo", "Telefono", "Correo"}
-        ) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false; // Bloquea la edición
-            }
-        };
-        tblPacientes.setModel(modelUsuarios);
-        //Cargar datos al hacer clic en una fila de la tabla
+        
+        cPaciente paciente = new cPaciente();
+        paciente.mostrarPacientes(tblPacientes);
         tblPacientes.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -699,10 +766,11 @@ public class vPacientes extends javax.swing.JFrame {
                     txtNombres.setText(tblPacientes.getValueAt(fila, 2).toString());
                     txtApellidos.setText(tblPacientes.getValueAt(fila, 3).toString());
                     txtFechaNacimiento.setText(tblPacientes.getValueAt(fila, 4).toString());
-                    cbSexo.setSelectedItem(tblPacientes.getValueAt(fila, 5) != null ? tblPacientes.getValueAt(fila, 5).toString() : "");
-                    txtTelefono.setText(tblPacientes.getValueAt(fila, 6) != null ? tblPacientes.getValueAt(fila, 6).toString() : "");
-
-                    txtCorreo.setText(tblPacientes.getValueAt(fila, 7).toString());
+                    txtTipoSangre.setText(tblPacientes.getValueAt(fila, 5).toString());
+                    txtFactor.setText(tblPacientes.getValueAt(fila, 6).toString());
+                    cbSexo.setSelectedItem(tblPacientes.getValueAt(fila, 7).toString());;
+                    txtTelefono.setText(tblPacientes.getValueAt(fila, 8).toString());
+                    txtCorreo.setText(tblPacientes.getValueAt(fila, 9).toString());
                 }
             }
         });
@@ -724,4 +792,29 @@ public class vPacientes extends javax.swing.JFrame {
             }
         });
     }
+    
+    private void quitarFiltroTabla() {
+    // Verifica si la tabla tiene un filtro aplicado
+    if (tblPacientes.getRowSorter() != null) {
+        // Le asigna un filtro "nulo", lo que significa que borra el filtro y muestra todo
+        ((javax.swing.table.TableRowSorter) tblPacientes.getRowSorter()).setRowFilter(null);
+    } 
+}
+    
+        private void limpiarCampos() {
+        txtNombres.setText("");
+        txtApellidos.setText("");
+        cmbTipoDocumento.setSelectedIndex(0);
+        txtNumeroDocumento.setText("");
+        txtFechaNacimiento.setText("");
+        txtTipoSangre.setText("");
+        txtFactor.setText("");
+        cbSexo.setSelectedIndex(0);
+        txtTelefono.setText("");
+        txtCorreo.setText("");
+        btGuardar.setEnabled(true);
+        txtNombres.requestFocusInWindow();        // TODO add your handling code here:
+        tblPacientes.clearSelection();
+    }
+
 }

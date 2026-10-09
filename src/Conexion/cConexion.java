@@ -12,7 +12,7 @@ import java.sql.Statement;
 public class cConexion {
 
     // Cadena de conexión con la base de datos.
-    String cadena = "jdbc:sqlite:C:/Users/admin/Documents/database/data/clinica.db";
+    String cadena = "jdbc:sqlite:database/data/clinica.db";
 
     public Connection conectar() throws SQLException {
 
