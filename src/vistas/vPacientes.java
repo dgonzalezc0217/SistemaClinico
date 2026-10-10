@@ -159,14 +159,15 @@ public class vPacientes extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         txtFechaNacimiento = new javax.swing.JTextField();
-        txtTipoSangre = new javax.swing.JTextField();
-        txtFactor = new javax.swing.JTextField();
-        cbSexo = new javax.swing.JComboBox<>();
+        cbTipoSangre = new javax.swing.JComboBox<>();
         txtTelefono = new javax.swing.JTextField();
         txtCorreo = new javax.swing.JTextField();
         btActualizar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblPacientes = new javax.swing.JTable();
+        btAlergia = new javax.swing.JButton();
+        cbSexo = new javax.swing.JComboBox<>();
+        cbFactor = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(244, 246, 248));
@@ -238,15 +239,9 @@ public class vPacientes extends javax.swing.JFrame {
         txtFechaNacimiento.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         txtFechaNacimiento.addActionListener(this::txtFechaNacimientoActionPerformed);
 
-        txtTipoSangre.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        txtTipoSangre.addActionListener(this::txtTipoSangreActionPerformed);
-
-        txtFactor.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        txtFactor.addActionListener(this::txtFactorActionPerformed);
-
-        cbSexo.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        cbSexo.setEditor(null);
-        cbSexo.addActionListener(this::cbSexoActionPerformed);
+        cbTipoSangre.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        cbTipoSangre.setEditor(null);
+        cbTipoSangre.addActionListener(this::cbTipoSangreActionPerformed);
 
         txtTelefono.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         txtTelefono.addActionListener(this::txtTelefonoActionPerformed);
@@ -259,19 +254,33 @@ public class vPacientes extends javax.swing.JFrame {
         btActualizar.addActionListener(this::btActualizarActionPerformed);
 
         tblPacientes.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        tblPacientes.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         tblPacientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
         tblPacientes.setSelectionBackground(new java.awt.Color(255, 255, 255));
         jScrollPane1.setViewportView(tblPacientes);
+
+        btAlergia.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        btAlergia.setForeground(new java.awt.Color(55, 65, 81));
+        btAlergia.setText("Alergias");
+        btAlergia.addActionListener(this::btAlergiaActionPerformed);
+
+        cbSexo.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        cbSexo.setEditor(null);
+        cbSexo.addActionListener(this::cbSexoActionPerformed);
+
+        cbFactor.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        cbFactor.setEditor(null);
+        cbFactor.addActionListener(this::cbFactorActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -282,101 +291,110 @@ public class vPacientes extends javax.swing.JFrame {
                 .addComponent(jLabel5)
                 .addGap(623, 623, 623))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtTipoSangre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addGap(48, 48, 48)
-                        .addComponent(txtFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel10)
-                            .addComponent(jLabel11))
+                            .addComponent(jLabel11)
+                            .addComponent(jLabel6))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(cbSexo, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtFactor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
-                            .addComponent(txtTelefono, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
-                            .addComponent(txtCorreo, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)))
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel8)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel9)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel2))
-                        .addGap(23, 23, 23)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtNombres, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(cmbTipoDocumento, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtApellidos)
-                                .addComponent(txtNumeroDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtTelefono, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
+                                .addComponent(txtCorreo, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE))
+                            .addComponent(cbFactor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(btActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btNuevo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cmbTipoDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                        .addComponent(txtNumeroDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtNombres, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtApellidos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btAlergia, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cbSexo, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cbTipoSangre, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 950, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 950, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel3)
-                                    .addComponent(cmbTipoDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(16, 16, 16)
-                                .addComponent(jLabel4))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(cmbTipoDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
                             .addComponent(txtNumeroDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
                             .addComponent(txtNombres, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
                             .addComponent(txtApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(26, 26, 26)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8)
-                            .addComponent(txtTipoSangre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                            .addComponent(cbTipoSangre, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
-                            .addComponent(txtFactor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                            .addComponent(cbFactor, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9)
                             .addComponent(cbSexo, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                        .addGap(30, 30, 30)
                         .addComponent(btGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btAlergia, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 711, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(145, Short.MAX_VALUE))
         );
@@ -391,7 +409,7 @@ public class vPacientes extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 20, Short.MAX_VALUE))
+                .addGap(0, 19, Short.MAX_VALUE))
         );
 
         pack();
@@ -409,19 +427,23 @@ public class vPacientes extends javax.swing.JFrame {
                 : cmbTipoDocumento.getSelectedItem().toString();
         String numero = txtNumeroDocumento.getText().replace(".", "").trim();
         String fechaNac = txtFechaNacimiento.getText().trim();
-        String tipoSangre = txtTipoSangre.getText().trim();
-        String factorRh = txtFactor.getText().trim();
+        String tipoSangre = cbTipoSangre.getSelectedIndex() == 0
+                ? ""
+                : cbTipoSangre.getSelectedItem().toString();
+        String factorRh = cbFactor.getSelectedIndex() == 0
+                ? ""
+                : cbFactor.getSelectedItem().toString();
         String sexo = cbSexo.getSelectedIndex() == 0
                 ? ""
                 : cbSexo.getSelectedItem().toString();
         String telefono = txtTelefono.getText().trim();
-        String correo = txtCorreo.getText().trim(); 
+        String correo = txtCorreo.getText().trim();
         java.time.LocalDateTime ahora = java.time.LocalDateTime.now();
         java.time.format.DateTimeFormatter formato = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String fechaCreacion = ahora.format(formato);
-        
+
         if (nombres.isEmpty() || apellidos.isEmpty()
-                || tipo.isEmpty() || numero.isEmpty() || fechaNac.isEmpty() || tipoSangre.isEmpty() || factorRh.isEmpty() || sexo.isEmpty() 
+                || tipo.isEmpty() || numero.isEmpty() || fechaNac.isEmpty() || tipoSangre.isEmpty() || factorRh.isEmpty() || sexo.isEmpty()
                 || telefono.isEmpty() || correo.isEmpty() || fechaCreacion.isEmpty()) {
 
             JOptionPane.showMessageDialog(
@@ -437,16 +459,16 @@ public class vPacientes extends javax.swing.JFrame {
         try {
 
             cPaciente datos = new cPaciente(
-                    nombres, 
-                    apellidos, 
-                    tipo, 
-                    numero, 
-                    fechaNac, 
-                    tipoSangre, 
-                    factorRh, 
-                    sexo, 
-                    telefono, 
-                    correo, 
+                    nombres,
+                    apellidos,
+                    tipo,
+                    numero,
+                    fechaNac,
+                    tipoSangre,
+                    factorRh,
+                    sexo,
+                    telefono,
+                    correo,
                     fechaCreacion
             );
 
@@ -554,7 +576,7 @@ public class vPacientes extends javax.swing.JFrame {
                         "Sin resultados",
                         javax.swing.JOptionPane.INFORMATION_MESSAGE);
             }
-        
+
         }
     }//GEN-LAST:event_btBuscarActionPerformed
 
@@ -574,17 +596,9 @@ public class vPacientes extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtFechaNacimientoActionPerformed
 
-    private void txtTipoSangreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTipoSangreActionPerformed
+    private void cbTipoSangreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbTipoSangreActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtTipoSangreActionPerformed
-
-    private void txtFactorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFactorActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtFactorActionPerformed
-
-    private void cbSexoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbSexoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbSexoActionPerformed
+    }//GEN-LAST:event_cbTipoSangreActionPerformed
 
     private void txtTelefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTelefonoActionPerformed
         // TODO add your handling code here:
@@ -596,66 +610,112 @@ public class vPacientes extends javax.swing.JFrame {
 
     private void btActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btActualizarActionPerformed
 
-    String tipoDoc = cmbTipoDocumento.getSelectedItem().toString();
-    String numDoc = txtNumeroDocumento.getText().trim().replace(".", "");
-    String nombres = txtNombres.getText().trim();
-    String apellidos = txtApellidos.getText().trim();
-    String fechaNac = txtFechaNacimiento.getText().trim();
-    String grupoSang = txtTipoSangre.getText().trim();
-    String factorRh = txtFactor.getText().trim();
-    String sexo = cbSexo.getSelectedItem().toString();
-    String telefono = txtTelefono.getText().trim();
-    String correo = txtCorreo.getText().trim();
+        String tipoDoc = cmbTipoDocumento.getSelectedItem().toString();
+        String numDoc = txtNumeroDocumento.getText().trim().replace(".", "");
+        String nombres = txtNombres.getText().trim();
+        String apellidos = txtApellidos.getText().trim();
+        String fechaNac = txtFechaNacimiento.getText().trim();
+        String grupoSang = cbTipoSangre.getSelectedItem().toString();
+        String factorRh = cbFactor.getSelectedItem().toString();
+        String sexo = cbSexo.getSelectedItem().toString();
+        String telefono = txtTelefono.getText().trim();
+        String correo = txtCorreo.getText().trim();
 
-    if (numDoc.isEmpty() || nombres.isEmpty() || apellidos.isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(
-            this, 
-            "Por favor, complete al menos el documento, nombres y apellidos.", 
-            "Campos obligatorios", 
-            javax.swing.JOptionPane.WARNING_MESSAGE
-        );
-        return;
-    }
-
-    int confirmacion = javax.swing.JOptionPane.showConfirmDialog(
-        this, 
-        "¿Está seguro de que desea actualizar los datos del paciente con documento " + numDoc + "?", 
-        "Confirmar Actualización", 
-        javax.swing.JOptionPane.YES_NO_OPTION
-    );
-
-    if (confirmacion == javax.swing.JOptionPane.YES_OPTION) {
-        // 4. Instanciar el modelo y ejecutar la actualización
-        cPaciente pacienteModelo = new cPaciente();
-        boolean actualizado = pacienteModelo.actualizarPaciente(
-            tipoDoc, numDoc, nombres, apellidos, fechaNac, grupoSang, factorRh, sexo, telefono, correo
-        );
-
-        // 5. Manejar el resultado devuelto por la base de datos
-        if (actualizado) {
+        if (numDoc.isEmpty() || nombres.isEmpty() || apellidos.isEmpty()) {
             javax.swing.JOptionPane.showMessageDialog(
-                this, 
-                "Paciente actualizado correctamente.", 
-                "Éxito", 
-                javax.swing.JOptionPane.INFORMATION_MESSAGE
+                    this,
+                    "Por favor, complete al menos el documento, nombres y apellidos.",
+                    "Campos obligatorios",
+                    javax.swing.JOptionPane.WARNING_MESSAGE
             );
-
-            // Refrescar la tabla con los nuevos datos
-            btGuardar.setEnabled(false);
-            pacienteModelo.mostrarPacientes(tblPacientes);
-
-            // Limpiar los filtros si existía alguno aplicado
-            quitarFiltroTabla();
-        } else {
-            javax.swing.JOptionPane.showMessageDialog(
-                this, 
-                "No se encontró un paciente registrado con el documento: " + numDoc, 
-                "Error al actualizar", 
-                javax.swing.JOptionPane.ERROR_MESSAGE
-            );
+            return;
         }
-    }
+
+        int confirmacion = javax.swing.JOptionPane.showConfirmDialog(
+                this,
+                "¿Está seguro de que desea actualizar los datos del paciente con documento " + numDoc + "?",
+                "Confirmar Actualización",
+                javax.swing.JOptionPane.YES_NO_OPTION
+        );
+
+        if (confirmacion == javax.swing.JOptionPane.YES_OPTION) {
+            // 4. Instanciar el modelo y ejecutar la actualización
+            cPaciente pacienteModelo = new cPaciente();
+            boolean actualizado = pacienteModelo.actualizarPaciente(
+                    tipoDoc, numDoc, nombres, apellidos, fechaNac, grupoSang, factorRh, sexo, telefono, correo
+            );
+
+            // 5. Manejar el resultado devuelto por la base de datos
+            if (actualizado) {
+                javax.swing.JOptionPane.showMessageDialog(
+                        this,
+                        "Paciente actualizado correctamente.",
+                        "Éxito",
+                        javax.swing.JOptionPane.INFORMATION_MESSAGE
+                );
+
+                // Refrescar la tabla con los nuevos datos
+                btGuardar.setEnabled(false);
+                pacienteModelo.mostrarPacientes(tblPacientes);
+
+                // Limpiar los filtros si existía alguno aplicado
+                quitarFiltroTabla();
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(
+                        this,
+                        "No se encontró un paciente registrado con el documento: " + numDoc,
+                        "Error al actualizar",
+                        javax.swing.JOptionPane.ERROR_MESSAGE
+                );
+            }
+        }
     }//GEN-LAST:event_btActualizarActionPerformed
+
+    private void btAlergiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAlergiaActionPerformed
+        //Verifica que haya un paciente seleccionado
+        int filaSeleccionada = tblPacientes.getSelectedRow();
+
+        if (filaSeleccionada == -1) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Por favor, seleccione un paciente de la tabla primero.", "Atención", javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        //Extraer datos reales de la fila seleccionada
+        //
+        String numeroDocumento = tblPacientes.getValueAt(filaSeleccionada, 1).toString(); // Columna del Número de Documento
+        String nombres = tblPacientes.getValueAt(filaSeleccionada, 2).toString(); // Columna Nombres
+        String apellidos = tblPacientes.getValueAt(filaSeleccionada, 3).toString(); // Columna Apellidos
+        String nombreCompleto = nombres + " " + apellidos;
+
+        //Buscar el ID real de la historia clínica en la BD
+        cPaciente Paciente = new cPaciente();
+        int idHistoriaReal = Paciente.obtenerIdHistoriaPorDocumento(numeroDocumento);
+
+        if (idHistoriaReal == -1) {
+            javax.swing.JOptionPane.showMessageDialog(this, "No se encontró una historia clínica para este paciente.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        //Obtener el ID del Usuario (Médico)
+        int idUsuario = 1; // Reemplaza esto con el ID real de la sesión cuando programes el Login
+
+        // 5. Preparar la ventana padre y abrir el diálogo con los DATOS REALES
+        java.awt.Window parentWindow = javax.swing.SwingUtilities.getWindowAncestor(this);
+        java.awt.Frame parentFrame = (parentWindow instanceof java.awt.Frame) ? (java.awt.Frame) parentWindow : null;
+
+        // Pasamos el nombre completo, la historia real y el usuario real
+        dlgAlergia dialogo = new dlgAlergia(parentFrame, true, null, nombreCompleto, idHistoriaReal, idUsuario);
+        dialogo.setLocationRelativeTo(this);
+        dialogo.setVisible(true);
+    }//GEN-LAST:event_btAlergiaActionPerformed
+
+    private void cbSexoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbSexoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbSexoActionPerformed
+
+    private void cbFactorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbFactorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbFactorActionPerformed
 
     /**
      * @param args the command line arguments
@@ -684,10 +744,13 @@ public class vPacientes extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btActualizar;
+    private javax.swing.JButton btAlergia;
     private javax.swing.JButton btBuscar;
     private javax.swing.JButton btGuardar;
     private javax.swing.JButton btNuevo;
+    private javax.swing.JComboBox<String> cbFactor;
     private javax.swing.JComboBox<String> cbSexo;
+    private javax.swing.JComboBox<String> cbTipoSangre;
     private javax.swing.JComboBox<String> cmbTipoDocumento;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -705,12 +768,10 @@ public class vPacientes extends javax.swing.JFrame {
     private javax.swing.JTable tblPacientes;
     private javax.swing.JTextField txtApellidos;
     private javax.swing.JTextField txtCorreo;
-    private javax.swing.JTextField txtFactor;
     private javax.swing.JTextField txtFechaNacimiento;
     private javax.swing.JTextField txtNombres;
     private javax.swing.JTextField txtNumeroDocumento;
     private javax.swing.JTextField txtTelefono;
-    private javax.swing.JTextField txtTipoSangre;
     // End of variables declaration//GEN-END:variables
 
     public void color() {
@@ -723,9 +784,8 @@ public class vPacientes extends javax.swing.JFrame {
         btActualizar.setBackground(java.awt.Color.decode("#A3C9A8"));
         btNuevo.setBackground(java.awt.Color.decode("#A3C9A8"));
         btBuscar.setBackground(java.awt.Color.decode("#A3C9A8"));
+        btAlergia.setBackground(java.awt.Color.decode("#A3C9A8"));
     }
-    
-    
 
     public void estilo() {
         color();
@@ -744,6 +804,25 @@ public class vPacientes extends javax.swing.JFrame {
 
         ((AbstractDocument) txtNumeroDocumento.getDocument())
                 .setDocumentFilter(new FiltroDocumento());
+        cbTipoSangre.setEditable(false);
+        cbTipoSangre.setEditor(
+                new javax.swing.plaf.basic.BasicComboBoxEditor()
+        );
+        cbTipoSangre.setModel(new DefaultComboBoxModel<>(
+                new String[]{
+                    "Seleccione...",
+                    "A", "B", "AB", "O"}
+        ));
+        cbFactor.setEditable(false);
+        cbFactor.setEditor(
+                new javax.swing.plaf.basic.BasicComboBoxEditor()
+        );
+        cbFactor.setModel(new DefaultComboBoxModel<>(
+                new String[]{
+                    "Seleccione...",
+                    "+", "-"}
+        ));
+
         cbSexo.setEditable(false);
         cbSexo.setEditor(
                 new javax.swing.plaf.basic.BasicComboBoxEditor()
@@ -753,7 +832,7 @@ public class vPacientes extends javax.swing.JFrame {
                     "Seleccione...",
                     "Hombre", "Mujer", "Otro",}
         ));
-        
+
         cPaciente paciente = new cPaciente();
         paciente.mostrarPacientes(tblPacientes);
         tblPacientes.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -766,8 +845,8 @@ public class vPacientes extends javax.swing.JFrame {
                     txtNombres.setText(tblPacientes.getValueAt(fila, 2).toString());
                     txtApellidos.setText(tblPacientes.getValueAt(fila, 3).toString());
                     txtFechaNacimiento.setText(tblPacientes.getValueAt(fila, 4).toString());
-                    txtTipoSangre.setText(tblPacientes.getValueAt(fila, 5).toString());
-                    txtFactor.setText(tblPacientes.getValueAt(fila, 6).toString());
+                    cbTipoSangre.setSelectedItem(tblPacientes.getValueAt(fila, 5).toString());;
+                    cbFactor.setSelectedItem(tblPacientes.getValueAt(fila, 6).toString());;
                     cbSexo.setSelectedItem(tblPacientes.getValueAt(fila, 7).toString());;
                     txtTelefono.setText(tblPacientes.getValueAt(fila, 8).toString());
                     txtCorreo.setText(tblPacientes.getValueAt(fila, 9).toString());
@@ -792,23 +871,23 @@ public class vPacientes extends javax.swing.JFrame {
             }
         });
     }
-    
+
     private void quitarFiltroTabla() {
-    // Verifica si la tabla tiene un filtro aplicado
-    if (tblPacientes.getRowSorter() != null) {
-        // Le asigna un filtro "nulo", lo que significa que borra el filtro y muestra todo
-        ((javax.swing.table.TableRowSorter) tblPacientes.getRowSorter()).setRowFilter(null);
-    } 
-}
-    
-        private void limpiarCampos() {
+        // Verifica si la tabla tiene un filtro aplicado
+        if (tblPacientes.getRowSorter() != null) {
+            // Le asigna un filtro "nulo", lo que significa que borra el filtro y muestra todo
+            ((javax.swing.table.TableRowSorter) tblPacientes.getRowSorter()).setRowFilter(null);
+        }
+    }
+
+    private void limpiarCampos() {
         txtNombres.setText("");
         txtApellidos.setText("");
         cmbTipoDocumento.setSelectedIndex(0);
         txtNumeroDocumento.setText("");
         txtFechaNacimiento.setText("");
-        txtTipoSangre.setText("");
-        txtFactor.setText("");
+        cbTipoSangre.setSelectedIndex(0);
+        cbFactor.setSelectedIndex(0);
         cbSexo.setSelectedIndex(0);
         txtTelefono.setText("");
         txtCorreo.setText("");

@@ -33,8 +33,8 @@ public class cPaciente {
 
     // Se usa para reunir los datos del paciente.
     public cPaciente(String nombres, String apellidos,
-            String tipoDocumento, String numeroDocumento,String fechaNacimiento,String tipoSangre,String factorrh,String sexo,
-            String telefono,String correo,String fechaCreacion) {
+            String tipoDocumento, String numeroDocumento, String fechaNacimiento, String tipoSangre, String factorrh, String sexo,
+            String telefono, String correo, String fechaCreacion) {
 
         this.nombres = nombres;
         this.apellidos = apellidos;
@@ -46,7 +46,7 @@ public class cPaciente {
         this.sexo = sexo;
         this.telefono = telefono;
         this.correo = correo;
-        this.fechaCreacion = fechaCreacion; 
+        this.fechaCreacion = fechaCreacion;
     }
 
     public long getIdPaciente() {
@@ -68,15 +68,15 @@ public class cPaciente {
     public String getNumeroDocumento() {
         return numeroDocumento;
     }
-    
+
     public String getfechaNacimiento() {
         return fechaNacimiento;
     }
-    
+
     public String getTipoSangre() {
         return tipoSangre;
     }
-    
+
     public String getFactorrh() {
         return factorrh;
     }
@@ -125,13 +125,11 @@ public class cPaciente {
         numero = validarTexto(numero, "numero de documento", 30);
 
         String sql = "SELECT id_paciente, nombres, apellidos, tipo_documento, numero_documento, "
-                    + "fecha_nacimiento, grupo_sanguineo, sexo, telefono, correo, creado_en "
-                    + "FROM Paciente WHERE tipo_documento = ? AND numero_documento = ?";
+                + "fecha_nacimiento, grupo_sanguineo, sexo, telefono, correo, creado_en "
+                + "FROM Paciente WHERE tipo_documento = ? AND numero_documento = ?";
 
         try (
-                Connection conexion = new cConexion().conectar();
-                PreparedStatement consulta = conexion.prepareStatement(sql)
-        ) {
+                Connection conexion = new cConexion().conectar(); PreparedStatement consulta = conexion.prepareStatement(sql)) {
 
             consulta.setString(1, tipo);
             consulta.setString(2, numero);
@@ -191,10 +189,10 @@ public class cPaciente {
         }
 
         String sqlPaciente = "INSERT INTO Paciente "
-                        + "(nombres, apellidos, tipo_documento, numero_documento, "
-                        + "fecha_nacimiento, grupo_sanguineo, factor_rh, sexo, telefono, correo, "
-                        + "creado_en, estado_identificacion) "
-                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                + "(nombres, apellidos, tipo_documento, numero_documento, "
+                + "fecha_nacimiento, grupo_sanguineo, factor_rh, sexo, telefono, correo, "
+                + "creado_en, estado_identificacion) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         String sqlHistoria = "INSERT INTO Historia_Clinica "
                 + "(numero_historia, id_paciente) "
@@ -208,8 +206,8 @@ public class cPaciente {
             try {
 
                 // 1. Insertar el paciente.
-                try (PreparedStatement consulta =
-                        conexion.prepareStatement(sqlPaciente)) {
+                try (PreparedStatement consulta
+                        = conexion.prepareStatement(sqlPaciente)) {
 
                     consulta.setString(1, nombres);
                     consulta.setString(2, apellidos);
@@ -233,33 +231,31 @@ public class cPaciente {
                 try (
                         PreparedStatement consulta = conexion.prepareStatement(
                                 "SELECT last_insert_rowid()"
-                        );
-                        ResultSet resultado = consulta.executeQuery()
-                ) {
+                        ); ResultSet resultado = consulta.executeQuery()) {
 
-                    if (!resultado.next()) {
-                        throw new SQLException(
-                                "No se pudo recuperar el ID del paciente."
-                        );
-                    }
+                            if (!resultado.next()) {
+                                throw new SQLException(
+                                        "No se pudo recuperar el ID del paciente."
+                                );
+                            }
 
-                    idGenerado = resultado.getLong(1);
-                }
+                            idGenerado = resultado.getLong(1);
+                        }
 
-                // 3. Crear la historia para ese paciente.
-                try (PreparedStatement consulta =
-                        conexion.prepareStatement(sqlHistoria)) {
+                        // 3. Crear la historia para ese paciente.
+                        try (PreparedStatement consulta
+                                = conexion.prepareStatement(sqlHistoria)) {
 
-                    consulta.setString(1, "HC" + idGenerado);
-                    consulta.setLong(2, idGenerado);
+                            consulta.setString(1, "HC" + idGenerado);
+                            consulta.setLong(2, idGenerado);
 
-                    consulta.executeUpdate();
-                }
+                            consulta.executeUpdate();
+                        }
 
-                // 4. Guardar definitivamente ambos registros.
-                conexion.commit();
+                        // 4. Guardar definitivamente ambos registros.
+                        conexion.commit();
 
-                return idGenerado;
+                        return idGenerado;
 
             } catch (SQLException error) {
 
@@ -290,21 +286,19 @@ public class cPaciente {
             }
         }
     }
-    
-    public boolean actualizarPaciente(String tipoDocumento, String numeroDocumento, String nombres, String apellidos, 
-                                      String fechaNacimiento, String tipoSangre, String factorrh, 
-                                      String sexo, String telefono, String correo) {
-        
+
+    public boolean actualizarPaciente(String tipoDocumento, String numeroDocumento, String nombres, String apellidos,
+            String fechaNacimiento, String tipoSangre, String factorrh,
+            String sexo, String telefono, String correo) {
+
         // La consulta SQL UPDATE. Usamos el WHERE para afectar solo al paciente que coincida con el documento.
         String sql = "UPDATE Paciente SET nombres = ?, apellidos = ?, fecha_nacimiento = ?, "
-                   + "grupo_sanguineo = ?, factor_rh = ?, sexo = ?, telefono = ?, correo = ? "
-                   + "WHERE tipo_documento = ? AND numero_documento = ?";
-        
+                + "grupo_sanguineo = ?, factor_rh = ?, sexo = ?, telefono = ?, correo = ? "
+                + "WHERE tipo_documento = ? AND numero_documento = ?";
+
         // Usamos try-with-resources para manejar y cerrar la conexión automáticamente
         try (
-            Connection conexion = new cConexion().conectar();
-            PreparedStatement consulta = conexion.prepareStatement(sql)
-        ) {
+                Connection conexion = new cConexion().conectar(); PreparedStatement consulta = conexion.prepareStatement(sql)) {
             // 1. Asignar los nuevos valores que van a reemplazar a los viejos
             consulta.setString(1, nombres);
             consulta.setString(2, apellidos);
@@ -314,25 +308,50 @@ public class cPaciente {
             consulta.setString(6, sexo);
             consulta.setString(7, telefono);
             consulta.setString(8, correo);
-            
+
             // 2. Asignar los datos del WHERE (para encontrar al paciente correcto)
             consulta.setString(9, tipoDocumento);
             consulta.setString(10, numeroDocumento);
-            
+
             // Ejecutar la actualización en la base de datos
             int filasAfectadas = consulta.executeUpdate();
-            
+
             // Si filasAfectadas es mayor a 0, significa que se encontró y actualizó el paciente
             return filasAfectadas > 0;
-            
+
         } catch (SQLException e) {
             javax.swing.JOptionPane.showMessageDialog(null, "Error al actualizar el paciente: " + e.getMessage());
             return false;
         }
     }
+
+    // Método para obtener el ID de la historia clínica a partir del número de documento
+    public int obtenerIdHistoriaPorDocumento(String numeroDocumento) {
+        // Hacemos un JOIN entre Historia_Clinica y Paciente
+        String sql = "SELECT h.id_historia_clinica FROM Historia_Clinica h "
+                + "INNER JOIN Paciente p ON h.id_paciente = p.id_paciente "
+                + "WHERE p.numero_documento = ?";
+
+        int idHistoria = -1; // Retornará -1 si no encuentra nada
+
+        try (java.sql.Connection conexion = new Conexion.cConexion().conectar(); java.sql.PreparedStatement consulta = conexion.prepareStatement(sql)) {
+
+            consulta.setString(1, numeroDocumento);
+            java.sql.ResultSet rs = consulta.executeQuery();
+
+            if (rs.next()) {
+                idHistoria = rs.getInt("id_historia_clinica");
+            }
+
+        } catch (java.sql.SQLException e) {
+            javax.swing.JOptionPane.showMessageDialog(null, "Error al buscar la historia clínica: " + e.getMessage());
+        }
+        return idHistoria;
+    }
+
     //Tabla
     public void mostrarPacientes(JTable tblPacientes) {
-        
+
         // Crear un objeto para manejar la tabla y hacer que no sea editable
         DefaultTableModel modelo = new DefaultTableModel() {
             @Override
@@ -367,10 +386,7 @@ public class cPaciente {
 
         // Usamos try-with-resources para asegurar que la conexión se cierre correctamente
         try (
-            Connection conexion = new cConexion().conectar();
-            PreparedStatement consulta = conexion.prepareStatement(sql);
-            ResultSet rs = consulta.executeQuery()
-        ) {
+                Connection conexion = new cConexion().conectar(); PreparedStatement consulta = conexion.prepareStatement(sql); ResultSet rs = consulta.executeQuery()) {
             // Ciclo que se repetirá mientras encuentre resultados en la BD
             while (rs.next()) {
                 // Extrae los valores usando el nombre de la columna para mayor seguridad
@@ -385,11 +401,11 @@ public class cPaciente {
                 datos[8] = rs.getString("telefono");
                 datos[9] = rs.getString("correo");
                 datos[10] = rs.getString("creado_en");
-                
+
                 // Añade la fila completa al modelo de la tabla
                 modelo.addRow(datos);
             }
-            
+
         } catch (SQLException er) {
             // Muestra una ventana emergente indicando que hubo un error 
             JOptionPane.showMessageDialog(null, "Error al cargar los pacientes de la base de datos: " + er.getMessage());
