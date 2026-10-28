@@ -313,7 +313,7 @@ public class vPacientes extends javax.swing.JFrame {
                         .addComponent(cmbTipoDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(txtNumeroDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -325,7 +325,7 @@ public class vPacientes extends javax.swing.JFrame {
                             .addComponent(txtApellidos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
                         .addComponent(txtFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btAlergia, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -510,7 +510,7 @@ public class vPacientes extends javax.swing.JFrame {
 
     private void btBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBuscarActionPerformed
 // 1. Crear los componentes internos del diálogo
-        String[] criterios = {"Número de Documento", "Nombres", "Apellidos", "Tipo de sangre", "Correo"};
+        String[] criterios = {"Número de Documento", "Nombres", "Apellidos", "Tipo de sangre", "Factor rh", "Correo"};
         javax.swing.JComboBox<String> cbCriterio = new javax.swing.JComboBox<>(criterios);
         javax.swing.JTextField txtBusqueda = new javax.swing.JTextField();
 
@@ -557,6 +557,9 @@ public class vPacientes extends javax.swing.JFrame {
                 case "Tipo de sangre":
                     columnaIndex = 5;
                     break;
+                case "Factor rh":
+                    columnaIndex = 6;
+                    break;
                 case "Correo":
                     columnaIndex = 9;
                     break;
@@ -582,6 +585,7 @@ public class vPacientes extends javax.swing.JFrame {
 
     private void btNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNuevoActionPerformed
         limpiarCampos();
+        quitarFiltroTabla();
     }//GEN-LAST:event_btNuevoActionPerformed
 
     private void txtApellidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtApellidosActionPerformed
@@ -840,6 +844,10 @@ public class vPacientes extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int fila = tblPacientes.getSelectedRow();
                 if (fila >= 0) {
+                    java.util.function.Function<Integer, String> getValor = (columna) -> {
+                        Object valor = tblPacientes.getValueAt(fila, columna);
+                        return (valor != null) ? valor.toString() : "";
+                    };
                     cmbTipoDocumento.setSelectedItem(tblPacientes.getValueAt(fila, 0).toString());
                     txtNumeroDocumento.setText(tblPacientes.getValueAt(fila, 1).toString());
                     txtNombres.setText(tblPacientes.getValueAt(fila, 2).toString());
@@ -848,8 +856,8 @@ public class vPacientes extends javax.swing.JFrame {
                     cbTipoSangre.setSelectedItem(tblPacientes.getValueAt(fila, 5).toString());;
                     cbFactor.setSelectedItem(tblPacientes.getValueAt(fila, 6).toString());;
                     cbSexo.setSelectedItem(tblPacientes.getValueAt(fila, 7).toString());;
-                    txtTelefono.setText(tblPacientes.getValueAt(fila, 8).toString());
-                    txtCorreo.setText(tblPacientes.getValueAt(fila, 9).toString());
+                    txtTelefono.setText(getValor.apply(8));
+                    txtCorreo.setText(getValor.apply(9));
                 }
             }
         });

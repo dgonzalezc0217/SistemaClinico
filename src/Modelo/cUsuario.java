@@ -111,13 +111,16 @@ public class cUsuario {
     public ArrayList<Datos> listar() throws SQLException {
         ArrayList<Datos> lista = new ArrayList<>();
 
-        String sql = "SELECT u.*, t.nombre AS nombre_turno "
+        // Agregamos una subconsulta para traer los IDs de los roles separados por coma
+        String sql = "SELECT u.*, t.nombre AS nombre_turno, "
+                + "(SELECT GROUP_CONCAT(id_rol) FROM Usuario_Rol WHERE id_usuario = u.id_usuario) AS roles_csv "
                 + "FROM Usuario u "
                 + "LEFT JOIN Turno t ON t.id_turno = u.id_turno "
                 + "ORDER BY u.apellidos, u.nombres, u.id_usuario";
 
         try (
                 Connection conexion = new cConexion().conectar(); PreparedStatement consulta = conexion.prepareStatement(sql); ResultSet resultado = consulta.executeQuery()) {
+
             while (resultado.next()) {
                 Datos datos = new Datos();
 
@@ -130,13 +133,21 @@ public class cUsuario {
                 datos.telefono = resultado.getString("telefono");
                 datos.correo = resultado.getString("correo");
                 datos.fechaNacimiento = resultado.getString("fecha_nacimiento");
-                datos.registroProfesional
-                        = resultado.getString("registro_profesional");
+                datos.registroProfesional = resultado.getString("registro_profesional");
                 datos.activo = resultado.getInt("activo");
                 datos.nombreTurno = resultado.getString("nombre_turno");
 
                 long turno = resultado.getLong("id_turno");
                 datos.idTurno = resultado.wasNull() ? null : Long.valueOf(turno);
+
+                // Recuperar los roles y agregarlos a la lista
+                String rolesCsv = resultado.getString("roles_csv");
+                if (rolesCsv != null && !rolesCsv.trim().isEmpty()) {
+                    String[] arregloRoles = rolesCsv.split(",");
+                    for (String idRolStr : arregloRoles) {
+                        datos.idsRoles.add(Long.valueOf(idRolStr.trim()));
+                    }
+                }
 
                 lista.add(datos);
             }
@@ -360,28 +371,81 @@ public class cUsuario {
             );
         }
 
-        String sql = "UPDATE Usuario SET nombres = ?, apellidos = ?, "
+        if (datos.idsRoles == null || datos.idsRoles.isEmpty()) {
+            throw new IllegalArgumentException(
+                    "Selecciona al menos un rol para el usuario."
+            );
+        }
+
+        // Evita intentar guardar dos veces el mismo rol.
+        java.util.LinkedHashSet<Long> rolesUnicos
+                = new java.util.LinkedHashSet<>(datos.idsRoles);
+
+        for (Long idRol : rolesUnicos) {
+            if (idRol == null) {
+                throw new IllegalArgumentException(
+                        "La selección de roles contiene un valor inválido."
+                );
+            }
+        }
+
+        String sqlUsuario = "UPDATE Usuario SET nombres = ?, apellidos = ?, "
                 + "tipo_documento = ?, numero_documento = ?, "
                 + "sujeto_identidad = ?, telefono = ?, correo = ?, "
                 + "fecha_nacimiento = ?, registro_profesional = ?, "
                 + "id_turno = ?, activo = ? "
                 + "WHERE id_usuario = ?";
 
-        try (
-                Connection conexion = new cConexion().conectar(); PreparedStatement consulta = conexion.prepareStatement(sql)) {
-            // Completa los primeros diez parámetros.
-            asignarDatos(consulta, datos);
+        String sqlBorrarRoles = "DELETE FROM Usuario_Rol WHERE id_usuario = ?";
 
-            // Guarda el estado seleccionado.
-            consulta.setInt(11, datos.activo);
+        String sqlInsertarRol = "INSERT INTO Usuario_Rol "
+                + "(id_usuario, id_rol) VALUES (?, ?)";
 
-            // Identifica al empleado por su ID real.
-            consulta.setLong(12, idUsuario);
+        try (Connection conexion = new cConexion().conectar()) {
 
-            if (consulta.executeUpdate() != 1) {
-                throw new SQLException(
-                        "No se encontró el usuario. Recarga la lista."
-                );
+            // Iniciamos la transacción
+            conexion.setAutoCommit(false);
+
+            try {
+                // 1. Actualizar los datos básicos del usuario
+                try (PreparedStatement consulta = conexion.prepareStatement(sqlUsuario)) {
+                    asignarDatos(consulta, datos); // Completa los primeros 10 parámetros
+                    consulta.setInt(11, datos.activo);
+                    consulta.setLong(12, idUsuario);
+
+                    if (consulta.executeUpdate() != 1) {
+                        throw new SQLException(
+                                "No se encontró el usuario. Recarga la lista."
+                        );
+                    }
+                }
+
+                // 2. Borrar los roles antiguos del usuario
+                try (PreparedStatement consultaBorrar = conexion.prepareStatement(sqlBorrarRoles)) {
+                    consultaBorrar.setLong(1, idUsuario);
+                    consultaBorrar.executeUpdate();
+                }
+
+                // 3. Insertar los nuevos roles actualizados
+                try (PreparedStatement consultaInsertar = conexion.prepareStatement(sqlInsertarRol)) {
+                    for (Long idRol : rolesUnicos) {
+                        consultaInsertar.setLong(1, idUsuario);
+                        consultaInsertar.setLong(2, idRol);
+                        consultaInsertar.executeUpdate();
+                    }
+                }
+
+                // 4. Confirmar los cambios si todo salió bien
+                conexion.commit();
+
+            } catch (SQLException | RuntimeException error) {
+                // Si algo falla, deshacer todos los cambios (Rollback)
+                try {
+                    conexion.rollback();
+                } catch (SQLException errorAlDeshacer) {
+                    error.addSuppressed(errorAlDeshacer);
+                }
+                throw error;
             }
         }
     }
