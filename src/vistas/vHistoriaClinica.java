@@ -4,6 +4,7 @@
  */
 package vistas;
 
+import Modelo.cHistoriaClinica;
 import java.awt.Color;
 
 /**
@@ -15,6 +16,7 @@ public class vHistoriaClinica extends javax.swing.JPanel {
     /**
      * Creates new form vHistoriaClinica
      */
+private long idHistoriaActiva = -1;
     public vHistoriaClinica() {
         initComponents();
         estilo();
@@ -68,8 +70,10 @@ public class vHistoriaClinica extends javax.swing.JPanel {
         jLabel18 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         txtDiagnostico = new javax.swing.JTextArea();
-        btIA = new javax.swing.JButton();
+        btDiagnostico = new javax.swing.JButton();
         btGuardar = new javax.swing.JButton();
+        btAbrir = new javax.swing.JButton();
+        btCancelar = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(1558, 886));
@@ -315,7 +319,7 @@ public class vHistoriaClinica extends javax.swing.JPanel {
                 .addComponent(txtFC, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 267, Short.MAX_VALUE)
                 .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtTemperatura, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -368,7 +372,7 @@ public class vHistoriaClinica extends javax.swing.JPanel {
         jScrollPane2.setViewportView(txtConsulta);
 
         jLabel18.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
-        jLabel18.setText("Diagnostico/Tratamiento");
+        jLabel18.setText("Nota Clinica");
 
         txtDiagnostico.setColumns(20);
         txtDiagnostico.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
@@ -376,19 +380,35 @@ public class vHistoriaClinica extends javax.swing.JPanel {
         txtDiagnostico.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jScrollPane3.setViewportView(txtDiagnostico);
 
-        btIA.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
-        btIA.setText("Solicitar analisis con IA");
-        btIA.addActionListener(new java.awt.event.ActionListener() {
+        btDiagnostico.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        btDiagnostico.setText("Realizar Diagnostico");
+        btDiagnostico.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btIAActionPerformed(evt);
+                btDiagnosticoActionPerformed(evt);
             }
         });
 
         btGuardar.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
-        btGuardar.setText("Guardar Registro");
+        btGuardar.setText("Guardar Episodio");
         btGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btGuardarActionPerformed(evt);
+            }
+        });
+
+        btAbrir.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        btAbrir.setText("Abrir Episodio clinico");
+        btAbrir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btAbrirActionPerformed(evt);
+            }
+        });
+
+        btCancelar.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        btCancelar.setText("Cancelar");
+        btCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btCancelarActionPerformed(evt);
             }
         });
 
@@ -412,15 +432,15 @@ public class vHistoriaClinica extends javax.swing.JPanel {
                             .addComponent(jLabel18))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btIA, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btAbrir, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btDiagnostico, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2))
                 .addContainerGap())
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jScrollPane2)
-                    .addContainerGap()))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -433,26 +453,27 @@ public class vHistoriaClinica extends javax.swing.JPanel {
                 .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(pSignos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(136, 136, 136)
-                .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
+                .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btGuardar)
-                    .addComponent(btIA))
-                .addContainerGap(48, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(367, 367, 367)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(420, Short.MAX_VALUE)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btGuardar)
+                        .addComponent(btDiagnostico))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btAbrir)
+                        .addComponent(btCancelar)))
+                .addContainerGap(67, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -496,44 +517,36 @@ public class vHistoriaClinica extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPesoActionPerformed
 
-    private void btIAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btIAActionPerformed
+    private void btDiagnosticoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDiagnosticoActionPerformed
 //Validar que haya al menos un motivo de consulta cargado para dar contexto a la IA
-        if (txtCedula.getText().trim().isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                    "Debe ingresar y buscar un paciente antes de consultar a la IA.",
-                    "Paciente no seleccionado",
-                    javax.swing.JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+        //if (txtCedula.getText().trim().isEmpty()) {
+        //    javax.swing.JOptionPane.showMessageDialog(this,
+        //            "Debe ingresar y buscar un paciente antes de consultar a la IA.",
+          //          "Paciente no seleccionado",
+            //        javax.swing.JOptionPane.WARNING_MESSAGE);
+            //return;
+        //}
 
-        if (txtConsulta.getText().trim().isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                    "Por favor ingrese el Motivo de consulta para que la IA tenga contexto.",
-                    "Campos incompletos",
-                    javax.swing.JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+        //if (txtConsulta.getText().trim().isEmpty()) {
+        //    javax.swing.JOptionPane.showMessageDialog(this,
+        //            "Por favor ingrese el Motivo de consulta para que la IA tenga contexto.",
+        //            "Campos incompletos",
+        //            javax.swing.JOptionPane.WARNING_MESSAGE);
+        //    return;
+        //}
 
         //Obtener el Frame contenedor principal
         java.awt.Frame framePadre = (java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(this);
 
         //Instanciar tu diálogo modal dlgIA
-        dlgIA asistente = new dlgIA(framePadre, true);
+        dlgDiagnostico  asistente = new dlgDiagnostico (framePadre, true);
 
-        //Enviar los datos del motivo de consulta y examen físico para generar la sugerencia
-        asistente.cargarDatosParaAnalisis(
-                txtConsulta.getText(),
-                txtExamen.getText()
-        );
+
 
         //Desplegar la ventana emergente
         asistente.setVisible(true);
 
-        //Si presiona "Aceptar Diagnóstico", copiar el resultado a la Historia Clínica
-        if (asistente.isDiagnosticoAceptado()) {
-            txtDiagnostico.setText(asistente.getDiagnosticoSugerido());
-        }
-    }//GEN-LAST:event_btIAActionPerformed
+    }//GEN-LAST:event_btDiagnosticoActionPerformed
 
     private void btGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btGuardarActionPerformed
         // TODO add your handling code here:
@@ -548,30 +561,54 @@ public class vHistoriaClinica extends javax.swing.JPanel {
     }//GEN-LAST:event_btVerHistorialActionPerformed
 
     private void btBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBuscarActionPerformed
-        txtNombre.setText("");
-        txtCedula.setText("");
-        txtCelular.setText("");
-        txtEdad.setText("");
-        txtSangre.setText("");
-        txtAlergias.setText("");
+    String cedulaIngresada = txtIngreso.getText().trim();
+    
+    if (cedulaIngresada.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Ingrese la cédula a buscar.");
+        return;
+    }
 
-        btVerHistorial.setEnabled(false);
-
-        javax.swing.JOptionPane.showMessageDialog(
-                this,
-                "Para buscar un paciente, abre Usuarios y selecciona "
-                + "la pestaña Pacientes.\n"
-                + "Escribe su tipo y numero de documento.",
-                "Busqueda de pacientes",
-                javax.swing.JOptionPane.INFORMATION_MESSAGE
-        );
+    cHistoriaClinica modelo = new cHistoriaClinica();
+    
+    try {
+        cHistoriaClinica.DatosPaciente paciente = modelo.buscarPacienteParaAtencion(cedulaIngresada);
+        
+        if (paciente != null) {
+            // Llenar los cuadros de texto de la vista
+            txtNombre.setText(paciente.nombreCompleto);
+            txtCedula.setText(paciente.numeroDocumento);
+            txtCelular.setText(paciente.celular);
+            String sangre = (paciente.grupoSanguineo != null ? paciente.grupoSanguineo : "");
+            String rh = (paciente.factorRh != null ? paciente.factorRh : "");
+            txtSangre.setText(sangre + rh);
+            txtEdad.setText(calcularEdad(paciente.fechaNacimiento));
+            txtAlergias.setText(paciente.alergias);
+            this.idHistoriaActiva = paciente.idHistoriaClinica;
+            btAbrir.setEnabled(true);
+            btVerHistorial.setEnabled(true);
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Paciente no encontrado en la base de datos.");
+        }
+    } catch (java.sql.SQLException e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Error de base de datos: " + e.getMessage());
+    }
     }//GEN-LAST:event_btBuscarActionPerformed
+
+    private void btAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAbrirActionPerformed
+        btDiagnostico.setEnabled(true);
+    }//GEN-LAST:event_btAbrirActionPerformed
+
+    private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btCancelarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btAbrir;
     private javax.swing.JButton btBuscar;
+    private javax.swing.JButton btCancelar;
+    private javax.swing.JButton btDiagnostico;
     private javax.swing.JButton btGuardar;
-    private javax.swing.JButton btIA;
     private javax.swing.JButton btVerHistorial;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -616,8 +653,10 @@ public class vHistoriaClinica extends javax.swing.JPanel {
     public void color() {
         btBuscar.setBackground(Color.decode("#A3C9A8"));
         btVerHistorial.setBackground(Color.decode("#A3C9A8"));
-        btIA.setBackground(Color.decode("#A3C9A8"));
+        btDiagnostico.setBackground(Color.decode("#A3C9A8"));
         btGuardar.setBackground(Color.decode("#A3C9A8"));
+        btAbrir.setBackground(Color.decode("#A3C9A8"));
+        btCancelar.setBackground(Color.decode("#A3C9A8"));
     }
 
     public void estilo() {
@@ -641,6 +680,29 @@ public class vHistoriaClinica extends javax.swing.JPanel {
         txtEdad.setEditable(false);
         txtSangre.setEditable(false);
         txtAlergias.setEditable(false);
-
+        txtTA.setEditable(false);
+        txtFC.setEditable(false);
+        txtTemperatura.setEditable(false);
+        txtPeso.setEditable(false);
+        txtConsulta.setEditable(false);
+        txtExamen.setEditable(false);
+        txtDiagnostico.setEditable(false);
+        btGuardar.setEnabled(false);
+        btDiagnostico.setEnabled(false);
+        btAbrir.setEnabled(false);
     }
+    private String calcularEdad(String fechaNacimiento) {
+    if (fechaNacimiento == null || fechaNacimiento.trim().isEmpty()) {
+        return "";
+    }
+    try {
+        java.time.LocalDate fechaNac = java.time.LocalDate.parse(fechaNacimiento);
+        java.time.LocalDate fechaActual = java.time.LocalDate.now();
+        java.time.Period periodo = java.time.Period.between(fechaNac, fechaActual);
+        return String.valueOf(periodo.getYears());
+    } catch (Exception e) {
+        return "N/A"; // Si el formato de fecha es incorrecto
+    }
+}
+    
 }

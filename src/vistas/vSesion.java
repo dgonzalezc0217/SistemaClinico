@@ -115,8 +115,18 @@ public class vSesion extends javax.swing.JPanel {
         txtContraseña.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         txtContraseña.setMaximumSize(new java.awt.Dimension(500, 49));
         txtContraseña.setPreferredSize(new java.awt.Dimension(400, 49));
+        txtContraseña.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtContraseñaActionPerformed(evt);
+            }
+        });
 
         btVer.setPreferredSize(new java.awt.Dimension(30, 30));
+        btVer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btVerActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -217,6 +227,14 @@ public class vSesion extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btInicioSesionActionPerformed
 
+    private void btVerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btVerActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btVerActionPerformed
+
+    private void txtContraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtContraseñaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtContraseñaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Entrada;
@@ -273,7 +291,7 @@ public class vSesion extends javax.swing.JPanel {
 
     public void estilo() {
         //Metodo para ocultar la contraseña
-        // Guardar el carácter de ocultamiento por defecto
+        //Guardar el carácter de ocultamiento por defecto
         echoCharOriginal = txtContraseña.getEchoChar();
 
         // Asignar el evento al botón de alternancia btVer

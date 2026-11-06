@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class vUsuarios extends javax.swing.JPanel {
 
     private final cUsuario modeloUsuario = new cUsuario();
-
+    private char echoCharOriginal;
     private ArrayList<cUsuario.Datos> usuarios = new ArrayList<>();
     private ArrayList<cUsuario.DatosTurno> turnos = new ArrayList<>();
     private ArrayList<cUsuario.DatosRol> roles = new ArrayList<>();
@@ -71,8 +71,9 @@ public class vUsuarios extends javax.swing.JPanel {
         jLabel20 = new javax.swing.JLabel();
         cbEstado = new javax.swing.JComboBox<>();
         jLabel21 = new javax.swing.JLabel();
-        txtText = new javax.swing.JTextField();
         btBuscar = new javax.swing.JButton();
+        txtContraseña = new javax.swing.JPasswordField();
+        btVer = new javax.swing.JToggleButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -230,11 +231,6 @@ public class vUsuarios extends javax.swing.JPanel {
         jLabel21.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
         jLabel21.setText("Contraseña:");
 
-        txtText.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
-        txtText.setMaximumSize(new java.awt.Dimension(250, 30));
-        txtText.setMinimumSize(new java.awt.Dimension(250, 30));
-        txtText.setPreferredSize(new java.awt.Dimension(250, 30));
-
         btBuscar.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         btBuscar.setText("Buscar");
         btBuscar.addActionListener(new java.awt.event.ActionListener() {
@@ -257,9 +253,7 @@ public class vUsuarios extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -268,35 +262,33 @@ public class vUsuarios extends javax.swing.JPanel {
                                         .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                     .addGap(6, 6, 6)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel21, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
-                                                .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                        .addGap(0, 0, 0)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                        .addGap(13, 13, 13)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txtNumeroDocumento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtNombres, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtApellidos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtTelefono, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtFechaNacimiento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtTipoDocumento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtSujetoIdentidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtRegistroProfesional, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtCorreo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbRol, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cbTurno, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cbEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(45, 45, 45)
+                                .addComponent(btVer, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
+                                .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(txtNumeroDocumento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtNombres, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtApellidos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtTelefono, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtFechaNacimiento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtTipoDocumento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtSujetoIdentidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtRegistroProfesional, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtCorreo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cbRol, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cbTurno, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cbEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(btListar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -364,10 +356,11 @@ public class vUsuarios extends javax.swing.JPanel {
                             .addComponent(jLabel20)
                             .addComponent(cbEstado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel21)
-                            .addComponent(txtText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtContraseña)
+                            .addComponent(btVer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -377,8 +370,8 @@ public class vUsuarios extends javax.swing.JPanel {
                         .addComponent(btListar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btBuscar))
-                    .addComponent(jScrollPane1))
-                .addContainerGap(67, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 740, Short.MAX_VALUE))
+                .addContainerGap(63, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -488,6 +481,7 @@ public class vUsuarios extends javax.swing.JPanel {
     private javax.swing.JButton btLimpiar;
     private javax.swing.JButton btListar;
     private javax.swing.JButton btRegistrar;
+    private javax.swing.JToggleButton btVer;
     private javax.swing.JComboBox<String> cbEstado;
     private javax.swing.JComboBox<String> cbRol;
     private javax.swing.JComboBox<String> cbTurno;
@@ -508,6 +502,7 @@ public class vUsuarios extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblUsuarios;
     private javax.swing.JTextField txtApellidos;
+    private javax.swing.JPasswordField txtContraseña;
     private javax.swing.JTextField txtCorreo;
     private javax.swing.JTextField txtFechaNacimiento;
     private javax.swing.JTextField txtNombres;
@@ -515,7 +510,6 @@ public class vUsuarios extends javax.swing.JPanel {
     private javax.swing.JTextField txtRegistroProfesional;
     private javax.swing.JTextField txtSujetoIdentidad;
     private javax.swing.JTextField txtTelefono;
-    private javax.swing.JTextField txtText;
     private javax.swing.JTextField txtTipoDocumento;
     // End of variables declaration//GEN-END:variables
 
@@ -531,6 +525,20 @@ public class vUsuarios extends javax.swing.JPanel {
         btListar.setBackground(Color.decode("#A3C9A8"));
         btBuscar.setBackground(Color.decode("#A3C9A8"));
     }
+    
+        private void ajustarIcono(javax.swing.JToggleButton boton, String rutaImagen) {
+        try {
+            javax.swing.ImageIcon iconoOriginal = new javax.swing.ImageIcon(getClass().getResource(rutaImagen));
+            java.awt.Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
+            boton.setIcon(new javax.swing.ImageIcon(imagenEscalada));
+        } catch (Exception e) {
+            System.out.println("No se pudo cargar la imagen: " + rutaImagen);
+        }
+        }
+        
+    private void icono() {
+        ajustarIcono(btVer, "/imagenes/Ojo.png");
+    }
 
     private cUsuario.Datos leerFormulario() {
         cUsuario.Datos datos = new cUsuario.Datos();
@@ -544,7 +552,7 @@ public class vUsuarios extends javax.swing.JPanel {
         datos.correo = txtCorreo.getText();
         datos.fechaNacimiento = txtFechaNacimiento.getText();
         datos.registroProfesional = txtRegistroProfesional.getText();
-
+        datos.contrasena = new String(txtContraseña.getPassword()).trim();
         int posicionTurno = cbTurno.getSelectedIndex();
 
         if (posicionTurno <= 0) {
@@ -592,6 +600,7 @@ public class vUsuarios extends javax.swing.JPanel {
         txtCorreo.setText(usuario.correo);
         txtFechaNacimiento.setText(usuario.fechaNacimiento);
         txtRegistroProfesional.setText(usuario.registroProfesional);
+        txtContraseña.setText("");
 
         // Inicialmente muestra "Sin asignar".
         cbTurno.setSelectedIndex(0);
@@ -656,6 +665,7 @@ public class vUsuarios extends javax.swing.JPanel {
         cbRol.setToolTipText("Selecciona el rol del nuevo empleado.");
         cbEstado.setSelectedIndex(0);
         cbEstado.setEnabled(false);
+        txtContraseña.setText("");
     }
 
     private void recargarDatos() {
@@ -718,7 +728,6 @@ public class vUsuarios extends javax.swing.JPanel {
                     }
                 }
                 tabla.addRow(new Object[]{
-                    usuario.id,
                     usuario.nombres,
                     usuario.apellidos,
                     usuario.tipoDocumento,
@@ -755,6 +764,20 @@ public class vUsuarios extends javax.swing.JPanel {
 
     public void estilo() {
         color();
+        icono();
+        echoCharOriginal = txtContraseña.getEchoChar();
+
+        // Asignar el evento al botón de alternancia btVer
+        btVer.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                if (btVer.isSelected()) {
+                    txtContraseña.setEchoChar((char) 0); // Texto legible
+                } else {
+                    txtContraseña.setEchoChar(echoCharOriginal); // Texto oculto
+                }
+            }
+        });
         cbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(
                 new String[]{"Activo", "Inactivo"}
         ));
@@ -777,7 +800,6 @@ public class vUsuarios extends javax.swing.JPanel {
         javax.swing.table.DefaultTableModel tabla
                 = new javax.swing.table.DefaultTableModel(
                         new String[]{
-                            "ID",
                             "Nombres",
                             "Apellidos",
                             "Tipo documento",

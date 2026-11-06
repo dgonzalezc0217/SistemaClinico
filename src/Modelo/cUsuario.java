@@ -81,6 +81,7 @@ public class cUsuario {
         public String registroProfesional, nombreTurno;
         public Long idTurno;
         public int activo;
+        public String contrasena;
         public ArrayList<Long> idsRoles = new ArrayList<>();
     }
 
@@ -204,6 +205,7 @@ public class cUsuario {
     }
 
     private void validarDatos(Datos datos) {
+        datos.contrasena = obligatorio(datos.contrasena, "Contraseña", 255);
         datos.nombres = obligatorio(datos.nombres, "Nombres", 100);
         datos.apellidos = obligatorio(datos.apellidos, "Apellidos", 100);
         datos.tipoDocumento = obligatorio(
@@ -272,6 +274,7 @@ public class cUsuario {
         } else {
             consulta.setLong(10, datos.idTurno);
         }
+        consulta.setString(11, datos.contrasena);
     }
 
     public void registrar(Datos datos) throws SQLException {
@@ -296,10 +299,10 @@ public class cUsuario {
         }
 
         String sqlUsuario = "INSERT INTO Usuario "
-                + "(nombres, apellidos, tipo_documento, numero_documento, "
-                + "sujeto_identidad, telefono, correo, fecha_nacimiento, "
-                + "registro_profesional, id_turno, activo) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)";
+                        + "(nombres, apellidos, tipo_documento, numero_documento, "
+                        + "sujeto_identidad, telefono, correo, fecha_nacimiento, "
+                        + "registro_profesional, id_turno, contrasena, activo) "
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)";
 
         String sqlRol = "INSERT INTO Usuario_Rol "
                 + "(id_usuario, id_rol) VALUES (?, ?)";
@@ -393,7 +396,7 @@ public class cUsuario {
                 + "tipo_documento = ?, numero_documento = ?, "
                 + "sujeto_identidad = ?, telefono = ?, correo = ?, "
                 + "fecha_nacimiento = ?, registro_profesional = ?, "
-                + "id_turno = ?, activo = ? "
+                + "id_turno = ?,contrasena = ?, activo = ? "
                 + "WHERE id_usuario = ?";
 
         String sqlBorrarRoles = "DELETE FROM Usuario_Rol WHERE id_usuario = ?";
@@ -410,8 +413,8 @@ public class cUsuario {
                 // 1. Actualizar los datos básicos del usuario
                 try (PreparedStatement consulta = conexion.prepareStatement(sqlUsuario)) {
                     asignarDatos(consulta, datos); // Completa los primeros 10 parámetros
-                    consulta.setInt(11, datos.activo);
-                    consulta.setLong(12, idUsuario);
+                    consulta.setInt(12, datos.activo);
+                    consulta.setLong(13, idUsuario);
 
                     if (consulta.executeUpdate() != 1) {
                         throw new SQLException(
