@@ -7,6 +7,7 @@ package vistas;
 import java.awt.Color;
 import Modelo.cUsuario;
 import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
 
 /**
  *
@@ -51,7 +52,6 @@ public class vUsuarios extends javax.swing.JPanel {
         jLabel13 = new javax.swing.JLabel();
         txtFechaNacimiento = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
-        txtTipoDocumento = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
         txtSujetoIdentidad = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
@@ -74,6 +74,7 @@ public class vUsuarios extends javax.swing.JPanel {
         btBuscar = new javax.swing.JButton();
         txtContraseña = new javax.swing.JPasswordField();
         btVer = new javax.swing.JToggleButton();
+        cmbTipoDocumento = new javax.swing.JComboBox<>();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -122,11 +123,6 @@ public class vUsuarios extends javax.swing.JPanel {
 
         jLabel14.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
         jLabel14.setText("Tipo de documento:");
-
-        txtTipoDocumento.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
-        txtTipoDocumento.setMaximumSize(new java.awt.Dimension(250, 30));
-        txtTipoDocumento.setMinimumSize(new java.awt.Dimension(250, 30));
-        txtTipoDocumento.setPreferredSize(new java.awt.Dimension(250, 30));
 
         jLabel15.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
         jLabel15.setText("Sujeto de identidad:");
@@ -227,6 +223,11 @@ public class vUsuarios extends javax.swing.JPanel {
         cbEstado.setMaximumSize(new java.awt.Dimension(250, 30));
         cbEstado.setMinimumSize(new java.awt.Dimension(250, 30));
         cbEstado.setPreferredSize(new java.awt.Dimension(250, 30));
+        cbEstado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbEstadoActionPerformed(evt);
+            }
+        });
 
         jLabel21.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
         jLabel21.setText("Contraseña:");
@@ -238,6 +239,8 @@ public class vUsuarios extends javax.swing.JPanel {
                 btBuscarActionPerformed(evt);
             }
         });
+
+        cmbTipoDocumento.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -274,21 +277,21 @@ public class vUsuarios extends javax.swing.JPanel {
                                 .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
                                 .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(txtNumeroDocumento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(txtNombres, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(txtApellidos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(txtTelefono, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(txtFechaNacimiento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtTipoDocumento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(txtSujetoIdentidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(txtRegistroProfesional, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(txtCorreo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(cbRol, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(cbTurno, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(cbEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtContraseña, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
+                            .addComponent(cmbTipoDocumento, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addComponent(btListar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -332,10 +335,10 @@ public class vUsuarios extends javax.swing.JPanel {
                             .addComponent(jLabel13)
                             .addComponent(txtFechaNacimiento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel14)
-                            .addComponent(txtTipoDocumento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cmbTipoDocumento))
+                        .addGap(8, 8, 8)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel15)
                             .addComponent(txtSujetoIdentidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -474,6 +477,10 @@ public class vUsuarios extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btBuscarActionPerformed
 
+    private void cbEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEstadoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbEstadoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btActualizar;
@@ -485,6 +492,7 @@ public class vUsuarios extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> cbEstado;
     private javax.swing.JComboBox<String> cbRol;
     private javax.swing.JComboBox<String> cbTurno;
+    private javax.swing.JComboBox<String> cmbTipoDocumento;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -510,7 +518,6 @@ public class vUsuarios extends javax.swing.JPanel {
     private javax.swing.JTextField txtRegistroProfesional;
     private javax.swing.JTextField txtSujetoIdentidad;
     private javax.swing.JTextField txtTelefono;
-    private javax.swing.JTextField txtTipoDocumento;
     // End of variables declaration//GEN-END:variables
 
     public void color() {
@@ -525,8 +532,8 @@ public class vUsuarios extends javax.swing.JPanel {
         btListar.setBackground(Color.decode("#A3C9A8"));
         btBuscar.setBackground(Color.decode("#A3C9A8"));
     }
-    
-        private void ajustarIcono(javax.swing.JToggleButton boton, String rutaImagen) {
+
+    private void ajustarIcono(javax.swing.JToggleButton boton, String rutaImagen) {
         try {
             javax.swing.ImageIcon iconoOriginal = new javax.swing.ImageIcon(getClass().getResource(rutaImagen));
             java.awt.Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
@@ -534,8 +541,8 @@ public class vUsuarios extends javax.swing.JPanel {
         } catch (Exception e) {
             System.out.println("No se pudo cargar la imagen: " + rutaImagen);
         }
-        }
-        
+    }
+
     private void icono() {
         ajustarIcono(btVer, "/imagenes/Ojo.png");
     }
@@ -545,7 +552,13 @@ public class vUsuarios extends javax.swing.JPanel {
 
         datos.nombres = txtNombres.getText();
         datos.apellidos = txtApellidos.getText();
-        datos.tipoDocumento = txtTipoDocumento.getText();
+        if (cmbTipoDocumento.getSelectedIndex() > 0) {
+            // Extraemos el texto exacto, por ejemplo "CC" o "TI"
+            datos.tipoDocumento = cmbTipoDocumento.getSelectedItem().toString();
+        } else {
+            // Aquí puedes mostrar un JOptionPane pidiendo que seleccione un documento
+            System.out.println("Error: Por favor seleccione un tipo de documento válido.");
+        }
         datos.numeroDocumento = txtNumeroDocumento.getText();
         datos.sujetoIdentidad = txtSujetoIdentidad.getText();
         datos.telefono = txtTelefono.getText();
@@ -593,7 +606,6 @@ public class vUsuarios extends javax.swing.JPanel {
         // Coloca sus datos en las casillas.
         txtNombres.setText(usuario.nombres);
         txtApellidos.setText(usuario.apellidos);
-        txtTipoDocumento.setText(usuario.tipoDocumento);
         txtNumeroDocumento.setText(usuario.numeroDocumento);
         txtSujetoIdentidad.setText(usuario.sujetoIdentidad);
         txtTelefono.setText(usuario.telefono);
@@ -604,6 +616,7 @@ public class vUsuarios extends javax.swing.JPanel {
 
         // Inicialmente muestra "Sin asignar".
         cbTurno.setSelectedIndex(0);
+        cmbTipoDocumento.setSelectedIndex(0);
 
         // Si tiene turno, selecciona la opción con ese mismo ID.
         if (usuario.idTurno != null) {
@@ -615,6 +628,7 @@ public class vUsuarios extends javax.swing.JPanel {
             }
         }
 
+        cmbTipoDocumento.setSelectedItem(usuario.tipoDocumento);
         cbEstado.setSelectedIndex(usuario.activo == 1 ? 0 : 1);
         cbEstado.setEnabled(true);
 
@@ -643,7 +657,10 @@ public class vUsuarios extends javax.swing.JPanel {
 
         txtNombres.setText("");
         txtApellidos.setText("");
-        txtTipoDocumento.setText("");
+        if (cmbTipoDocumento.getItemCount() > 0) {
+            cmbTipoDocumento.setSelectedIndex(0);
+        }
+
         txtNumeroDocumento.setText("");
         txtSujetoIdentidad.setText("");
         txtTelefono.setText("");
@@ -780,6 +797,18 @@ public class vUsuarios extends javax.swing.JPanel {
         });
         cbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(
                 new String[]{"Activo", "Inactivo"}
+        ));
+        cmbTipoDocumento.setEditable(false);
+        cmbTipoDocumento.setEditor(
+                new javax.swing.plaf.basic.BasicComboBoxEditor()
+        );
+        cmbTipoDocumento.setModel(new DefaultComboBoxModel<>(
+                new String[]{
+                    "Seleccione...",
+                    "CC", "TI", "CE", "RC", "CN",
+                    "PA", "CD", "SC", "PE", "PT",
+                    "PPT", "DE", "PC", "AS", "MS", "SI"
+                }
         ));
 
         cbEstado.setEditable(false);

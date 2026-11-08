@@ -6,6 +6,7 @@ package vistas;
 
 import Modelo.cHistoriaClinica;
 import java.awt.Color;
+import javax.swing.DefaultComboBoxModel;
 
 /**
  *
@@ -13,10 +14,15 @@ import java.awt.Color;
  */
 public class vHistoriaClinica extends javax.swing.JPanel {
 
+    cHistoriaClinica modelo = new cHistoriaClinica();
     /**
      * Creates new form vHistoriaClinica
      */
-private long idHistoriaActiva = -1;
+    private long idHistoriaActiva = -1;
+    public long idEpisodioActivo = 0;
+    public long idSedeActual = 1; //
+    public long idPacienteActivo = 0;
+
     public vHistoriaClinica() {
         initComponents();
         estilo();
@@ -61,6 +67,11 @@ private long idHistoriaActiva = -1;
         jLabel14 = new javax.swing.JLabel();
         txtPeso = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
+        txtTemperatura1 = new javax.swing.JTextField();
+        jLabel19 = new javax.swing.JLabel();
+        cmbTriage = new javax.swing.JComboBox<>();
+        jLabel20 = new javax.swing.JLabel();
+        cmbTipo = new javax.swing.JComboBox<>();
         jLabel16 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtExamen = new javax.swing.JTextArea();
@@ -69,11 +80,12 @@ private long idHistoriaActiva = -1;
         txtConsulta = new javax.swing.JTextArea();
         jLabel18 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        txtDiagnostico = new javax.swing.JTextArea();
+        txtNotaClinica = new javax.swing.JTextArea();
         btDiagnostico = new javax.swing.JButton();
         btGuardar = new javax.swing.JButton();
         btAbrir = new javax.swing.JButton();
-        btCancelar = new javax.swing.JButton();
+        btLimpiar = new javax.swing.JButton();
+        btNota = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(1558, 886));
@@ -188,11 +200,11 @@ private long idHistoriaActiva = -1;
                             .addGroup(pPacienteLayout.createSequentialGroup()
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtCedula, javax.swing.GroupLayout.DEFAULT_SIZE, 337, Short.MAX_VALUE)
+                                .addComponent(txtCedula)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel3)
                                 .addGap(34, 34, 34)
-                                .addComponent(txtCelular, javax.swing.GroupLayout.DEFAULT_SIZE, 337, Short.MAX_VALUE)
+                                .addComponent(txtCelular)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel4)
                                 .addGap(18, 18, 18)
@@ -304,6 +316,23 @@ private long idHistoriaActiva = -1;
         jLabel15.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         jLabel15.setText("Kg");
 
+        txtTemperatura1.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        txtTemperatura1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTemperatura1ActionPerformed(evt);
+            }
+        });
+
+        jLabel19.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        jLabel19.setText("Triage:");
+
+        cmbTriage.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+
+        jLabel20.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        jLabel20.setText("Tipo:");
+
+        cmbTipo.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+
         javax.swing.GroupLayout pSignosLayout = new javax.swing.GroupLayout(pSignos);
         pSignos.setLayout(pSignosLayout);
         pSignosLayout.setHorizontalGroup(
@@ -313,22 +342,32 @@ private long idHistoriaActiva = -1;
                 .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtTA, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(172, 172, 172)
-                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
+                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtFC, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 267, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtTemperatura1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtTemperatura, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(172, 172, 172)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtPeso, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel19)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cmbTriage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel20)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cmbTipo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         pSignosLayout.setVerticalGroup(
@@ -336,9 +375,6 @@ private long idHistoriaActiva = -1;
             .addGroup(pSignosLayout.createSequentialGroup()
                 .addGap(8, 8, 8)
                 .addGroup(pSignosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pSignosLayout.createSequentialGroup()
-                        .addComponent(jLabel10)
-                        .addContainerGap(12, Short.MAX_VALUE))
                     .addGroup(pSignosLayout.createSequentialGroup()
                         .addGroup(pSignosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtTA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -348,9 +384,17 @@ private long idHistoriaActiva = -1;
                             .addComponent(jLabel13)
                             .addComponent(txtTemperatura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel14)
-                            .addComponent(txtPeso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel15))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                            .addComponent(txtPeso, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel15)
+                            .addComponent(txtTemperatura1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel19)
+                            .addComponent(cmbTriage)
+                            .addComponent(jLabel20)
+                            .addComponent(cmbTipo))
+                        .addGap(0, 9, Short.MAX_VALUE))
+                    .addGroup(pSignosLayout.createSequentialGroup()
+                        .addComponent(jLabel10)
+                        .addContainerGap(12, Short.MAX_VALUE))))
         );
 
         jLabel16.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
@@ -374,11 +418,11 @@ private long idHistoriaActiva = -1;
         jLabel18.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         jLabel18.setText("Nota Clinica");
 
-        txtDiagnostico.setColumns(20);
-        txtDiagnostico.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        txtDiagnostico.setRows(5);
-        txtDiagnostico.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jScrollPane3.setViewportView(txtDiagnostico);
+        txtNotaClinica.setColumns(20);
+        txtNotaClinica.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        txtNotaClinica.setRows(5);
+        txtNotaClinica.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jScrollPane3.setViewportView(txtNotaClinica);
 
         btDiagnostico.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         btDiagnostico.setText("Realizar Diagnostico");
@@ -404,11 +448,19 @@ private long idHistoriaActiva = -1;
             }
         });
 
-        btCancelar.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
-        btCancelar.setText("Cancelar");
-        btCancelar.addActionListener(new java.awt.event.ActionListener() {
+        btLimpiar.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        btLimpiar.setText("Limpiar");
+        btLimpiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btCancelarActionPerformed(evt);
+                btLimpiarActionPerformed(evt);
+            }
+        });
+
+        btNota.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        btNota.setText("Agregar Nota");
+        btNota.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btNotaActionPerformed(evt);
             }
         });
 
@@ -419,10 +471,21 @@ private long idHistoriaActiva = -1;
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3)
                     .addComponent(pPaciente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(pSignos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane1)
-                    .addComponent(jScrollPane3)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btAbrir, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30)
+                        .addComponent(btNota, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                        .addComponent(btDiagnostico, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel8)
@@ -430,16 +493,7 @@ private long idHistoriaActiva = -1;
                             .addComponent(jLabel16)
                             .addComponent(jLabel17)
                             .addComponent(jLabel18))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btAbrir, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btDiagnostico, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane2))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -472,7 +526,8 @@ private long idHistoriaActiva = -1;
                         .addComponent(btDiagnostico))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btAbrir)
-                        .addComponent(btCancelar)))
+                        .addComponent(btLimpiar)
+                        .addComponent(btNota)))
                 .addContainerGap(67, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -518,34 +573,20 @@ private long idHistoriaActiva = -1;
     }//GEN-LAST:event_txtPesoActionPerformed
 
     private void btDiagnosticoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDiagnosticoActionPerformed
-//Validar que haya al menos un motivo de consulta cargado para dar contexto a la IA
-        //if (txtCedula.getText().trim().isEmpty()) {
-        //    javax.swing.JOptionPane.showMessageDialog(this,
-        //            "Debe ingresar y buscar un paciente antes de consultar a la IA.",
-          //          "Paciente no seleccionado",
-            //        javax.swing.JOptionPane.WARNING_MESSAGE);
-            //return;
-        //}
+        if (this.idEpisodioActivo <= 0) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Debe abrir un episodio antes de agregar diagnósticos.");
+            return;
+        }
 
-        //if (txtConsulta.getText().trim().isEmpty()) {
-        //    javax.swing.JOptionPane.showMessageDialog(this,
-        //            "Por favor ingrese el Motivo de consulta para que la IA tenga contexto.",
-        //            "Campos incompletos",
-        //            javax.swing.JOptionPane.WARNING_MESSAGE);
-        //    return;
-        //}
+        // Crear la ventana de diálogos
+        dlgDiagnostico ventanaDiagnosticos = new dlgDiagnostico(null, true);
 
-        //Obtener el Frame contenedor principal
-        java.awt.Frame framePadre = (java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(this);
+        // ¡AQUÍ ESTÁ LA CLAVE! Le enviamos el ID del episodio activo
+        ventanaDiagnosticos.setEpisodioActivo(this.idEpisodioActivo);
 
-        //Instanciar tu diálogo modal dlgIA
-        dlgDiagnostico  asistente = new dlgDiagnostico (framePadre, true);
-
-
-
-        //Desplegar la ventana emergente
-        asistente.setVisible(true);
-
+        // Mostrar la ventana centradita
+        ventanaDiagnosticos.setLocationRelativeTo(this);
+        ventanaDiagnosticos.setVisible(true);
     }//GEN-LAST:event_btDiagnosticoActionPerformed
 
     private void btGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btGuardarActionPerformed
@@ -553,7 +594,6 @@ private long idHistoriaActiva = -1;
     }//GEN-LAST:event_btGuardarActionPerformed
 
     private void btVerHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btVerHistorialActionPerformed
-
         java.awt.Window parentWindow = javax.swing.SwingUtilities.getWindowAncestor(this);
         java.awt.Frame parentFrame = (parentWindow instanceof java.awt.Frame) ? (java.awt.Frame) parentWindow : null;
         dlgHistorial dialogo = new dlgHistorial(parentFrame, true, this);
@@ -561,55 +601,156 @@ private long idHistoriaActiva = -1;
     }//GEN-LAST:event_btVerHistorialActionPerformed
 
     private void btBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBuscarActionPerformed
-    String cedulaIngresada = txtIngreso.getText().trim();
-    
-    if (cedulaIngresada.isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Ingrese la cédula a buscar.");
-        return;
-    }
+        String cedulaIngresada = txtIngreso.getText().trim();
 
-    cHistoriaClinica modelo = new cHistoriaClinica();
-    
-    try {
-        cHistoriaClinica.DatosPaciente paciente = modelo.buscarPacienteParaAtencion(cedulaIngresada);
-        
-        if (paciente != null) {
-            // Llenar los cuadros de texto de la vista
-            txtNombre.setText(paciente.nombreCompleto);
-            txtCedula.setText(paciente.numeroDocumento);
-            txtCelular.setText(paciente.celular);
-            String sangre = (paciente.grupoSanguineo != null ? paciente.grupoSanguineo : "");
-            String rh = (paciente.factorRh != null ? paciente.factorRh : "");
-            txtSangre.setText(sangre + rh);
-            txtEdad.setText(calcularEdad(paciente.fechaNacimiento));
-            txtAlergias.setText(paciente.alergias);
-            this.idHistoriaActiva = paciente.idHistoriaClinica;
-            btAbrir.setEnabled(true);
-            btVerHistorial.setEnabled(true);
-        } else {
-            javax.swing.JOptionPane.showMessageDialog(this, "Paciente no encontrado en la base de datos.");
+        if (cedulaIngresada.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Ingrese la cédula a buscar.");
+            return;
         }
-    } catch (java.sql.SQLException e) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Error de base de datos: " + e.getMessage());
-    }
+        try {
+            cHistoriaClinica.DatosPaciente paciente = modelo.buscarPacienteParaAtencion(cedulaIngresada);
+
+            if (paciente != null) {
+                // Llenar los cuadros de texto de la vista
+                txtNombre.setText(paciente.nombreCompleto);
+                txtCedula.setText(paciente.numeroDocumento);
+                txtCelular.setText(paciente.celular);
+                String sangre = (paciente.grupoSanguineo != null ? paciente.grupoSanguineo : "");
+                String rh = (paciente.factorRh != null ? paciente.factorRh : "");
+                txtSangre.setText(sangre + rh);
+                txtEdad.setText(calcularEdad(paciente.fechaNacimiento));
+                txtAlergias.setText(paciente.alergias);
+                this.idHistoriaActiva = paciente.idHistoriaClinica;
+                this.idPacienteActivo = paciente.idPaciente; //
+                btAbrir.setEnabled(true);
+                btVerHistorial.setEnabled(true);
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Paciente no encontrado en la base de datos.");
+            }
+        } catch (java.sql.SQLException e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Error de base de datos: " + e.getMessage());
+        }
     }//GEN-LAST:event_btBuscarActionPerformed
 
     private void btAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAbrirActionPerformed
-        btDiagnostico.setEnabled(true);
+        int primeraRespuesta = javax.swing.JOptionPane.showConfirmDialog(
+                null,
+                "¿Está seguro de que desea abrir un nuevo episodio clínico para este paciente?",
+                "Confirmar apertura",
+                javax.swing.JOptionPane.YES_NO_OPTION
+        );
+
+        if (primeraRespuesta == javax.swing.JOptionPane.YES_OPTION) {
+            int segundaRespuesta = javax.swing.JOptionPane.showConfirmDialog(
+                    null,
+                    "¿Confirma la creación de este episodio? El estado pasará a ser ACTIVO/ABIERTO.",
+                    "Confirmación final",
+                    javax.swing.JOptionPane.YES_NO_OPTION,
+                    javax.swing.JOptionPane.WARNING_MESSAGE
+            );
+
+            if (segundaRespuesta == javax.swing.JOptionPane.YES_OPTION) {
+                try {
+
+                    Long idCitaEncontrada = modelo.buscarCitaPendiente(idPacienteActivo);
+                    idEpisodioActivo = modelo.obtenerOCrearEpisodio(
+                            idHistoriaActiva,
+                            idSedeActual, // Será 1
+                            idCitaEncontrada, // El ID encontrado o null
+                            "POR DEFINIR",
+                            "Consulta iniciada"
+                    );
+
+                    // 4. Habilitar interfaz
+                    btDiagnostico.setEnabled(true);
+                    txtTA.setEditable(false);
+                    txtFC.setEditable(true);
+                    txtTemperatura.setEditable(true);
+                    txtPeso.setEditable(true);
+                    txtConsulta.setEditable(true);
+                    txtExamen.setEditable(true);
+                    txtNotaClinica.setEditable(true);
+                    btDiagnostico.setEnabled(true);
+                    btAbrir.setEnabled(true);
+                    btNota.setEnabled(true);
+                    cmbTriage.setEnabled(true);
+                    cmbTipo.setEnabled(true);
+                    javax.swing.JOptionPane.showMessageDialog(null, "Episodio creado exitosamente. Puede continuar con la atención.");
+
+                } catch (Exception ex) {
+                    javax.swing.JOptionPane.showMessageDialog(null, "Error al crear el episodio: " + ex.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
     }//GEN-LAST:event_btAbrirActionPerformed
 
-    private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
+    private void btLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLimpiarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btCancelarActionPerformed
+    }//GEN-LAST:event_btLimpiarActionPerformed
+
+    private void btNotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNotaActionPerformed
+        // 1. Validar que exista un episodio abierto
+        if (this.idEpisodioActivo <= 0) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Debe abrir un episodio clínico antes de agregar una nota.");
+            return;
+        }
+
+        // 2. Validar que la nota no esté vacía
+        if (txtNotaClinica.getText().trim().isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "La Nota Clínica no puede estar vacía.");
+            return;
+        }
+
+        // 3. Confirmación (Opcional, pero recomendada)
+        int confirmacion = javax.swing.JOptionPane.showConfirmDialog(
+                this,
+                "¿Desea agregar esta nota a la historia del paciente?",
+                "Confirmar Nota",
+                javax.swing.JOptionPane.YES_NO_OPTION
+        );
+
+        if (confirmacion == javax.swing.JOptionPane.YES_OPTION) {
+
+            long idUsuarioLogueado = 1; // Ajusta esto con tu variable de sesión
+
+            // 4. Llamar al modelo para guardar SÓLO la nota
+            boolean exito = modelo.agregarNotaClinica(
+                    this.idEpisodioActivo,
+                    idUsuarioLogueado,
+                    txtExamen.getText().trim(),
+                    txtNotaClinica.getText().trim()
+            );
+
+            // 5. Finalizar
+            if (exito) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Nota agregada exitosamente al episodio en curso.");
+
+                // Limpiamos SOLO las cajas de texto de la nota y el examen para que pueda seguir trabajando
+                txtExamen.setText("");
+                txtNotaClinica.setText("");
+
+                // NO reiniciamos idEpisodioActivo aquí, porque el episodio sigue abierto.
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Ocurrió un error al agregar la nota.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btNotaActionPerformed
+
+    private void txtTemperatura1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTemperatura1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTemperatura1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btAbrir;
     private javax.swing.JButton btBuscar;
-    private javax.swing.JButton btCancelar;
     private javax.swing.JButton btDiagnostico;
     private javax.swing.JButton btGuardar;
+    private javax.swing.JButton btLimpiar;
+    private javax.swing.JButton btNota;
     private javax.swing.JButton btVerHistorial;
+    private javax.swing.JComboBox<String> cmbTipo;
+    private javax.swing.JComboBox<String> cmbTriage;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -620,7 +761,9 @@ private long idHistoriaActiva = -1;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -637,16 +780,17 @@ private long idHistoriaActiva = -1;
     private javax.swing.JTextField txtCedula;
     private javax.swing.JTextField txtCelular;
     private javax.swing.JTextArea txtConsulta;
-    private javax.swing.JTextArea txtDiagnostico;
     private javax.swing.JTextField txtEdad;
     private javax.swing.JTextArea txtExamen;
     private javax.swing.JTextField txtFC;
     private javax.swing.JTextField txtIngreso;
     private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextArea txtNotaClinica;
     private javax.swing.JTextField txtPeso;
     private javax.swing.JTextField txtSangre;
     private javax.swing.JTextField txtTA;
     private javax.swing.JTextField txtTemperatura;
+    private javax.swing.JTextField txtTemperatura1;
     // End of variables declaration//GEN-END:variables
 
     //Color para los botones
@@ -656,7 +800,8 @@ private long idHistoriaActiva = -1;
         btDiagnostico.setBackground(Color.decode("#A3C9A8"));
         btGuardar.setBackground(Color.decode("#A3C9A8"));
         btAbrir.setBackground(Color.decode("#A3C9A8"));
-        btCancelar.setBackground(Color.decode("#A3C9A8"));
+        btLimpiar.setBackground(Color.decode("#A3C9A8"));
+        btNota.setBackground(Color.decode("#A3C9A8"));
     }
 
     public void estilo() {
@@ -671,6 +816,16 @@ private long idHistoriaActiva = -1;
             }
         });
         color();
+        cmbTriage.setModel(new DefaultComboBoxModel<>(
+                new String[]{
+                    "Seleccione...",
+                    "1", "2", "3", "4", "5"}
+        ));
+        cmbTipo.setModel(new DefaultComboBoxModel<>(
+                new String[]{
+                    "Seleccione...",
+                    "Ambulatoria", "Urgencias", "Hospitalizacion", "Domiciliaria", "Prehospitalaria"}
+        ));
         //desabilita el boton de ver historial al abrir la ventana
         btVerHistorial.setEnabled(false);
         // Bloquear la edición manual por teclado
@@ -686,23 +841,73 @@ private long idHistoriaActiva = -1;
         txtPeso.setEditable(false);
         txtConsulta.setEditable(false);
         txtExamen.setEditable(false);
-        txtDiagnostico.setEditable(false);
+        txtNotaClinica.setEditable(false);
         btGuardar.setEnabled(false);
         btDiagnostico.setEnabled(false);
         btAbrir.setEnabled(false);
+        btNota.setEnabled(false);
+        cmbTriage.setEnabled(false);
+        cmbTipo.setEnabled(false);
     }
+
     private String calcularEdad(String fechaNacimiento) {
-    if (fechaNacimiento == null || fechaNacimiento.trim().isEmpty()) {
-        return "";
+        if (fechaNacimiento == null || fechaNacimiento.trim().isEmpty()) {
+            return "";
+        }
+        try {
+            java.time.LocalDate fechaNac = java.time.LocalDate.parse(fechaNacimiento);
+            java.time.LocalDate fechaActual = java.time.LocalDate.now();
+            java.time.Period periodo = java.time.Period.between(fechaNac, fechaActual);
+            return String.valueOf(periodo.getYears());
+        } catch (Exception e) {
+            return "N/A"; // Si el formato de fecha es incorrecto
+        }
     }
-    try {
-        java.time.LocalDate fechaNac = java.time.LocalDate.parse(fechaNacimiento);
-        java.time.LocalDate fechaActual = java.time.LocalDate.now();
-        java.time.Period periodo = java.time.Period.between(fechaNac, fechaActual);
-        return String.valueOf(periodo.getYears());
-    } catch (Exception e) {
-        return "N/A"; // Si el formato de fecha es incorrecto
+
+    @Override
+    public void addNotify() {
+        super.addNotify();
+
+        // Obtenemos la ventana principal (JFrame) que contiene a este JPanel
+        java.awt.Window ventanaPadre = javax.swing.SwingUtilities.getWindowAncestor(this);
+
+        if (ventanaPadre instanceof javax.swing.JFrame) {
+            javax.swing.JFrame frame = (javax.swing.JFrame) ventanaPadre;
+
+            // Bloqueamos la 'X' de la ventana principal
+            frame.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+
+            // Le agregamos el evento de cierre a la ventana principal
+            frame.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent evt) {
+                    validarCierreVentana(frame);
+                }
+            });
+        }
     }
-}
-    
+
+    // 2. Método de validación ajustado para cerrar la ventana principal
+    private void validarCierreVentana(javax.swing.JFrame frame) {
+        if (this.idEpisodioActivo > 0) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Tiene un episodio clínico ABIERTO en este momento.\nPor favor, guarde la atención o cancele el episodio antes de salir.",
+                    "Cierre Bloqueado",
+                    javax.swing.JOptionPane.WARNING_MESSAGE
+            );
+        } else {
+            int confirmacion = javax.swing.JOptionPane.showConfirmDialog(
+                    this,
+                    "¿Está seguro que desea cerrar el programa?",
+                    "Confirmar salida",
+                    javax.swing.JOptionPane.YES_NO_OPTION
+            );
+
+            if (confirmacion == javax.swing.JOptionPane.YES_OPTION) {
+                // Cerramos la aplicación completa
+                System.exit(0);
+            }
+        }
+    }
 }

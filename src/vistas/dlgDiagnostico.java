@@ -4,7 +4,9 @@
  */
 package vistas;
 
+import Modelo.cDiagnostico;
 import java.awt.Color;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -12,13 +14,20 @@ import java.awt.Color;
  */
 public class dlgDiagnostico extends javax.swing.JDialog {
 
+    cDiagnostico modelo = new cDiagnostico();
+    private long idEpisodio = -1;
+
     /**
      * Creates new form dlgIA
      */
-    public dlgDiagnostico (java.awt.Frame parent, boolean modal) {
+    public dlgDiagnostico(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        estilo();
+        estilo(parent);
+    }
+
+    public void setEpisodioActivo(long idEpisodio) {
+        this.idEpisodio = idEpisodio;
     }
 
     /**
@@ -31,35 +40,29 @@ public class dlgDiagnostico extends javax.swing.JDialog {
     private void initComponents() {
 
         btAceptar = new javax.swing.JButton();
-        btIngresar = new javax.swing.JButton();
         btBuscar = new javax.swing.JButton();
         jLabel20 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtHallazgos = new javax.swing.JTextArea();
         jLabel21 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtCodigo = new javax.swing.JTextField();
         jLabel23 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        btVolver1 = new javax.swing.JButton();
+        txtDescripcion = new javax.swing.JTextField();
+        btLimpiar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblResultados = new javax.swing.JTable();
+        tblDiagnosticos = new javax.swing.JTable();
+        jLabel24 = new javax.swing.JLabel();
+        btFinalizar = new javax.swing.JButton();
+        btVolver = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         btAceptar.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
-        btAceptar.setText("Aceptar Diagnostico");
+        btAceptar.setText("Agregar Diagnostico");
         btAceptar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btAceptarActionPerformed(evt);
-            }
-        });
-
-        btIngresar.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
-        btIngresar.setText("Ingresar Manualmente");
-        btIngresar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btIngresarActionPerformed(evt);
             }
         });
 
@@ -85,22 +88,22 @@ public class dlgDiagnostico extends javax.swing.JDialog {
         jLabel22.setFont(new java.awt.Font("SansSerif", 1, 36)); // NOI18N
         jLabel22.setText("Diagnosticos");
 
-        jTextField1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        txtCodigo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
 
         jLabel23.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         jLabel23.setText("Ingrese descripción");
 
-        jTextField2.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        txtDescripcion.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
 
-        btVolver1.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
-        btVolver1.setText("Volver");
-        btVolver1.addActionListener(new java.awt.event.ActionListener() {
+        btLimpiar.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        btLimpiar.setText("Limpiar");
+        btLimpiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btVolver1ActionPerformed(evt);
+                btLimpiarActionPerformed(evt);
             }
         });
 
-        tblResultados.setModel(new javax.swing.table.DefaultTableModel(
+        tblDiagnosticos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
                 {},
@@ -111,7 +114,26 @@ public class dlgDiagnostico extends javax.swing.JDialog {
 
             }
         ));
-        jScrollPane1.setViewportView(tblResultados);
+        jScrollPane1.setViewportView(tblDiagnosticos);
+
+        jLabel24.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        jLabel24.setText("Diagnosticos");
+
+        btFinalizar.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        btFinalizar.setText("Finalizar Diagnosticos");
+        btFinalizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btFinalizarActionPerformed(evt);
+            }
+        });
+
+        btVolver.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        btVolver.setText("Volver a Episodio ");
+        btVolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btVolverActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -119,28 +141,6 @@ public class dlgDiagnostico extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel20)
-                                        .addGap(55, 55, 55)
-                                        .addComponent(jTextField1))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel23)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 1111, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(18, 18, Short.MAX_VALUE)
-                                .addComponent(btBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(jScrollPane2)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btIngresar, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btVolver1, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -150,8 +150,36 @@ public class dlgDiagnostico extends javax.swing.JDialog {
                                 .addContainerGap()
                                 .addComponent(jLabel21)))
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel20)
+                                        .addGap(55, 55, 55)
+                                        .addComponent(txtCodigo))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel23)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 1111, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(18, 18, Short.MAX_VALUE)
+                                .addComponent(btBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jScrollPane2)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btFinalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane1))))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel24)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -163,49 +191,98 @@ public class dlgDiagnostico extends javax.swing.JDialog {
                         .addGap(15, 15, 15)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel20)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel23)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(45, 45, 45)
                         .addComponent(btBuscar)))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel24)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel21)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btAceptar)
-                    .addComponent(btIngresar)
-                    .addComponent(btVolver1))
-                .addContainerGap(15, Short.MAX_VALUE))
+                    .addComponent(btLimpiar)
+                    .addComponent(btFinalizar)
+                    .addComponent(btVolver))
+                .addContainerGap(7, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAceptarActionPerformed
-        this.diagnosticoAceptado = true;
-        this.dispose();
+        int filaSeleccionada = tblDiagnosticos.getSelectedRow();
+
+        if (filaSeleccionada == -1) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Seleccione un diagnóstico de la tabla de resultados.");
+            return;
+        }
+
+        // Usamos idEpisodio en lugar de this.idEpisodioActivo
+        if (idEpisodio <= 0) {
+            javax.swing.JOptionPane.showMessageDialog(this, "No hay un episodio activo para asociar el diagnóstico.");
+            return;
+        }
+
+        long idCatalogoSeleccionado = (long) tblDiagnosticos.getValueAt(filaSeleccionada, 0);
+        String codigoDiagnostico = (String) tblDiagnosticos.getValueAt(filaSeleccionada, 1);
+        long idUsuarioLogueado = 1;
+        // Pasamos idEpisodio al método
+        boolean exito = modelo.registrarDiagnosticoClinico(
+                idEpisodio,
+                idUsuarioLogueado,
+                idCatalogoSeleccionado,
+                "CONFIRMADO",
+                "ACTIVO"
+        );
+
+        if (exito) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Diagnóstico " + codigoDiagnostico + " agregado al episodio.");
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Error al agregar el diagnóstico.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btAceptarActionPerformed
 
-    private void btIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btIngresarActionPerformed
-        this.diagnosticoAceptado = false;
-        this.dispose();
-    }//GEN-LAST:event_btIngresarActionPerformed
-
     private void btBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBuscarActionPerformed
-        this.diagnosticoAceptado = false;
-        this.dispose();
+        String codigo = txtCodigo.getText().trim();
+        String descripcion = txtDescripcion.getText().trim();
+
+        // Validar que al menos un campo tenga texto para no cargar toda la base de datos de golpe
+        if (codigo.isEmpty() && descripcion.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Ingrese un código o descripción para buscar.");
+            return;
+        }
+        DefaultTableModel resultado = modelo.buscarDiagnosticoEnCatalogo(codigo, descripcion);
+
+        // tblDiagnosticos es el nombre de tu tabla superior
+        tblDiagnosticos.setModel(resultado);
+
+        // Ocultamos la columna del ID para que el usuario no la vea, pero podamos usarla luego
+        tblDiagnosticos.getColumnModel().getColumn(0).setMinWidth(0);
+        tblDiagnosticos.getColumnModel().getColumn(0).setMaxWidth(0);
+        tblDiagnosticos.getColumnModel().getColumn(0).setWidth(0);
     }//GEN-LAST:event_btBuscarActionPerformed
 
-    private void btVolver1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btVolver1ActionPerformed
+    private void btLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLimpiarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btVolver1ActionPerformed
+    }//GEN-LAST:event_btLimpiarActionPerformed
+
+    private void btFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btFinalizarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btFinalizarActionPerformed
+
+    private void btVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btVolverActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btVolverActionPerformed
 
     /**
      * @param args the command line arguments
@@ -224,20 +301,20 @@ public class dlgDiagnostico extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(dlgDiagnostico .class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(dlgDiagnostico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(dlgDiagnostico .class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(dlgDiagnostico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(dlgDiagnostico .class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(dlgDiagnostico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(dlgDiagnostico .class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(dlgDiagnostico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                dlgDiagnostico  dialog = new dlgDiagnostico(new javax.swing.JFrame(), true);
+                dlgDiagnostico dialog = new dlgDiagnostico(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -252,17 +329,19 @@ public class dlgDiagnostico extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btAceptar;
     private javax.swing.JButton btBuscar;
-    private javax.swing.JButton btIngresar;
-    private javax.swing.JButton btVolver1;
+    private javax.swing.JButton btFinalizar;
+    private javax.swing.JButton btLimpiar;
+    private javax.swing.JButton btVolver;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTable tblResultados;
+    private javax.swing.JTable tblDiagnosticos;
+    private javax.swing.JTextField txtCodigo;
+    private javax.swing.JTextField txtDescripcion;
     private javax.swing.JTextArea txtHallazgos;
     // End of variables declaration//GEN-END:variables
     private boolean diagnosticoAceptado = false;
@@ -270,22 +349,20 @@ public class dlgDiagnostico extends javax.swing.JDialog {
     public void color() {
         this.getContentPane().setBackground(Color.WHITE);
         btAceptar.setBackground(Color.decode("#A3C9A8"));
-        btIngresar.setBackground(Color.decode("#A3C9A8"));
+        btLimpiar.setBackground(Color.decode("#A3C9A8"));
         btBuscar.setBackground(Color.decode("#A3C9A8"));
+        btVolver.setBackground(Color.decode("#A3C9A8"));
+        btFinalizar.setBackground(Color.decode("#A3C9A8"));
     }
-
-
 
 // Métodos de consulta desde vHistoriaClinica
     public boolean isDiagnosticoAceptado() {
         return diagnosticoAceptado;
     }
 
-
-
-    public void estilo() {
+    public void estilo(java.awt.Frame parent) {
         color();
-
+        this.setLocationRelativeTo(parent);
         txtHallazgos.setEditable(false);
     }
 }
