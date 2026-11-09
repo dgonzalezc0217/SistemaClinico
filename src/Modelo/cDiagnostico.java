@@ -4,6 +4,7 @@
  */
 package Modelo;
 
+import Conexion.cConexion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -63,5 +64,71 @@ public class cDiagnostico {
             System.err.println("Error al registrar diagnóstico: " + e.getMessage());
             return false;
         }
+    }
+
+    public boolean existeDiagnosticoEnEpisodio(long idEpisodio, long idCatalogo) {
+        String sql = "SELECT 1 FROM Diagnostico_Clinico WHERE id_episodio = ? AND id_catalogo_diagnostico = ?";
+
+        try (java.sql.Connection con = new Conexion.cConexion().conectar(); java.sql.PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setLong(1, idEpisodio);
+            ps.setLong(2, idCatalogo);
+
+            try (java.sql.ResultSet rs = ps.executeQuery()) {
+                return rs.next(); // Si devuelve true, significa que el diagnóstico ya existe
+            }
+        } catch (java.sql.SQLException e) {
+            System.err.println("Error al verificar diagnóstico duplicado: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public void deshacerDiagnosticos(long idEpisodio, java.util.List<Long> idsCatalogo) {
+        // Si la lista está vacía, no hay nada que borrar
+        if (idsCatalogo == null || idsCatalogo.isEmpty()) {
+            return;
+        }
+
+        String sql = "DELETE FROM Diagnostico_Clinico WHERE id_episodio = ? AND id_catalogo_diagnostico = ?";
+
+        try (java.sql.Connection con = new cConexion().conectar(); java.sql.PreparedStatement ps = con.prepareStatement(sql)) {
+
+            // Recorremos la lista y borramos uno por uno
+            for (Long idCat : idsCatalogo) {
+                ps.setLong(1, idEpisodio);
+                ps.setLong(2, idCat);
+                ps.executeUpdate();
+            }
+
+        } catch (java.sql.SQLException e) {
+            System.err.println("Error al deshacer diagnósticos: " + e.getMessage());
+        }
+    }
+
+    public String obtenerDiagnosticosDelEpisodio(long idEpisodio) {
+        StringBuilder listaDiagnosticos = new StringBuilder();
+
+        String sql = "SELECT c.codigo, c.descripcion "
+                + "FROM Diagnostico_Clinico d "
+                + "INNER JOIN Catalogo_Diagnostico c ON d.id_catalogo_diagnostico = c.id_catalogo_diagnostico "
+                + "WHERE d.id_episodio = ?";
+
+        try (java.sql.Connection con = new Conexion.cConexion().conectar(); java.sql.PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setLong(1, idEpisodio);
+
+            try (java.sql.ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    String codigo = rs.getString("codigo");
+                    String descripcion = rs.getString("descripcion");
+                    // Construye el texto con el mismo formato que usaste al agregar
+                    listaDiagnosticos.append("• [").append(codigo).append("] - ").append(descripcion).append("\n");
+                }
+            }
+        } catch (java.sql.SQLException e) {
+            System.err.println("Error al cargar diagnósticos previos: " + e.getMessage());
+        }
+
+        return listaDiagnosticos.toString();
     }
 }

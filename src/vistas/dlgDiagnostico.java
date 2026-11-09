@@ -16,6 +16,7 @@ public class dlgDiagnostico extends javax.swing.JDialog {
 
     cDiagnostico modelo = new cDiagnostico();
     private long idEpisodio = -1;
+    private java.util.List<Long> diagnosticosAgregadosEnSesion = new java.util.ArrayList<>();
 
     /**
      * Creates new form dlgIA
@@ -28,6 +29,8 @@ public class dlgDiagnostico extends javax.swing.JDialog {
 
     public void setEpisodioActivo(long idEpisodio) {
         this.idEpisodio = idEpisodio;
+        String diagnosticosPrevios = modelo.obtenerDiagnosticosDelEpisodio(this.idEpisodio);
+        txtDetalles.setText(diagnosticosPrevios);
     }
 
     /**
@@ -43,18 +46,17 @@ public class dlgDiagnostico extends javax.swing.JDialog {
         btBuscar = new javax.swing.JButton();
         jLabel20 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        txtHallazgos = new javax.swing.JTextArea();
+        txtDetalles = new javax.swing.JTextArea();
         jLabel21 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
         txtCodigo = new javax.swing.JTextField();
         jLabel23 = new javax.swing.JLabel();
         txtDescripcion = new javax.swing.JTextField();
-        btLimpiar = new javax.swing.JButton();
+        btCancelar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblDiagnosticos = new javax.swing.JTable();
         jLabel24 = new javax.swing.JLabel();
         btFinalizar = new javax.swing.JButton();
-        btVolver = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -77,10 +79,10 @@ public class dlgDiagnostico extends javax.swing.JDialog {
         jLabel20.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         jLabel20.setText("Ingrese codigo:");
 
-        txtHallazgos.setColumns(20);
-        txtHallazgos.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        txtHallazgos.setRows(5);
-        jScrollPane2.setViewportView(txtHallazgos);
+        txtDetalles.setColumns(20);
+        txtDetalles.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        txtDetalles.setRows(5);
+        jScrollPane2.setViewportView(txtDetalles);
 
         jLabel21.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         jLabel21.setText("Detalles");
@@ -95,11 +97,11 @@ public class dlgDiagnostico extends javax.swing.JDialog {
 
         txtDescripcion.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
 
-        btLimpiar.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
-        btLimpiar.setText("Limpiar");
-        btLimpiar.addActionListener(new java.awt.event.ActionListener() {
+        btCancelar.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        btCancelar.setText("Cancelar");
+        btCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btLimpiarActionPerformed(evt);
+                btCancelarActionPerformed(evt);
             }
         });
 
@@ -124,14 +126,6 @@ public class dlgDiagnostico extends javax.swing.JDialog {
         btFinalizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btFinalizarActionPerformed(evt);
-            }
-        });
-
-        btVolver.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
-        btVolver.setText("Volver a Episodio ");
-        btVolver.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btVolverActionPerformed(evt);
             }
         });
 
@@ -169,10 +163,8 @@ public class dlgDiagnostico extends javax.swing.JDialog {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(btAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btFinalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane1))))
                 .addContainerGap())
@@ -210,9 +202,8 @@ public class dlgDiagnostico extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btAceptar)
-                    .addComponent(btLimpiar)
-                    .addComponent(btFinalizar)
-                    .addComponent(btVolver))
+                    .addComponent(btCancelar)
+                    .addComponent(btFinalizar))
                 .addContainerGap(7, Short.MAX_VALUE))
         );
 
@@ -235,8 +226,29 @@ public class dlgDiagnostico extends javax.swing.JDialog {
 
         long idCatalogoSeleccionado = (long) tblDiagnosticos.getValueAt(filaSeleccionada, 0);
         String codigoDiagnostico = (String) tblDiagnosticos.getValueAt(filaSeleccionada, 1);
+        String descripcionDiagnostico = (String) tblDiagnosticos.getValueAt(filaSeleccionada, 2);
         long idUsuarioLogueado = 1;
         // Pasamos idEpisodio al método
+        if (modelo.existeDiagnosticoEnEpisodio(idEpisodio, idCatalogoSeleccionado)) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "El diagnóstico [" + codigoDiagnostico + "] ya fue agregado previamente a este episodio.",
+                    "Diagnóstico Duplicado",
+                    javax.swing.JOptionPane.WARNING_MESSAGE
+            );
+            return; // Detenemos la ejecución aquí para que no lo guarde ni lo repita en la lista
+        }
+        int confirmacion = javax.swing.JOptionPane.showConfirmDialog(
+                this,
+                "¿Está seguro que desea agregar el diagnóstico:\n[" + codigoDiagnostico + "] - " + descripcionDiagnostico + "?",
+                "Confirmar Diagnóstico",
+                javax.swing.JOptionPane.YES_NO_OPTION,
+                javax.swing.JOptionPane.QUESTION_MESSAGE
+        );
+
+        // Si el usuario elige "No" o cierra la ventana, se detiene la ejecución
+        if (confirmacion != javax.swing.JOptionPane.YES_OPTION) {
+            return;
+        }
         boolean exito = modelo.registrarDiagnosticoClinico(
                 idEpisodio,
                 idUsuarioLogueado,
@@ -247,6 +259,13 @@ public class dlgDiagnostico extends javax.swing.JDialog {
 
         if (exito) {
             javax.swing.JOptionPane.showMessageDialog(this, "Diagnóstico " + codigoDiagnostico + " agregado al episodio.");
+
+            txtDetalles.append("• [" + codigoDiagnostico + "] - " + descripcionDiagnostico + "\n");
+            diagnosticosAgregadosEnSesion.add(idCatalogoSeleccionado);
+            // Limpiamos las cajas de texto de arriba 
+            // para que el médico pueda buscar rápidamente el siguiente diagnóstico.
+            txtCodigo.setText("");
+            txtDescripcion.setText("");
         } else {
             javax.swing.JOptionPane.showMessageDialog(this, "Error al agregar el diagnóstico.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
@@ -272,17 +291,58 @@ public class dlgDiagnostico extends javax.swing.JDialog {
         tblDiagnosticos.getColumnModel().getColumn(0).setWidth(0);
     }//GEN-LAST:event_btBuscarActionPerformed
 
-    private void btLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLimpiarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btLimpiarActionPerformed
-
     private void btFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btFinalizarActionPerformed
-        // TODO add your handling code here:
+        if (txtDetalles.getText().trim().isEmpty()) {
+            int confirmacion = javax.swing.JOptionPane.showConfirmDialog(
+                    this,
+                    "No ha agregado ningún diagnóstico.\n¿Está seguro que desea finalizar y salir sin diagnósticos?",
+                    "Sin diagnósticos",
+                    javax.swing.JOptionPane.YES_NO_OPTION,
+                    javax.swing.JOptionPane.WARNING_MESSAGE
+            );
+
+            if (confirmacion == javax.swing.JOptionPane.YES_OPTION) {
+                this.dispose();
+            }
+        } else {
+            // 2. Mensaje de éxito informando que todo está bien
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Los diagnósticos han sido vinculados exitosamente al episodio clínico.",
+                    "Diagnósticos Finalizados",
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE
+            );
+
+            this.dispose();
+        }
     }//GEN-LAST:event_btFinalizarActionPerformed
 
-    private void btVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btVolverActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btVolverActionPerformed
+    private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
+        // 1. Verificar si el usuario agregó algo en esta sesión
+        if (!diagnosticosAgregadosEnSesion.isEmpty()) {
+
+            int confirmacion = javax.swing.JOptionPane.showConfirmDialog(
+                    this,
+                    "Ha agregado " + diagnosticosAgregadosEnSesion.size() + " diagnóstico(s) nuevo(s).\n"
+                    + "¿Desea DESHACERLOS (borrarlos) y salir?",
+                    "Cancelar y Deshacer",
+                    javax.swing.JOptionPane.YES_NO_OPTION,
+                    javax.swing.JOptionPane.WARNING_MESSAGE
+            );
+
+            if (confirmacion == javax.swing.JOptionPane.YES_OPTION) {
+                modelo.deshacerDiagnosticos(idEpisodio, diagnosticosAgregadosEnSesion);
+
+                javax.swing.JOptionPane.showMessageDialog(this, "Los diagnósticos agregados fueron revertidos.");
+                this.dispose(); // Cerramos la ventana
+            }
+            // Si dice que NO, la ventana se queda abierta y no hace nada
+
+        } else {
+            // Si no agregó nada, simplemente cerramos la ventana sin preguntar
+            this.dispose();
+        }
+    }//GEN-LAST:event_btCancelarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -329,9 +389,8 @@ public class dlgDiagnostico extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btAceptar;
     private javax.swing.JButton btBuscar;
+    private javax.swing.JButton btCancelar;
     private javax.swing.JButton btFinalizar;
-    private javax.swing.JButton btLimpiar;
-    private javax.swing.JButton btVolver;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
@@ -342,16 +401,20 @@ public class dlgDiagnostico extends javax.swing.JDialog {
     private javax.swing.JTable tblDiagnosticos;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtDescripcion;
-    private javax.swing.JTextArea txtHallazgos;
+    private javax.swing.JTextArea txtDetalles;
     // End of variables declaration//GEN-END:variables
     private boolean diagnosticoAceptado = false;
 
     public void color() {
         this.getContentPane().setBackground(Color.WHITE);
+        jScrollPane1.getViewport().setBackground(java.awt.Color.WHITE);
+        //Cambiar el color de cuando se seleciona una fila
+        tblDiagnosticos.setSelectionBackground(Color.decode("#C8E6C9"));
+        //Cambiar el color de las letras en la selecccion de fila
+        tblDiagnosticos.setSelectionForeground(Color.BLACK);
         btAceptar.setBackground(Color.decode("#A3C9A8"));
-        btLimpiar.setBackground(Color.decode("#A3C9A8"));
+        btCancelar.setBackground(Color.decode("#A3C9A8"));
         btBuscar.setBackground(Color.decode("#A3C9A8"));
-        btVolver.setBackground(Color.decode("#A3C9A8"));
         btFinalizar.setBackground(Color.decode("#A3C9A8"));
     }
 
@@ -363,6 +426,34 @@ public class dlgDiagnostico extends javax.swing.JDialog {
     public void estilo(java.awt.Frame parent) {
         color();
         this.setLocationRelativeTo(parent);
-        txtHallazgos.setEditable(false);
+        txtDetalles.setEditable(false);
+        tblDiagnosticos.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int fila = tblDiagnosticos.getSelectedRow();
+
+                if (fila >= 0) {
+                    // Función para obtener el valor de forma segura sin NullPointerException
+                    java.util.function.Function<Integer, String> getValor = (columna) -> {
+                        Object valor = tblDiagnosticos.getValueAt(fila, columna);
+                        return (valor != null) ? valor.toString() : "";
+                    };
+                    txtCodigo.setText(getValor.apply(1));
+                    txtDescripcion.setText(getValor.apply(2));
+                }
+            }
+        });
+    }
+
+    public void activarModoLectura() {
+        // Apagamos los campos de búsqueda y los botones de modificar
+        txtCodigo.setEnabled(false);
+        txtDescripcion.setEnabled(false);
+
+        // Asume los nombres de tus botones, ajústalos si se llaman diferente
+        btBuscar.setEnabled(false);
+        btAceptar.setEnabled(false);
+        btFinalizar.setEnabled(false);
+
     }
 }

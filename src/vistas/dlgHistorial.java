@@ -4,6 +4,7 @@
  */
 package vistas;
 
+import Modelo.cHistoriaClinica;
 import java.awt.Color;
 
 /**
@@ -12,9 +13,9 @@ import java.awt.Color;
  */
 public class dlgHistorial extends javax.swing.JDialog {
 
-    /**
-     * Creates new form dlgHistorial
-     */
+    cHistoriaClinica modelo = new cHistoriaClinica();
+    private long idPaciente;
+
     public dlgHistorial(java.awt.Frame parent, boolean modal, vHistoriaClinica vistaPadre) {
         //Asocia el JDialog para asociar el JFrame y activar el modo modal
         super(parent, modal);
@@ -49,13 +50,13 @@ public class dlgHistorial extends javax.swing.JDialog {
         tblHistorial.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         tblHistorial.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Fecha", "Medico", "Signos vitales", "Motivo de consulta", "Examen", "Diagnostico"
+
             }
         ));
         tblHistorial.setSelectionBackground(new java.awt.Color(255, 255, 255));
@@ -120,22 +121,35 @@ public class dlgHistorial extends javax.swing.JDialog {
     }//GEN-LAST:event_btCerrarActionPerformed
 
     private void btCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCargarActionPerformed
-        int fila = tblHistorial.getSelectedRow();
-        if (fila != -1) {
-            String fecha = tblHistorial.getValueAt(fila, 0).toString();
-            String signosVitales = tblHistorial.getValueAt(fila, 2).toString();
-            String motivo = tblHistorial.getValueAt(fila, 3).toString();
-            String diagnostico = tblHistorial.getValueAt(fila, 4).toString();
+        int filaSeleccionada = tblHistorial.getSelectedRow();
 
-            javax.swing.JOptionPane.showMessageDialog(this,
-                    "Cargando antecedentes del " + fecha + ":\n"
-                    + "• Signos vitales previos: " + signosVitales + "\n"
-                    + "• Diagnóstico anterior: " + diagnostico,
-                    "Carga de Antecedentes",
-                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
-
-            this.dispose(); // Cierra el modal y vuelve a la historia clínica
+        if (filaSeleccionada == -1) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Debe seleccionar un episodio de la tabla primero.");
+            return;
         }
+
+        // 1. Extraer el ID viejo
+        long idEpisodioViejo = (long) tblHistorial.getModel().getValueAt(filaSeleccionada, 0);
+
+        // 2. Extraer datos escritos y enviarlos a la ventana principal
+        java.util.HashMap<String, String> datos = modelo.obtenerDetalleConsultaPrevia(idEpisodioViejo);
+        vistaPadre.cargarDatosDesdeHistorial(datos, idEpisodioViejo);
+
+        // 3. Evaluar qué hacer con los diagnósticos según tu idea
+        if (vistaPadre.idEpisodioActivo > 0) {
+            // Si YA había abierto un episodio, clonamos los diagnósticos normalmente
+            long idUsuarioLogueado = 1;
+            modelo.clonarDiagnosticos(idEpisodioViejo, vistaPadre.idEpisodioActivo, idUsuarioLogueado);
+            javax.swing.JOptionPane.showMessageDialog(this, "Datos y diagnósticos cargados con éxito al episodio actual.", "Carga Exitosa", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            // Si NO hay episodio abierto, avisamos que es modo lectura
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Datos cargados en MODO LECTURA.\n\nPara iniciar una consulta nueva para hoy, presione el botón 'Limpiar' y luego 'Abrir Episodio'.",
+                    "Historial Consultado",
+                    javax.swing.JOptionPane.WARNING_MESSAGE);
+        }
+
+        this.dispose();
     }//GEN-LAST:event_btCargarActionPerformed
 
     /**
@@ -189,37 +203,15 @@ public class dlgHistorial extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
     private vHistoriaClinica vistaPadre;
 
-//Datos simulados
-    private void cargarDatos() {
-        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tblHistorial.getModel();
-        model.setRowCount(0);
-        // Formato resuelto: "P.A | F.C | Temp | Peso"
-        model.addRow(new Object[]{
-            "10/05/2026",
-            "Dr. Roberto Gómez",
-            "120/80 mmHg | 72 bpm | 36.5°C | 70kg",
-            "Control Rutina",
-            "Paciente estable, anemia leve"
-        });
-
-        model.addRow(new Object[]{
-            "22/01/2026",
-            "Dra. Elena Rostova",
-            "130/85 mmHg | 80 bpm | 37.0°C | 72kg",
-            "Chequeo Lipídico",
-            "Colesterol moderadamente alto"
-        });
-    }
-
 //Genera los colores de la plantilla
     public void color() {
         //Color del panel y la tabla
         this.getContentPane().setBackground(Color.WHITE);
         jScrollPane1.getViewport().setBackground(java.awt.Color.WHITE);
         //Cambiar el color de cuando se seleciona una fila
-        tblHistorial.setSelectionBackground(Color.decode("#C8E6C9")); 
+        tblHistorial.setSelectionBackground(Color.decode("#C8E6C9"));
         //Cambiar el color de las letras en la selecccion de fila
-        tblHistorial.setSelectionForeground(Color.BLACK);           
+        tblHistorial.setSelectionForeground(Color.BLACK);
         //Color de los botones
         btCerrar.setBackground(Color.decode("#A3C9A8"));
         btCargar.setBackground(Color.decode("#A3C9A8"));
@@ -244,7 +236,6 @@ public class dlgHistorial extends javax.swing.JDialog {
             }
         };
         tblHistorial.setModel(model);
-        cargarDatos();
         btCargar.setEnabled(false);
         // Listener para habilitar el botón cuando el médico elija una consulta
         tblHistorial.getSelectionModel().addListSelectionListener(e -> {
@@ -252,5 +243,24 @@ public class dlgHistorial extends javax.swing.JDialog {
                 btCargar.setEnabled(true);
             }
         });
+    }
+
+    public void cargarHistorial(long idPacienteActivo) {
+        this.idPaciente = idPacienteActivo;
+
+        // Obtenemos el modelo ya lleno desde la base de datos
+        javax.swing.table.DefaultTableModel modeloDatos = modelo.consultarHistorialPaciente(this.idPaciente);
+
+        // Se lo aplicamos a tu JTable visual
+        tblHistorial.setModel(modeloDatos);
+
+        // TRUCO PROFESIONAL: Ocultar la columna 0 (ID Episodio)
+        // El médico no necesita ver el número de ID, pero el sistema SÍ lo necesita 
+        // para el botón "Cargar datos". Así que la hacemos invisible:
+        if (tblHistorial.getColumnCount() > 0) {
+            tblHistorial.getColumnModel().getColumn(0).setMinWidth(0);
+            tblHistorial.getColumnModel().getColumn(0).setMaxWidth(0);
+            tblHistorial.getColumnModel().getColumn(0).setWidth(0);
+        }
     }
 }
