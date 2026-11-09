@@ -11,9 +11,13 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-/** Diálogo escrito a mano: no necesita archivo .form ni librerías adicionales. */
+/**
+ * Diálogo escrito a mano: no necesita archivo .form ni librerías adicionales.
+ */
 public class dlgSeleccionarHorario extends JDialog {
-    private final long idPaciente, idMedico, idEspecialidad, idServicio;
+
+    private final long idPaciente, idMedico, idEspecialidad,
+            idServicio, idCitaExcluir;
     private final cDisponibilidad modelo = new cDisponibilidad();
     private YearMonth mes = YearMonth.now(cDisponibilidad.ZONA);
     private final JLabel titulo = new JLabel("", SwingConstants.CENTER);
@@ -21,7 +25,10 @@ public class dlgSeleccionarHorario extends JDialog {
     private final JPanel calendario = new JPanel(new GridLayout(7, 7, 4, 4));
     private final DefaultTableModel tablaModelo = new DefaultTableModel(
             new String[]{"Inicio", "Fin", "Minutos", "Sede", "Agenda"}, 0) {
-        @Override public boolean isCellEditable(int fila, int columna) { return false; }
+        @Override
+        public boolean isCellEditable(int fila, int columna) {
+            return false;
+        }
     };
     private final JTable tabla = new JTable(tablaModelo);
     private final JButton anterior = new JButton("<");
@@ -34,14 +41,45 @@ public class dlgSeleccionarHorario extends JDialog {
     private boolean cargando;
     private SwingWorker<Map<LocalDate, List<Horario>>, Void> trabajo;
 
-    public dlgSeleccionarHorario(Window padre, long idPaciente, long idMedico,
-            long idEspecialidad, long idServicio) {
-        super(padre, "Seleccionar fecha y horario", ModalityType.APPLICATION_MODAL);
+    public dlgSeleccionarHorario(
+            Window padre,
+            long idPaciente,
+            long idMedico,
+            long idEspecialidad,
+            long idServicio) {
+
+        this(
+                padre,
+                idPaciente,
+                idMedico,
+                idEspecialidad,
+                idServicio,
+                0
+        );
+    }
+
+    public dlgSeleccionarHorario(
+            Window padre,
+            long idPaciente,
+            long idMedico,
+            long idEspecialidad,
+            long idServicio,
+            long idCitaExcluir) {
+
+        super(
+                padre,
+                "Seleccionar fecha y horario",
+                ModalityType.APPLICATION_MODAL
+        );
+
+        this.idCitaExcluir = idCitaExcluir;
         this.idPaciente = idPaciente;
         this.idMedico = idMedico;
         this.idEspecialidad = idEspecialidad;
         this.idServicio = idServicio;
+
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
         construirVentana();
         cargarMes();
     }
@@ -75,21 +113,32 @@ public class dlgSeleccionarHorario extends JDialog {
         inferior.add(botones, BorderLayout.SOUTH);
         contenido.add(inferior, BorderLayout.SOUTH);
         seleccionar.setEnabled(false);
-        anterior.addActionListener(e -> { mes = mes.minusMonths(1); cargarMes(); });
-        siguiente.addActionListener(e -> { mes = mes.plusMonths(1); cargarMes(); });
+        anterior.addActionListener(e -> {
+            mes = mes.minusMonths(1);
+            cargarMes();
+        });
+        siguiente.addActionListener(e -> {
+            mes = mes.plusMonths(1);
+            cargarMes();
+        });
         actualizar.addActionListener(e -> cargarMes());
         cancelar.addActionListener(e -> dispose());
-        tabla.getSelectionModel().addListSelectionListener(e ->
-                seleccionar.setEnabled(!cargando && tabla.getSelectedRow() >= 0));
+        tabla.getSelectionModel().addListSelectionListener(e
+                -> seleccionar.setEnabled(!cargando && tabla.getSelectedRow() >= 0));
         seleccionar.addActionListener(e -> {
             int fila = tabla.getSelectedRow();
-            if (fila < 0 || cargando) return;
+            if (fila < 0 || cargando) {
+                return;
+            }
             elegido = horariosDia.get(tabla.convertRowIndexToModel(fila));
             dispose();
         });
         addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override public void windowClosed(java.awt.event.WindowEvent e) {
-                if (trabajo != null) trabajo.cancel(true);
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                if (trabajo != null) {
+                    trabajo.cancel(true);
+                }
             }
         });
         pack();
@@ -109,11 +158,23 @@ public class dlgSeleccionarHorario extends JDialog {
         estado.setText("Consultando horarios del médico y del paciente...");
         YearMonth solicitado = mes;
         trabajo = new SwingWorker<>() {
-            @Override protected Map<LocalDate, List<Horario>> doInBackground() throws Exception {
-                return modelo.listarMes(idPaciente, idMedico, idEspecialidad, idServicio, solicitado);
+            @Override
+            protected Map<LocalDate, List<Horario>> doInBackground() throws Exception {
+                return modelo.listarMes(
+        idPaciente,
+        idMedico,
+        idEspecialidad,
+        idServicio,
+        solicitado,
+        idCitaExcluir
+);
             }
-            @Override protected void done() {
-                if (isCancelled() || !isDisplayable()) return;
+
+            @Override
+            protected void done() {
+                if (isCancelled() || !isDisplayable()) {
+                    return;
+                }
                 cargando = false;
                 anterior.setEnabled(mes.isAfter(YearMonth.now(cDisponibilidad.ZONA)));
                 siguiente.setEnabled(true);
@@ -143,7 +204,9 @@ public class dlgSeleccionarHorario extends JDialog {
             calendario.add(new JLabel(nombre, SwingConstants.CENTER));
         }
         int vacios = mes.atDay(1).getDayOfWeek().getValue() - 1;
-        for (int i = 0; i < vacios; i++) calendario.add(new JLabel());
+        for (int i = 0; i < vacios; i++) {
+            calendario.add(new JLabel());
+        }
         for (int dia = 1; dia <= mes.lengthOfMonth(); dia++) {
             LocalDate fecha = mes.atDay(dia);
             JButton boton = new JButton(String.valueOf(dia));
@@ -157,7 +220,9 @@ public class dlgSeleccionarHorario extends JDialog {
             boton.addActionListener(e -> mostrarDia(fecha));
             calendario.add(boton);
         }
-        while (calendario.getComponentCount() < 49) calendario.add(new JLabel());
+        while (calendario.getComponentCount() < 49) {
+            calendario.add(new JLabel());
+        }
         calendario.revalidate();
         calendario.repaint();
     }
@@ -178,5 +243,7 @@ public class dlgSeleccionarHorario extends JDialog {
         seleccionar.setEnabled(false);
     }
 
-    public Horario getHorarioSeleccionado() { return elegido; }
+    public Horario getHorarioSeleccionado() {
+        return elegido;
+    }
 }

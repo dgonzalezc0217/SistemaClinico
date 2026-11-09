@@ -27,6 +27,7 @@ public class dlgNuevaCita extends javax.swing.JDialog {
 
     private Modelo.cDisponibilidad.Horario horarioSeleccionado;
     private boolean agendasConsultadas = false;
+    private cAgendamiento.DatosCita citaOriginal;
 
     public dlgNuevaCita(java.awt.Frame parent, boolean modal, vAgendamiento vistaPadre) {
         super(parent, modal);
@@ -222,31 +223,79 @@ public class dlgNuevaCita extends javax.swing.JDialog {
     private void btGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btGuardarActionPerformed
         cAgendamiento.Opcion paciente
                 = (cAgendamiento.Opcion) cbPacientes.getSelectedItem();
+
         cAgendamiento.Opcion especialidad
                 = (cAgendamiento.Opcion) cbEspecialidad.getSelectedItem();
+
         cAgendamiento.Opcion medico
                 = (cAgendamiento.Opcion) cbMedico.getSelectedItem();
+
         cAgendamiento.Opcion servicio
                 = (cAgendamiento.Opcion) cbServicio.getSelectedItem();
-        if (paciente == null || especialidad == null || medico == null
-                || servicio == null || horarioSeleccionado == null) {
-            JOptionPane.showMessageDialog(this, "Completa las opciones y selecciona un horario.");
+
+        if (paciente == null
+                || especialidad == null
+                || medico == null
+                || servicio == null
+                || horarioSeleccionado == null) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Completa las opciones y selecciona un horario."
+            );
+
             return;
         }
+
         btGuardar.setEnabled(false);
+
         try {
-            long idCita = modeloAgendamiento.guardarCita(
-                    paciente.getId(), especialidad.getId(), medico.getId(), servicio.getId(),
-                    horarioSeleccionado.idAgenda,
-                    horarioSeleccionado.inicioUTC, horarioSeleccionado.finUTC);
-            JOptionPane.showMessageDialog(this, "Cita " + idCita + " guardada correctamente.");
+            long idCita;
+
+            if (citaOriginal == null) {
+                // Crear una cita nueva.
+                idCita = modeloAgendamiento.guardarCita(
+                        paciente.getId(),
+                        especialidad.getId(),
+                        medico.getId(),
+                        servicio.getId(),
+                        horarioSeleccionado.idAgenda,
+                        horarioSeleccionado.inicioUTC,
+                        horarioSeleccionado.finUTC
+                );
+
+            } else {
+                // Modificar la cita que se seleccionó en la tabla.
+                idCita = modeloAgendamiento.reprogramarCita(
+                        citaOriginal,
+                        especialidad.getId(),
+                        medico.getId(),
+                        servicio.getId(),
+                        horarioSeleccionado.idAgenda,
+                        horarioSeleccionado.inicioUTC,
+                        horarioSeleccionado.finUTC
+                );
+            }
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Cita " + idCita + " guardada correctamente."
+            );
+
             if (vistaPadre != null) {
                 vistaPadre.cargarCitas();
             }
+
             dispose();
+
         } catch (SQLException | IllegalArgumentException error) {
-            JOptionPane.showMessageDialog(this, "No se pudo guardar.\n" + error.getMessage(),
-                    "Revisar cita", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No se pudo guardar.\n" + error.getMessage(),
+                    "Revisar cita",
+                    JOptionPane.WARNING_MESSAGE
+            );
+
             invalidarAgendas();
         }
     }//GEN-LAST:event_btGuardarActionPerformed
@@ -365,24 +414,54 @@ public class dlgNuevaCita extends javax.swing.JDialog {
         btLimpiar.setBackground(Color.decode("#A3C9A8"));
     }
 
-    public void prepararModoReagendar(String cedulaPaciente, String fechaActual, String horaActual) {
-        // 1. Asignar y seleccionar al paciente existente
-        txtCedula.setText(cedulaPaciente);
+    public void prepararModoReagendar(long idCita) throws SQLException {
+        citaOriginal
+                = modeloAgendamiento.obtenerCitaParaReprogramar(idCita);
 
-        // Disparar la búsqueda del paciente en el combo
-        txtCedulaActionPerformed(null);
+        txtCedula.setText(citaOriginal.documento);
 
-        // 2. Pre-cargar fecha y hora actuales
-        txtFecha.setText(fechaActual);
-        txtHora.setText(horaActual);
+        cbPacientes.removeAllItems();
 
-        // 3. Bloquear los campos del paciente para que no se alteren
+        cbPacientes.addItem(
+                new cAgendamiento.Opcion(
+                        citaOriginal.idPaciente,
+                        citaOriginal.paciente
+                        + " — "
+                        + citaOriginal.documento
+                )
+        );
+
+        cbPacientes.setSelectedIndex(0);
+
+        // El paciente de la cita no se puede cambiar.
         txtCedula.setEnabled(false);
         cbPacientes.setEnabled(false);
+        btLimpiar.setEnabled(false);
 
-        // 4. Cambiar el título del botón o de la ventana (opcional)
-        btGuardar.setText("Confirmar Reagendamiento");
-        jLabel1.setText("Reagendar Cita Médica");
+        seleccionarId(cbEspecialidad, citaOriginal.idEspecialidad);
+        seleccionarId(cbMedico, citaOriginal.idMedico);
+        seleccionarId(cbServicio, citaOriginal.idServicio);
+
+        // Obliga a elegir nuevamente un horario disponible.
+        invalidarAgendas();
+
+        setTitle("Reprogramar cita " + idCita);
+        jLabel1.setText("Reprogramar cita " + idCita);
+        btGuardar.setText("Guardar reprogramación");
+    }
+
+    private void seleccionarId(
+            javax.swing.JComboBox<cAgendamiento.Opcion> combo,
+            long id) {
+
+        for (int i = 0; i < combo.getItemCount(); i++) {
+            if (combo.getItemAt(i).getId() == id) {
+                combo.setSelectedIndex(i);
+                return;
+            }
+        }
+
+        combo.setSelectedIndex(-1);
     }
 // Coloca objetos completos en el combo, no solamente sus nombres.
 
@@ -511,7 +590,13 @@ public class dlgNuevaCita extends javax.swing.JDialog {
         }
         invalidarAgendas();
         dlgSeleccionarHorario ventana = new dlgSeleccionarHorario(
-                this, paciente.getId(), medico.getId(), especialidad.getId(), servicio.getId());
+                this,
+                paciente.getId(),
+                medico.getId(),
+                especialidad.getId(),
+                servicio.getId(),
+                citaOriginal == null ? 0 : citaOriginal.idCita
+        );
         ventana.setVisible(true);
         Modelo.cDisponibilidad.Horario horario = ventana.getHorarioSeleccionado();
         if (horario == null) {

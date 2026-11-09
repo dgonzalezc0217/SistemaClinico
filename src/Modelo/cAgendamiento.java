@@ -347,6 +347,22 @@ public class cAgendamiento {
             String inicioUTC,
             String finUTC) throws SQLException {
 
+        return guardarOReprogramar(null, idPaciente, idEspecialidad,
+                idProfesional, idServicio, idAgenda, inicioUTC, finUTC);
+    }
+
+    public long reprogramarCita(DatosCita original, long idEspecialidad,
+            long idProfesional, long idServicio, long idAgenda,
+            String inicioUTC, String finUTC) throws SQLException {
+        if (original == null) throw new IllegalArgumentException("Selecciona la cita.");
+        return guardarOReprogramar(original, original.idPaciente, idEspecialidad,
+                idProfesional, idServicio, idAgenda, inicioUTC, finUTC);
+    }
+
+    private long guardarOReprogramar(DatosCita original, long idPaciente,
+            long idEspecialidad, long idProfesional, long idServicio,
+            long idAgenda, String inicioUTC, String finUTC) throws SQLException {
+        long excluir = original == null ? 0 : original.idCita;
         validarHorario(inicioUTC, finUTC);
 
         if (idPaciente <= 0 || idEspecialidad <= 0
@@ -365,6 +381,19 @@ public class cAgendamiento {
             conexion.setAutoCommit(false);
 
             try {
+                if (original != null) {
+                    DatosCita actual = obtenerCita(conexion, original.idCita);
+                    validarEditable(conexion, actual);
+                    if (actual.idPaciente != original.idPaciente
+                            || actual.idAgenda != original.idAgenda
+                            || actual.idEspecialidad != original.idEspecialidad
+                            || actual.idServicio != original.idServicio
+                            || !actual.inicioUTC.equals(original.inicioUTC)
+                            || !actual.finUTC.equals(original.finUTC)) {
+                        throw new IllegalArgumentException(
+                                "La cita cambió en otra ventana. Cierra el diálogo y vuelve a seleccionarla.");
+                    }
+                }
                 cDisponibilidad.validarServicio(
                         conexion,
                         idEspecialidad,
@@ -439,7 +468,7 @@ public class cAgendamiento {
                         = "SELECT 1 FROM Cita c "
                         + "JOIN Agenda a ON a.id_agenda = c.id_agenda "
                         + "WHERE a.id_usuario = ? "
-                        + "AND c.estado <> 'CANCELADA' "
+                        + "AND c.estado <> 'CANCELADA' AND c.id_cita <> ? "
                         + "AND c.inicio < ? "
                         + "AND c.fin > ?";
 
@@ -447,6 +476,7 @@ public class cAgendamiento {
                         conexion,
                         sqlCruceMedico,
                         idProfesional,
+                        excluir,
                         finUTC,
                         inicioUTC
                 );
@@ -462,7 +492,7 @@ public class cAgendamiento {
                 String sqlCrucePaciente
                         = "SELECT 1 FROM Cita "
                         + "WHERE id_paciente = ? "
-                        + "AND estado <> 'CANCELADA' "
+                        + "AND estado <> 'CANCELADA' AND id_cita <> ? "
                         + "AND inicio < ? "
                         + "AND fin > ?";
 
@@ -470,6 +500,7 @@ public class cAgendamiento {
                         conexion,
                         sqlCrucePaciente,
                         idPaciente,
+                        excluir,
                         finUTC,
                         inicioUTC
                 );
@@ -480,6 +511,22 @@ public class cAgendamiento {
                     );
                 }
 
+                // Reprogramar conserva el identificador, el paciente y la prioridad.
+                if (original != null) {
+                    String sql = "UPDATE Cita SET inicio=?, fin=?, id_agenda=?, "
+                            + "id_especialidad=?, id_servicio=? WHERE id_cita=? "
+                            + "AND estado='PENDIENTE' AND NOT EXISTS "
+                            + "(SELECT 1 FROM Episodio e WHERE e.id_cita=Cita.id_cita)";
+                    try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+                        ps.setString(1, inicioUTC); ps.setString(2, finUTC);
+                        ps.setLong(3, idAgenda); ps.setLong(4, idEspecialidad);
+                        ps.setLong(5, idServicio); ps.setLong(6, original.idCita);
+                        if (ps.executeUpdate() != 1) throw new SQLException(
+                                "La cita ya no se puede reprogramar. Actualiza la lista.");
+                    }
+                    conexion.commit();
+                    return original.idCita;
+                }
                 // 6. Guardar la cita después de superar las comprobaciones.
                 String sqlInsertar
                         = "INSERT INTO Cita "
@@ -607,4 +654,59 @@ public class cAgendamiento {
 
         return filas;
     }
+
+    public static class DatosCita {
+        public long idCita, idPaciente, idAgenda, idEspecialidad, idServicio, idMedico;
+        public String paciente, documento, estado, inicioUTC, finUTC;
+    }
+
+    private DatosCita obtenerCita(Connection con, long idCita) throws SQLException {
+        String sql = "SELECT c.*, a.id_usuario, p.nombres || ' ' || p.apellidos AS paciente, "
+                + "p.numero_documento FROM Cita c JOIN Agenda a ON a.id_agenda=c.id_agenda "
+                + "JOIN Paciente p ON p.id_paciente=c.id_paciente WHERE c.id_cita=?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setLong(1, idCita);
+            try (ResultSet r = ps.executeQuery()) {
+                if (!r.next()) throw new IllegalArgumentException("La cita ya no existe.");
+                DatosCita d = new DatosCita();
+                d.idCita=r.getLong("id_cita"); d.idPaciente=r.getLong("id_paciente");
+                d.idAgenda=r.getLong("id_agenda"); d.idEspecialidad=r.getLong("id_especialidad");
+                d.idServicio=r.getLong("id_servicio"); d.idMedico=r.getLong("id_usuario");
+                d.paciente=r.getString("paciente"); d.documento=r.getString("numero_documento");
+                d.estado=r.getString("estado"); d.inicioUTC=r.getString("inicio"); d.finUTC=r.getString("fin");
+                return d;
+            }
+        }
+    }
+
+    private void validarEditable(Connection con, DatosCita d) throws SQLException {
+        if (!"PENDIENTE".equals(d.estado)) throw new IllegalArgumentException(
+                "Solo se pueden modificar citas PENDIENTES.");
+        if (existe(con, "SELECT 1 FROM Episodio WHERE id_cita=?", d.idCita)) {
+            throw new IllegalArgumentException("Esta cita ya tiene un episodio. No se puede cancelar ni reprogramar.");
+        }
+    }
+
+    public DatosCita obtenerCitaParaReprogramar(long idCita) throws SQLException {
+        try (Connection con = new cConexion().conectar()) {
+            DatosCita d = obtenerCita(con, idCita);
+            validarEditable(con, d);
+            return d;
+        }
+    }
+
+    public void cancelarCita(long idCita, String motivo) throws SQLException {
+        if (motivo == null || motivo.isBlank()) throw new IllegalArgumentException(
+                "Escribe el motivo de cancelación.");
+        // Una sola sentencia: comprobar y cambiar son una operación indivisible.
+        String sql = "UPDATE Cita SET estado='CANCELADA', motivo_cancelacion=? "
+                + "WHERE id_cita=? AND estado='PENDIENTE' AND NOT EXISTS "
+                + "(SELECT 1 FROM Episodio e WHERE e.id_cita=Cita.id_cita)";
+        try (Connection con = new cConexion().conectar(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, motivo.trim()); ps.setLong(2, idCita);
+            if (ps.executeUpdate() != 1) throw new IllegalArgumentException(
+                    "No se canceló: la cita ya cambió de estado o tiene una atención iniciada. Actualiza la lista.");
+        }
+    }
+
 }

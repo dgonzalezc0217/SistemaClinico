@@ -22,6 +22,7 @@ public class vHistoriaClinica extends javax.swing.JPanel {
     public long idEpisodioActivo = 0;
     public long idSedeActual = 1; //
     public long idPacienteActivo = 0;
+    private long idCitaActiva = 0;
 
     public vHistoriaClinica() {
         initComponents();
@@ -601,6 +602,15 @@ public class vHistoriaClinica extends javax.swing.JPanel {
     }//GEN-LAST:event_btVerHistorialActionPerformed
 
     private void btBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBuscarActionPerformed
+        if (idEpisodioActivo > 0) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Ya hay una atención abierta. "
+                    + "No cambies de paciente ni abras otro episodio."
+            );
+
+            return;
+        }
         String cedulaIngresada = txtIngreso.getText().trim();
 
         if (cedulaIngresada.isEmpty()) {
@@ -633,6 +643,15 @@ public class vHistoriaClinica extends javax.swing.JPanel {
     }//GEN-LAST:event_btBuscarActionPerformed
 
     private void btAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAbrirActionPerformed
+        if (idEpisodioActivo > 0) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Ya hay una atención abierta. "
+                    + "No cambies de paciente ni abras otro episodio."
+            );
+
+            return;
+        }
         int primeraRespuesta = javax.swing.JOptionPane.showConfirmDialog(
                 null,
                 "¿Está seguro de que desea abrir un nuevo episodio clínico para este paciente?",
@@ -889,25 +908,134 @@ public class vHistoriaClinica extends javax.swing.JPanel {
 
     // 2. Método de validación ajustado para cerrar la ventana principal
     private void validarCierreVentana(javax.swing.JFrame frame) {
-        if (this.idEpisodioActivo > 0) {
-            javax.swing.JOptionPane.showMessageDialog(
-                    this,
-                    "Tiene un episodio clínico ABIERTO en este momento.\nPor favor, guarde la atención o cancele el episodio antes de salir.",
-                    "Cierre Bloqueado",
-                    javax.swing.JOptionPane.WARNING_MESSAGE
-            );
-        } else {
-            int confirmacion = javax.swing.JOptionPane.showConfirmDialog(
-                    this,
-                    "¿Está seguro que desea cerrar el programa?",
-                    "Confirmar salida",
-                    javax.swing.JOptionPane.YES_NO_OPTION
-            );
+        String mensaje;
 
-            if (confirmacion == javax.swing.JOptionPane.YES_OPTION) {
-                // Cerramos la aplicación completa
-                System.exit(0);
-            }
+        if (idEpisodioActivo > 0) {
+            mensaje
+                    = "El episodio seguirá ABIERTO en SQLite.\n"
+                    + "Los campos que no hayas guardado se perderán.\n"
+                    + "¿Cerrar el programa?";
+        } else {
+            mensaje = "¿Cerrar el programa?";
         }
+
+        int respuesta = javax.swing.JOptionPane.showConfirmDialog(
+                this,
+                mensaje,
+                "Cerrar",
+                javax.swing.JOptionPane.YES_NO_OPTION
+        );
+
+        if (respuesta == javax.swing.JOptionPane.YES_OPTION) {
+            frame.dispose();
+        }
+    }
+
+    public long getIdCitaActiva() {
+        return idCitaActiva;
+    }
+
+    public long getIdEpisodioActivo() {
+        return idEpisodioActivo;
+    }
+
+    public void cargarDesdeCita(long idCita)
+            throws java.sql.SQLException {
+
+        if (idEpisodioActivo > 0) {
+            // Volver a la misma cita no borra lo escrito.
+            if (idCitaActiva == idCita) {
+                return;
+            }
+
+            throw new IllegalArgumentException(
+                    "Ya hay otra atención abierta en la vista clínica. "
+                    + "Finalízala antes de abrir otra."
+            );
+        }
+
+        cHistoriaClinica.AtencionCita datos
+                = modelo.abrirAtencionDesdeCita(idCita);
+
+        cHistoriaClinica.DatosPaciente paciente = datos.paciente;
+
+        // Conservar los identificadores de la atención correcta.
+        idCitaActiva = datos.idCita;
+        idEpisodioActivo = datos.idEpisodio;
+        idPacienteActivo = paciente.idPaciente;
+        idHistoriaActiva = paciente.idHistoriaClinica;
+        idSedeActual = datos.idSede;
+
+        // Mostrar los datos del paciente.
+        txtIngreso.setText(paciente.numeroDocumento);
+        txtCedula.setText(paciente.numeroDocumento);
+        txtNombre.setText(paciente.nombreCompleto);
+        txtCelular.setText(paciente.celular);
+        txtEdad.setText(calcularEdad(paciente.fechaNacimiento));
+
+        String grupo = paciente.grupoSanguineo == null
+                ? ""
+                : paciente.grupoSanguineo;
+
+        String rh = paciente.factorRh == null
+                ? ""
+                : paciente.factorRh;
+
+        txtSangre.setText(grupo + rh);
+        txtAlergias.setText(paciente.alergias);
+
+        // Recuperar los datos que ya estén guardados en el episodio.
+        txtTA.setText(datos.tension);
+        txtFC.setText(datos.frecuencia);
+        txtTemperatura.setText(datos.temperatura);
+        txtPeso.setText(datos.peso);
+        txtConsulta.setText(datos.motivo);
+
+        txtExamen.setText("");
+        txtNotaClinica.setText("");
+
+        cmbTipo.setSelectedItem(datos.tipo);
+
+        cmbTriage.setSelectedItem(
+                datos.triage == null
+                        ? "Seleccione..."
+                        : datos.triage.toString()
+        );
+
+        // Evitar cambiar de paciente mientras esta atención está abierta.
+        txtIngreso.setEnabled(false);
+        btBuscar.setEnabled(false);
+        btAbrir.setEnabled(false);
+        btLimpiar.setEnabled(false);
+
+        btVerHistorial.setEnabled(true);
+
+        // Habilitar los campos de atención.
+        txtTA.setEditable(true);
+        txtFC.setEditable(true);
+        txtTemperatura.setEditable(true);
+        txtPeso.setEditable(true);
+        txtConsulta.setEditable(true);
+        txtExamen.setEditable(true);
+        txtNotaClinica.setEditable(true);
+
+        cmbTipo.setEnabled(true);
+        cmbTriage.setEnabled(true);
+
+        btDiagnostico.setEnabled(true);
+        btNota.setEnabled(true);
+
+        // El guardado y cierre clínico todavía están pendientes.
+        btGuardar.setEnabled(false);
+
+        btGuardar.setToolTipText(
+                "Pendiente de implementar el guardado "
+                + "y cierre de atención con Oscar."
+        );
+
+        setToolTipText(
+                "Cita " + idCitaActiva
+                + " · Episodio " + idEpisodioActivo
+        );
     }
 }

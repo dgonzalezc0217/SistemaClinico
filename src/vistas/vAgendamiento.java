@@ -4,6 +4,7 @@
  */
 package vistas;
 
+import javax.swing.JOptionPane;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
@@ -357,19 +358,112 @@ public class vAgendamiento extends javax.swing.JPanel {
     }//GEN-LAST:event_btNuevaCitaActionPerformed
 
     private void btReagendarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btReagendarActionPerformed
-        javax.swing.JOptionPane.showMessageDialog(
-                this,
-                "El reagendamiento todavía está pendiente de conectar "
-                + "con la cita seleccionada."
-        );
+        try {
+            long idCita = idCitaSeleccionada();
+
+            java.awt.Window padre
+                    = javax.swing.SwingUtilities.getWindowAncestor(this);
+
+            dlgNuevaCita dialogo = new dlgNuevaCita(
+                    padre instanceof java.awt.Frame
+                            ? (java.awt.Frame) padre
+                            : null,
+                    true,
+                    this
+            );
+
+            try {
+                dialogo.prepararModoReagendar(idCita);
+                dialogo.setVisible(true);
+            } finally {
+                dialogo.dispose();
+            }
+
+        } catch (java.sql.SQLException | IllegalArgumentException error) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    error.getMessage(),
+                    "Reprogramar",
+                    JOptionPane.WARNING_MESSAGE
+            );
+        }
     }//GEN-LAST:event_btReagendarActionPerformed
 
     private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
-        // TODO add your handling code here:
+        try {
+            long idCita = idCitaSeleccionada();
+
+            String motivo = JOptionPane.showInputDialog(
+                    this,
+                    "Motivo para cancelar la cita " + idCita + ":",
+                    "Cancelar cita",
+                    JOptionPane.QUESTION_MESSAGE
+            );
+
+            // Si se cierra la ventana o se pulsa Cancelar, no se modifica nada.
+            if (motivo == null) {
+                return;
+            }
+
+            if (motivo.isBlank()) {
+                throw new IllegalArgumentException(
+                        "Escribe un motivo de cancelación."
+                );
+            }
+
+            int respuesta = JOptionPane.showConfirmDialog(
+                    this,
+                    "¿Cancelar la cita " + idCita + "?",
+                    "Confirmar",
+                    JOptionPane.YES_NO_OPTION
+            );
+
+            if (respuesta != JOptionPane.YES_OPTION) {
+                return;
+            }
+
+            new Modelo.cAgendamiento().cancelarCita(idCita, motivo);
+
+            cargarCitas();
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Cita cancelada."
+            );
+
+        } catch (java.sql.SQLException | IllegalArgumentException error) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    error.getMessage(),
+                    "Cancelar",
+                    JOptionPane.WARNING_MESSAGE
+            );
+        }
     }//GEN-LAST:event_btCancelarActionPerformed
 
     private void btAtenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAtenderActionPerformed
-        // TODO add your handling code here:
+        try {
+            long idCita = idCitaSeleccionada();
+
+            java.awt.Window ventana
+                    = javax.swing.SwingUtilities.getWindowAncestor(this);
+
+            if (!(ventana instanceof vPrincipal)) {
+                throw new IllegalArgumentException(
+                        "Abre Agendamiento desde la ventana principal."
+                );
+            }
+
+            ((vPrincipal) ventana).abrirAtencionDesdeCita(idCita);
+
+        } catch (java.sql.SQLException | IllegalArgumentException error) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    error.getMessage(),
+                    "Atender",
+                    JOptionPane.WARNING_MESSAGE
+            );
+        }
     }//GEN-LAST:event_btAtenderActionPerformed
 
 
@@ -689,4 +783,18 @@ public class vAgendamiento extends javax.swing.JPanel {
         });
     }
 
+    private long idCitaSeleccionada() {
+        int fila = tblCitas.getSelectedRow();
+
+        if (fila < 0) {
+            throw new IllegalArgumentException(
+                    "Selecciona una cita de la tabla."
+            );
+        }
+
+        int filaModelo = tblCitas.convertRowIndexToModel(fila);
+
+        return ((Number) tblCitas.getModel()
+                .getValueAt(filaModelo, 0)).longValue();
+    }
 }

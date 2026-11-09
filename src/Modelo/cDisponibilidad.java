@@ -108,6 +108,12 @@ public class cDisponibilidad {
     public Map<LocalDate, List<Horario>> listarMes(long idPaciente,
             long idMedico, long idEspecialidad, long idServicio, YearMonth mes)
             throws SQLException {
+        return listarMes(idPaciente, idMedico, idEspecialidad, idServicio, mes, 0);
+    }
+
+    public Map<LocalDate, List<Horario>> listarMes(long idPaciente,
+            long idMedico, long idEspecialidad, long idServicio, YearMonth mes,
+            long idCitaExcluir) throws SQLException {
         Map<LocalDate, List<Horario>> dias = new TreeMap<>();
         LocalDateTime desde = mes.atDay(1).atStartOfDay(ZONA)
                 .withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime();
@@ -125,12 +131,13 @@ public class cDisponibilidad {
                         + "JOIN Agenda a ON a.id_agenda = c.id_agenda "
                         + "WHERE c.estado <> 'CANCELADA' "
                         + "AND (a.id_usuario = ? OR c.id_paciente = ?) "
-                        + "AND c.inicio < ? AND c.fin > ?";
+                        + "AND c.inicio < ? AND c.fin > ? AND c.id_cita <> ?";
                 try (PreparedStatement p = c.prepareStatement(sqlOcupados)) {
                     p.setLong(1, idMedico);
                     p.setLong(2, idPaciente);
                     p.setString(3, hasta.plusMinutes(minutos).format(FORMATO_BD));
                     p.setString(4, desde.format(FORMATO_BD));
+                    p.setLong(5, idCitaExcluir);
                     try (ResultSet r = p.executeQuery()) {
                         while (r.next()) ocupados.add(new Intervalo(r.getString(1), r.getString(2)));
                     }
