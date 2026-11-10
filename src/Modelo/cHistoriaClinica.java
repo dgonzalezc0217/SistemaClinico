@@ -202,61 +202,63 @@ public class cHistoriaClinica {
         public Integer triage;
     }
 
-  public DatosPaciente obtenerPacientePorCita(long idCita) throws SQLException {
-    if (idCita <= 0) {
-        throw new IllegalArgumentException("Selecciona una cita válida.");
-    }
-    
-    try (Connection con = new cConexion().conectar()) {
-        // 1. Buscar los datos del paciente asociados a la cita
-        String sql = "SELECT p.*, h.id_historia_clinica "
-                   + "FROM Cita c "
-                   + "JOIN Paciente p ON p.id_paciente = c.id_paciente "
-                   + "LEFT JOIN Historia_Clinica h ON h.id_paciente = p.id_paciente "
-                   + "WHERE c.id_cita = ?";
-                   
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setLong(1, idCita);
-            try (ResultSet r = ps.executeQuery()) {
-                if (!r.next()) {
-                    throw new IllegalArgumentException("La cita no existe en la base de datos.");
-                }
-                
-                DatosPaciente p = new DatosPaciente();
-                p.idPaciente = r.getLong("id_paciente");
-                p.idHistoriaClinica = r.getLong("id_historia_clinica");
-                
-                if (p.idHistoriaClinica <= 0) {
-                    throw new IllegalArgumentException("El paciente no tiene historia clínica. Completen su registro antes de atender.");
-                }
-                
-                p.nombreCompleto = r.getString("nombres") + " " + r.getString("apellidos");
-                p.numeroDocumento = r.getString("numero_documento");
-                p.celular = r.getString("telefono");
-                p.fechaNacimiento = r.getString("fecha_nacimiento");
-                p.grupoSanguineo = r.getString("grupo_sanguineo");
-                p.factorRh = r.getString("factor_rh");
-                
-                // 2. Buscar las alergias del paciente
-                StringBuilder alergias = new StringBuilder();
-                String sqlAlergias = "SELECT sustancia FROM Alergia_Paciente WHERE id_historia_clinica=? AND estado='Confirmada'";
-                try (PreparedStatement psA = con.prepareStatement(sqlAlergias)) {
-                    psA.setLong(1, p.idHistoriaClinica);
-                    try (ResultSet rA = psA.executeQuery()) {
-                        while (rA.next()) {
-                            if (alergias.length() > 0) alergias.append(", ");
-                            alergias.append(rA.getString(1));
+    public DatosPaciente obtenerPacientePorCita(long idCita) throws SQLException {
+        if (idCita <= 0) {
+            throw new IllegalArgumentException("Selecciona una cita válida.");
+        }
+
+        try (Connection con = new cConexion().conectar()) {
+            // 1. Buscar los datos del paciente asociados a la cita
+            String sql = "SELECT p.*, h.id_historia_clinica "
+                    + "FROM Cita c "
+                    + "JOIN Paciente p ON p.id_paciente = c.id_paciente "
+                    + "LEFT JOIN Historia_Clinica h ON h.id_paciente = p.id_paciente "
+                    + "WHERE c.id_cita = ?";
+
+            try (PreparedStatement ps = con.prepareStatement(sql)) {
+                ps.setLong(1, idCita);
+                try (ResultSet r = ps.executeQuery()) {
+                    if (!r.next()) {
+                        throw new IllegalArgumentException("La cita no existe en la base de datos.");
+                    }
+
+                    DatosPaciente p = new DatosPaciente();
+                    p.idPaciente = r.getLong("id_paciente");
+                    p.idHistoriaClinica = r.getLong("id_historia_clinica");
+
+                    if (p.idHistoriaClinica <= 0) {
+                        throw new IllegalArgumentException("El paciente no tiene historia clínica. Completen su registro antes de atender.");
+                    }
+
+                    p.nombreCompleto = r.getString("nombres") + " " + r.getString("apellidos");
+                    p.numeroDocumento = r.getString("numero_documento");
+                    p.celular = r.getString("telefono");
+                    p.fechaNacimiento = r.getString("fecha_nacimiento");
+                    p.grupoSanguineo = r.getString("grupo_sanguineo");
+                    p.factorRh = r.getString("factor_rh");
+
+                    // 2. Buscar las alergias del paciente
+                    StringBuilder alergias = new StringBuilder();
+                    String sqlAlergias = "SELECT sustancia FROM Alergia_Paciente WHERE id_historia_clinica=? AND estado='Confirmada'";
+                    try (PreparedStatement psA = con.prepareStatement(sqlAlergias)) {
+                        psA.setLong(1, p.idHistoriaClinica);
+                        try (ResultSet rA = psA.executeQuery()) {
+                            while (rA.next()) {
+                                if (alergias.length() > 0) {
+                                    alergias.append(", ");
+                                }
+                                alergias.append(rA.getString(1));
+                            }
                         }
                     }
+                    p.alergias = alergias.length() == 0 ? "Ninguna confirmada" : alergias.toString();
+
+                    // 3. Devolver SOLO al paciente (Sin crear el episodio)
+                    return p;
                 }
-                p.alergias = alergias.length() == 0 ? "Ninguna confirmada" : alergias.toString();
-                
-                // 3. Devolver SOLO al paciente (Sin crear el episodio)
-                return p;
             }
         }
     }
-}
 
     public boolean agregarNotaClinica(long idEpisodio, long idUsuario, String examenFisico, String descripcionNota) {
         String sqlInsertNota = "INSERT INTO Nota_Clinica "

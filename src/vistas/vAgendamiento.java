@@ -519,92 +519,92 @@ public class vAgendamiento extends javax.swing.JPanel {
 
 //Cargar datos a las tablas
     public void cargarCitas() {
-    try {
-        Modelo.cAgendamiento modeloAgenda = new Modelo.cAgendamiento();
+        try {
+            Modelo.cAgendamiento modeloAgenda = new Modelo.cAgendamiento();
 
-        // Consultar antes de limpiar la tabla.
-        ArrayList<Object[]> filas = modeloAgenda.listarCitas();
+            // Consultar antes de limpiar la tabla.
+            ArrayList<Object[]> filas = modeloAgenda.listarCitas();
 
-        DefaultTableModel modeloTabla = (DefaultTableModel) tblCitas.getModel();
+            DefaultTableModel modeloTabla = (DefaultTableModel) tblCitas.getModel();
 
-        // Quitar filtros anteriores para mostrar lo recién cargado.
-        if (sorter != null) {
-            sorter.setRowFilter(null);
-        }
-        tblCitas.clearSelection();
-        modeloTabla.setRowCount(0);
-
-        int pendientes = 0;
-        int atendidas = 0;
-
-        for (Object[] fila : filas) {
-            modeloTabla.addRow(fila);
-
-            String estado = String.valueOf(fila[7]);
-
-            if ("PENDIENTE".equals(estado)) {
-                pendientes++;
+            // Quitar filtros anteriores para mostrar lo recién cargado.
+            if (sorter != null) {
+                sorter.setRowFilter(null);
             }
+            tblCitas.clearSelection();
+            modeloTabla.setRowCount(0);
 
-            if ("ATENDIDA".equals(estado)) {
-                atendidas++;
-            }
-        }
+            int pendientes = 0;
+            int atendidas = 0;
 
-        lbCitasT.setText(String.valueOf(filas.size()));
-        lbCitasP.setText(String.valueOf(pendientes));
-        lbCitasC.setText(String.valueOf(atendidas));
+            for (Object[] fila : filas) {
+                modeloTabla.addRow(fila);
 
-        txtFecha.setText("");
-        txtCedula.setText("");
+                String estado = String.valueOf(fila[7]);
 
-        configurarComboBoxes();
+                if ("PENDIENTE".equals(estado)) {
+                    pendientes++;
+                }
 
-        // --- FILTRADO AUTOMÁTICO SEGÚN ROL DEL USUARIO LOGUEADO ---
-        aplicarFiltroSegunRol();
-
-    } catch (java.sql.SQLException | RuntimeException error) {
-        javax.swing.JOptionPane.showMessageDialog(
-                this,
-                "No se pudo actualizar la lista de citas.\n" + error.getMessage(),
-                "Error al consultar",
-                javax.swing.JOptionPane.ERROR_MESSAGE
-        );
-    }
-}
-    
-    private void aplicarFiltroSegunRol() {
-    java.awt.Window ventana = javax.swing.SwingUtilities.getWindowAncestor(this);
-    
-    if (ventana instanceof vPrincipal principal) {
-        long idUsuarioLogueado = principal.getIdUsuarioLogueado();
-        String rol = principal.getRolUsuarioLogueado();
-
-        // Detecta cualquier variación del rol médico
-        if (rol != null && rol.toLowerCase().contains("medic")) {
-            DefaultComboBoxModel modelMedicos = (DefaultComboBoxModel) cbMedico.getModel();
-
-            for (int i = 0; i < modelMedicos.getSize(); i++) {
-                Object item = modelMedicos.getElementAt(i);
-                if (item instanceof Modelo.cAgendamiento.Opcion opcion) {
-                    if (opcion.getId() == idUsuarioLogueado) {
-                        cbMedico.setSelectedIndex(i);
-                        break;
-                    }
+                if ("ATENDIDA".equals(estado)) {
+                    atendidas++;
                 }
             }
 
-            // Deshabilita el selector para bloquear la consulta de otros médicos
-            cbMedico.setEnabled(false);
-            
-            // Aplica la filtración de inmediato
-            filtrarTabla();
-        } else {
-            // Administradores y recepcionistas pueden seleccionar cualquier médico
-            cbMedico.setEnabled(true);
+            lbCitasT.setText(String.valueOf(filas.size()));
+            lbCitasP.setText(String.valueOf(pendientes));
+            lbCitasC.setText(String.valueOf(atendidas));
+
+            txtFecha.setText("");
+            txtCedula.setText("");
+
+            configurarComboBoxes();
+
+            // --- FILTRADO AUTOMÁTICO SEGÚN ROL DEL USUARIO LOGUEADO ---
+            aplicarFiltroSegunRol();
+
+        } catch (java.sql.SQLException | RuntimeException error) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "No se pudo actualizar la lista de citas.\n" + error.getMessage(),
+                    "Error al consultar",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
         }
     }
-}
+
+    private void aplicarFiltroSegunRol() {
+        java.awt.Window ventana = javax.swing.SwingUtilities.getWindowAncestor(this);
+
+        if (ventana instanceof vPrincipal principal) {
+            long idUsuarioLogueado = principal.getIdUsuarioLogueado();
+            String rol = principal.getRolUsuarioLogueado();
+
+            // Detecta cualquier variación del rol médico
+            if (rol != null && rol.toLowerCase().contains("medic")) {
+                DefaultComboBoxModel modelMedicos = (DefaultComboBoxModel) cbMedico.getModel();
+
+                for (int i = 0; i < modelMedicos.getSize(); i++) {
+                    Object item = modelMedicos.getElementAt(i);
+                    if (item instanceof Modelo.cAgendamiento.Opcion opcion) {
+                        if (opcion.getId() == idUsuarioLogueado) {
+                            cbMedico.setSelectedIndex(i);
+                            break;
+                        }
+                    }
+                }
+
+                // Deshabilita el selector para bloquear la consulta de otros médicos
+                cbMedico.setEnabled(false);
+
+                // Aplica la filtración de inmediato
+                filtrarTabla();
+            } else {
+                // Administradores y recepcionistas pueden seleccionar cualquier médico
+                cbMedico.setEnabled(true);
+            }
+        }
+    }
 
     //Datos de prueba para las tarjetas
     private void configurarTarjetas() {
@@ -760,61 +760,61 @@ public class vAgendamiento extends javax.swing.JPanel {
     }
 
     private void filtrarTabla() {
-    if (sorter == null) {
-        return;
-    }
-
-    final String documentoBuscado = txtCedula.getText().trim();
-    final String fechaBuscada = txtFecha.getText().trim();
-
-    Modelo.cAgendamiento.Opcion medico = (Modelo.cAgendamiento.Opcion) cbMedico.getSelectedItem();
-    Modelo.cAgendamiento.Opcion especialidad = (Modelo.cAgendamiento.Opcion) cbEspecialidad.getSelectedItem();
-
-    final long idMedicoCombo = medico == null ? 0 : medico.getId();
-    final long idEspecialidad = especialidad == null ? 0 : especialidad.getId();
-
-    // Consultar la sesión del usuario directamente desde la ventana principal
-    java.awt.Window ventana = javax.swing.SwingUtilities.getWindowAncestor(this);
-    long idUsuarioLogueado = 0;
-    boolean esMedico = false;
-
-    if (ventana instanceof vPrincipal principal) {
-        idUsuarioLogueado = principal.getIdUsuarioLogueado();
-        String rol = principal.getRolUsuarioLogueado();
-        if (rol != null && rol.toLowerCase().contains("medic")) {
-            esMedico = true;
+        if (sorter == null) {
+            return;
         }
-    }
 
-    final boolean esMedicoLogueado = esMedico;
-    final long idMedicoSesion = idUsuarioLogueado;
+        final String documentoBuscado = txtCedula.getText().trim();
+        final String fechaBuscada = txtFecha.getText().trim();
 
-    sorter.setRowFilter(new RowFilter<DefaultTableModel, Integer>() {
-        @Override
-        public boolean include(Entry<? extends DefaultTableModel, ? extends Integer> fila) {
-            Object documentoValor = fila.getValue(4);
-            String documento = documentoValor == null ? "" : documentoValor.toString();
-            String fecha = fila.getStringValue(1);
+        Modelo.cAgendamiento.Opcion medico = (Modelo.cAgendamiento.Opcion) cbMedico.getSelectedItem();
+        Modelo.cAgendamiento.Opcion especialidad = (Modelo.cAgendamiento.Opcion) cbEspecialidad.getSelectedItem();
 
-            long medicoFila = ((Number) fila.getValue(8)).longValue();
-            long especialidadFila = ((Number) fila.getValue(9)).longValue();
+        final long idMedicoCombo = medico == null ? 0 : medico.getId();
+        final long idEspecialidad = especialidad == null ? 0 : especialidad.getId();
 
-            boolean coincideDocumento = documentoBuscado.isEmpty() || documento.contains(documentoBuscado);
-            boolean coincideFecha = fechaBuscada.isEmpty() || fecha.equals(fechaBuscada);
-            boolean coincideEspecialidad = idEspecialidad == 0 || especialidadFila == idEspecialidad;
+        // Consultar la sesión del usuario directamente desde la ventana principal
+        java.awt.Window ventana = javax.swing.SwingUtilities.getWindowAncestor(this);
+        long idUsuarioLogueado = 0;
+        boolean esMedico = false;
 
-            // Si el usuario es médico, restringe estrictamente la vista a sus propias citas (medicoFila == idMedicoSesion)
-            boolean coincideMedico;
-            if (esMedicoLogueado) {
-                coincideMedico = (medicoFila == idMedicoSesion);
-            } else {
-                coincideMedico = (idMedicoCombo == 0 || medicoFila == idMedicoCombo);
+        if (ventana instanceof vPrincipal principal) {
+            idUsuarioLogueado = principal.getIdUsuarioLogueado();
+            String rol = principal.getRolUsuarioLogueado();
+            if (rol != null && rol.toLowerCase().contains("medic")) {
+                esMedico = true;
             }
-
-            return coincideDocumento && coincideFecha && coincideMedico && coincideEspecialidad;
         }
-    });
-}
+
+        final boolean esMedicoLogueado = esMedico;
+        final long idMedicoSesion = idUsuarioLogueado;
+
+        sorter.setRowFilter(new RowFilter<DefaultTableModel, Integer>() {
+            @Override
+            public boolean include(Entry<? extends DefaultTableModel, ? extends Integer> fila) {
+                Object documentoValor = fila.getValue(4);
+                String documento = documentoValor == null ? "" : documentoValor.toString();
+                String fecha = fila.getStringValue(1);
+
+                long medicoFila = ((Number) fila.getValue(8)).longValue();
+                long especialidadFila = ((Number) fila.getValue(9)).longValue();
+
+                boolean coincideDocumento = documentoBuscado.isEmpty() || documento.contains(documentoBuscado);
+                boolean coincideFecha = fechaBuscada.isEmpty() || fecha.equals(fechaBuscada);
+                boolean coincideEspecialidad = idEspecialidad == 0 || especialidadFila == idEspecialidad;
+
+                // Si el usuario es médico, restringe estrictamente la vista a sus propias citas (medicoFila == idMedicoSesion)
+                boolean coincideMedico;
+                if (esMedicoLogueado) {
+                    coincideMedico = (medicoFila == idMedicoSesion);
+                } else {
+                    coincideMedico = (idMedicoCombo == 0 || medicoFila == idMedicoCombo);
+                }
+
+                return coincideDocumento && coincideFecha && coincideMedico && coincideEspecialidad;
+            }
+        });
+    }
 
     private long idCitaSeleccionada() {
         int fila = tblCitas.getSelectedRow();

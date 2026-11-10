@@ -16,6 +16,7 @@ public class vPrincipal extends javax.swing.JFrame {
     private long idUsuarioLogueado;
     private String nombreUsuarioLogueado;
     private String rolUsuarioLogueado;
+
     public vPrincipal() {
         initComponents();
         estilo();
@@ -833,35 +834,36 @@ public class vPrincipal extends javax.swing.JFrame {
     public javax.swing.JPanel getpBase() {
         return pBase;
     }
+
     public void abrirAtencionDesdeCita(long idCita)
-        throws java.sql.SQLException {
+            throws java.sql.SQLException {
 
-    vistaHistoria.cargarDesdeCita(idCita);
+        vistaHistoria.cargarDesdeCita(idCita);
 
-    ((java.awt.CardLayout) pBase.getLayout()).show(
-            pBase,
-            "pantallaHistoriaClinica"
-    );
-}
-    
-   public void iniciarSesionExitosa(long idUsuario, String nombreCompleto, String rol) {
-    this.idUsuarioLogueado = idUsuario;
-    this.nombreUsuarioLogueado = nombreCompleto;
-    this.rolUsuarioLogueado = rol; // <-- ESTA LÍNEA FALTABA
+        ((java.awt.CardLayout) pBase.getLayout()).show(
+                pBase,
+                "pantallaHistoriaClinica"
+        );
+    }
 
-    mostrarBarraYMenu(true);
-    lbBienvenida.setText("<html>¡Bienvenido!<br>" + nombreCompleto + " | " + rol + "</html>");
-    configurarPermisosSegunRol(rol);
-    
-    CardLayout layout = (CardLayout) pBase.getLayout();
-    layout.show(pBase, "pantallaInicio");
-}
+    public void iniciarSesionExitosa(long idUsuario, String nombreCompleto, String rol) {
+        this.idUsuarioLogueado = idUsuario;
+        this.nombreUsuarioLogueado = nombreCompleto;
+        this.rolUsuarioLogueado = rol; // <-- ESTA LÍNEA FALTABA
 
-public long getIdUsuarioLogueado() {
-    return this.idUsuarioLogueado;
-}
+        mostrarBarraYMenu(true);
+        lbBienvenida.setText("<html>¡Bienvenido!<br>" + nombreCompleto + " | " + rol + "</html>");
+        configurarPermisosSegunRol(rol);
 
-public String getRolUsuarioLogueado() {
-    return this.rolUsuarioLogueado;
-}
+        CardLayout layout = (CardLayout) pBase.getLayout();
+        layout.show(pBase, "pantallaInicio");
+    }
+
+    public long getIdUsuarioLogueado() {
+        return this.idUsuarioLogueado;
+    }
+
+    public String getRolUsuarioLogueado() {
+        return this.rolUsuarioLogueado;
+    }
 }

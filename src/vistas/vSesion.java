@@ -199,44 +199,44 @@ public class vSesion extends javax.swing.JPanel {
     }//GEN-LAST:event_cbPerfilActionPerformed
 
     private void btInicioSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btInicioSesionActionPerformed
-    String documento = txtDocumento.getText().trim();
-    String contrasena = new String(txtContraseña.getPassword()).trim();
+        String documento = txtDocumento.getText().trim();
+        String contrasena = new String(txtContraseña.getPassword()).trim();
 
-    if (cbPerfil.getSelectedIndex() <= 0 || cbPerfil.getSelectedItem() == null) {
-        JOptionPane.showMessageDialog(this, "Por favor seleccione un perfil válido.", "Perfil no seleccionado", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-
-    String perfil = cbPerfil.getSelectedItem().toString().toLowerCase().trim();
-
-    if (documento.isEmpty() || contrasena.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Por favor ingrese documento y contraseña.", "Campos vacíos", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-
-    cUsuario controlador = new cUsuario();
-    cUsuario usuarioLogueado = controlador.validarLogin(documento, contrasena, perfil);
-
-    if (usuarioLogueado != null) {
-        // Unimos los dos getters para construir el texto de bienvenida
-        String nombreMostrar = usuarioLogueado.getNombres() + " " + usuarioLogueado.getApellidos();
-        
-        JOptionPane.showMessageDialog(this, "Bienvenido " + nombreMostrar, "Acceso Exitoso", JOptionPane.INFORMATION_MESSAGE);
-        
-        java.awt.Window ventana = javax.swing.SwingUtilities.getWindowAncestor(this);
-        if (ventana instanceof vPrincipal) {
-            vPrincipal principal = (vPrincipal) ventana;
-            
-            // Le enviamos el ID único recuperado y el nombre concatenado
-            principal.iniciarSesionExitosa(
-                usuarioLogueado.getIdUsuario(), 
-                nombreMostrar, 
-                perfil
-            );
+        if (cbPerfil.getSelectedIndex() <= 0 || cbPerfil.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(this, "Por favor seleccione un perfil válido.", "Perfil no seleccionado", JOptionPane.WARNING_MESSAGE);
+            return;
         }
-    } else {
-        JOptionPane.showMessageDialog(this, "Credenciales incorrectas o perfil no autorizado.", "Error de Autenticación", JOptionPane.ERROR_MESSAGE);
-    }
+
+        String perfil = cbPerfil.getSelectedItem().toString().toLowerCase().trim();
+
+        if (documento.isEmpty() || contrasena.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor ingrese documento y contraseña.", "Campos vacíos", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        cUsuario controlador = new cUsuario();
+        cUsuario usuarioLogueado = controlador.validarLogin(documento, contrasena, perfil);
+
+        if (usuarioLogueado != null) {
+            // Unimos los dos getters para construir el texto de bienvenida
+            String nombreMostrar = usuarioLogueado.getNombres() + " " + usuarioLogueado.getApellidos();
+
+            JOptionPane.showMessageDialog(this, "Bienvenido " + nombreMostrar, "Acceso Exitoso", JOptionPane.INFORMATION_MESSAGE);
+
+            java.awt.Window ventana = javax.swing.SwingUtilities.getWindowAncestor(this);
+            if (ventana instanceof vPrincipal) {
+                vPrincipal principal = (vPrincipal) ventana;
+
+                // Le enviamos el ID único recuperado y el nombre concatenado
+                principal.iniciarSesionExitosa(
+                        usuarioLogueado.getIdUsuario(),
+                        nombreMostrar,
+                        perfil
+                );
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Credenciales incorrectas o perfil no autorizado.", "Error de Autenticación", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btInicioSesionActionPerformed
 
     private void btVerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btVerActionPerformed

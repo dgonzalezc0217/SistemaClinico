@@ -742,7 +742,7 @@ public class vHistoriaClinica extends javax.swing.JPanel {
                 btVerHistorial.setEnabled(true);
                 btBuscar.setEnabled(false);
                 txtIngreso.setEditable(false);
-                
+
             } else {
                 javax.swing.JOptionPane.showMessageDialog(this, "Paciente no encontrado en la base de datos.");
             }
@@ -1086,41 +1086,42 @@ public class vHistoriaClinica extends javax.swing.JPanel {
     public void cargarDesdeCita(long idCita) throws java.sql.SQLException {
 
         if (idEpisodioActivo > 0) {
-        if (idCitaActiva == idCita) return;
-        throw new IllegalArgumentException("Ya hay otra atención abierta. Finalízala antes de abrir otra.");
-    }
-    
-    
-    cHistoriaClinica.DatosPaciente paciente = modelo.obtenerPacientePorCita(idCita); 
-    idCitaActiva = idCita;
-    idEpisodioActivo = 0; 
-    idPacienteActivo = paciente.idPaciente;
-    idHistoriaActiva = paciente.idHistoriaClinica;
+            if (idCitaActiva == idCita) {
+                return;
+            }
+            throw new IllegalArgumentException("Ya hay otra atención abierta. Finalízala antes de abrir otra.");
+        }
 
-    // Mostrar los datos del paciente
-    txtIngreso.setText(paciente.numeroDocumento);
-    txtCedula.setText(paciente.numeroDocumento);
-    txtNombre.setText(paciente.nombreCompleto);
-    txtCelular.setText(paciente.celular);
-    txtEdad.setText(calcularEdad(paciente.fechaNacimiento));
-    
-    String grupo = paciente.grupoSanguineo == null ? "" : paciente.grupoSanguineo;
-    String rh = paciente.factorRh == null ? "" : paciente.factorRh;
-    txtSangre.setText(grupo + rh);
-    txtAlergias.setText(paciente.alergias);
+        cHistoriaClinica.DatosPaciente paciente = modelo.obtenerPacientePorCita(idCita);
+        idCitaActiva = idCita;
+        idEpisodioActivo = 0;
+        idPacienteActivo = paciente.idPaciente;
+        idHistoriaActiva = paciente.idHistoriaClinica;
 
-    // Asegurarse de que los campos de consulta estén limpios y bloqueados
-    limpiarFormulario(false); 
+        // Mostrar los datos del paciente
+        txtIngreso.setText(paciente.numeroDocumento);
+        txtCedula.setText(paciente.numeroDocumento);
+        txtNombre.setText(paciente.nombreCompleto);
+        txtCelular.setText(paciente.celular);
+        txtEdad.setText(calcularEdad(paciente.fechaNacimiento));
 
-    // Bloquear cambio de paciente
-    txtIngreso.setEnabled(false);
-    btBuscar.setEnabled(false);
-    txtCedula.setEditable(false);
+        String grupo = paciente.grupoSanguineo == null ? "" : paciente.grupoSanguineo;
+        String rh = paciente.factorRh == null ? "" : paciente.factorRh;
+        txtSangre.setText(grupo + rh);
+        txtAlergias.setText(paciente.alergias);
 
-    // HABILITAMOS SOLO LO NECESARIO PARA EMPEZAR
-    btVerHistorial.setEnabled(true); // Podrá entrar en modo lectura
-    btAbrir.setEnabled(true);        // Podrá abrir el episodio cuando esté listo
-    btLimpiar.setEnabled(true);      // Por si quiere cancelar y limpiar la pantalla
+        // Asegurarse de que los campos de consulta estén limpios y bloqueados
+        limpiarFormulario(false);
+
+        // Bloquear cambio de paciente
+        txtIngreso.setEnabled(false);
+        btBuscar.setEnabled(false);
+        txtCedula.setEditable(false);
+
+        // HABILITAMOS SOLO LO NECESARIO PARA EMPEZAR
+        btVerHistorial.setEnabled(true); // Podrá entrar en modo lectura
+        btAbrir.setEnabled(true);        // Podrá abrir el episodio cuando esté listo
+        btLimpiar.setEnabled(true);      // Por si quiere cancelar y limpiar la pantalla
     }
 
     public void limpiarFormulario(boolean limpiarPaciente) {
