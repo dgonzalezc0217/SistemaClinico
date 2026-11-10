@@ -684,5 +684,6 @@ public class dlgNuevaCita extends javax.swing.JDialog {
         this.setResizable(false);
         pack();
         setLocationRelativeTo(parent);
+    
     }
 }

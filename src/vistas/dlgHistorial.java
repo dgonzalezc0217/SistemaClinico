@@ -263,4 +263,5 @@ public class dlgHistorial extends javax.swing.JDialog {
             tblHistorial.getColumnModel().getColumn(0).setWidth(0);
         }
     }
+
 }

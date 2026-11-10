@@ -1217,4 +1217,5 @@ public class vHistoriaClinica extends javax.swing.JPanel {
             btDiagnostico.setText("Ver Diagnósticos");
         }
     }
+
 }

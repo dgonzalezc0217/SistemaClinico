@@ -345,4 +345,5 @@ public class vSesion extends javax.swing.JPanel {
         }
         return super.getPreferredSize();
     }
+
 }

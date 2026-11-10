@@ -528,5 +528,4 @@ public class cUsuario {
 
         return null;
     }
-
 }

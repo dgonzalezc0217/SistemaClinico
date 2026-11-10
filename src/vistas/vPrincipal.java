@@ -865,5 +865,6 @@ public class vPrincipal extends javax.swing.JFrame {
 
     public String getRolUsuarioLogueado() {
         return this.rolUsuarioLogueado;
+    
     }
 }

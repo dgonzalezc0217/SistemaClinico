@@ -829,5 +829,6 @@ public class vAgendamiento extends javax.swing.JPanel {
 
         return ((Number) tblCitas.getModel()
                 .getValueAt(filaModelo, 0)).longValue();
+    
     }
 }

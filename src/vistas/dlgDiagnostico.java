@@ -456,4 +456,5 @@ public class dlgDiagnostico extends javax.swing.JDialog {
         btFinalizar.setEnabled(false);
 
     }
+
 }
