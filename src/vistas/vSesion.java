@@ -4,7 +4,10 @@
  */
 package vistas;
 
+import Modelo.cUsuario;
 import java.awt.Color;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -94,7 +97,6 @@ public class vSesion extends javax.swing.JPanel {
         jLabel4.setText("Contraseña");
 
         cbPerfil.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        cbPerfil.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Medico", "Administrador", "Recepcionista" }));
         cbPerfil.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbPerfilActionPerformed(evt);
@@ -151,9 +153,9 @@ public class vSesion extends javax.swing.JPanel {
                                             .addComponent(jLabel5)
                                             .addComponent(jLabel4)
                                             .addComponent(jLabel3)
-                                            .addComponent(cbPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(txtContraseña, javax.swing.GroupLayout.DEFAULT_SIZE, 1038, Short.MAX_VALUE)
-                                            .addComponent(txtDocumento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                            .addComponent(txtDocumento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(cbPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(btVer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addContainerGap(448, Short.MAX_VALUE))
@@ -197,34 +199,44 @@ public class vSesion extends javax.swing.JPanel {
     }//GEN-LAST:event_cbPerfilActionPerformed
 
     private void btInicioSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btInicioSesionActionPerformed
-        String documento = txtDocumento.getText().trim();
-        String password = new String(txtContraseña.getPassword()).trim();
+    String documento = txtDocumento.getText().trim();
+    String contrasena = new String(txtContraseña.getPassword()).trim();
 
-        if (documento.isEmpty() || password.isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                    "Por favor ingrese su documento y contraseña.",
-                    "Campos requeridos",
-                    javax.swing.JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        //Capturar el rol seleccionado del ComboBox
-        String rolSeleccionado = cbPerfil.getSelectedItem().toString();
+    if (cbPerfil.getSelectedIndex() <= 0 || cbPerfil.getSelectedItem() == null) {
+        JOptionPane.showMessageDialog(this, "Por favor seleccione un perfil válido.", "Perfil no seleccionado", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
 
-        // Obtener la ventana principal contenedora
+    String perfil = cbPerfil.getSelectedItem().toString().toLowerCase().trim();
+
+    if (documento.isEmpty() || contrasena.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Por favor ingrese documento y contraseña.", "Campos vacíos", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    cUsuario controlador = new cUsuario();
+    cUsuario usuarioLogueado = controlador.validarLogin(documento, contrasena, perfil);
+
+    if (usuarioLogueado != null) {
+        // Unimos los dos getters para construir el texto de bienvenida
+        String nombreMostrar = usuarioLogueado.getNombres() + " " + usuarioLogueado.getApellidos();
+        
+        JOptionPane.showMessageDialog(this, "Bienvenido " + nombreMostrar, "Acceso Exitoso", JOptionPane.INFORMATION_MESSAGE);
+        
         java.awt.Window ventana = javax.swing.SwingUtilities.getWindowAncestor(this);
         if (ventana instanceof vPrincipal) {
             vPrincipal principal = (vPrincipal) ventana;
-            //Bloquea o habilita los botones según el rol
-            principal.configurarPermisosSegunRol(rolSeleccionado);
-            // Restablece el menú lateral y la barra superior
-            principal.mostrarBarraYMenu(true);
-
-            // Muestra la pantalla de inicio/dashboard
-            java.awt.CardLayout cl = (java.awt.CardLayout) principal.getpBase().getLayout();
-            cl.show(principal.getpBase(), "pantallaInicio");
-            txtDocumento.setText("");
-            txtContraseña.setText("");
+            
+            // Le enviamos el ID único recuperado y el nombre concatenado
+            principal.iniciarSesionExitosa(
+                usuarioLogueado.getIdUsuario(), 
+                nombreMostrar, 
+                perfil
+            );
         }
+    } else {
+        JOptionPane.showMessageDialog(this, "Credenciales incorrectas o perfil no autorizado.", "Error de Autenticación", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_btInicioSesionActionPerformed
 
     private void btVerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btVerActionPerformed
@@ -318,6 +330,11 @@ public class vSesion extends javax.swing.JPanel {
         });
         color();
         iconos();
+        cbPerfil.setModel(new DefaultComboBoxModel<>(
+                new String[]{
+                    "Seleccione...",
+                    "Medico", "Administrador", "Recepcionista",}
+        ));
     }
 
 //Funcion para ajustar el tamñao de la pantalla

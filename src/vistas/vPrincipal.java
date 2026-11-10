@@ -13,9 +13,9 @@ import java.awt.Color;
  */
 public class vPrincipal extends javax.swing.JFrame {
 
-    /**
-     * Creates new form vPrincipal
-     */
+    private long idUsuarioLogueado;
+    private String nombreUsuarioLogueado;
+    private String rolUsuarioLogueado;
     public vPrincipal() {
         initComponents();
         estilo();
@@ -646,10 +646,11 @@ public class vPrincipal extends javax.swing.JFrame {
         pPerfil.setVisible(visible);
     }
 //Metodo para inicializar las vistas
+    private vHistoriaClinica vistaHistoria;
 
     private void inicializarVistas() {
         //Se agrega el objeto vHistoriaClinica
-        vHistoriaClinica vistaHistoria = new vHistoriaClinica();
+        vistaHistoria = new vHistoriaClinica();
         //Se agrega el objeto vFacturacion
         vFacturacion vistaFacturacion = new vFacturacion();
         //Se agrega el objeto vAgendamiento
@@ -665,21 +666,21 @@ public class vPrincipal extends javax.swing.JFrame {
         //Aqui se le dice al panel agregado que agregue la vista del panel vHistoriaclinica y se le pone una etiqueta
         //Agrega el panel vistaHistoriaClinica al contenedor principal llamado pBase.
         //Como pBase es un CardLayout, el segundo parametro ("pantallaHistoriaClinica") funciona como un alias o identificador unico.
-vPacientes vistaPacientes = new vPacientes();
+        vPacientes vistaPacientes = new vPacientes();
 
-javax.swing.JTabbedPane pestanasPersonas =
-        new javax.swing.JTabbedPane();
+        javax.swing.JTabbedPane pestanasPersonas
+                = new javax.swing.JTabbedPane();
 
 // Agrega los campos y botones del formulario a la pestaña.
-pestanasPersonas.addTab(
-        "Pacientes",
-        vistaPacientes.getContentPane()
-);
+        pestanasPersonas.addTab(
+                "Pacientes",
+                vistaPacientes.getContentPane()
+        );
 
 // Libera la ventana; su contenido ya está en la pestaña.
-vistaPacientes.dispose();
+        vistaPacientes.dispose();
 
-pestanasPersonas.addTab("Personal", vistaUsuario);
+        pestanasPersonas.addTab("Personal", vistaUsuario);
         pBase.add(pInicio, "pantallaInicio");
         pBase.add(vistaHistoria, "pantallaHistoriaClinica");
         pBase.add(vistaFacturacion, "pantallaFacturacion");
@@ -802,6 +803,7 @@ pestanasPersonas.addTab("Personal", vistaUsuario);
                 btHistoria.setEnabled(true);
                 btLaboratorio.setEnabled(true);
                 btPACS.setEnabled(true);
+                btAgenda.setEnabled(true);
                 break;
 
             case "recepcion":
@@ -831,4 +833,35 @@ pestanasPersonas.addTab("Personal", vistaUsuario);
     public javax.swing.JPanel getpBase() {
         return pBase;
     }
+    public void abrirAtencionDesdeCita(long idCita)
+        throws java.sql.SQLException {
+
+    vistaHistoria.cargarDesdeCita(idCita);
+
+    ((java.awt.CardLayout) pBase.getLayout()).show(
+            pBase,
+            "pantallaHistoriaClinica"
+    );
+}
+    
+   public void iniciarSesionExitosa(long idUsuario, String nombreCompleto, String rol) {
+    this.idUsuarioLogueado = idUsuario;
+    this.nombreUsuarioLogueado = nombreCompleto;
+    this.rolUsuarioLogueado = rol; // <-- ESTA LÍNEA FALTABA
+
+    mostrarBarraYMenu(true);
+    lbBienvenida.setText("<html>¡Bienvenido!<br>" + nombreCompleto + " | " + rol + "</html>");
+    configurarPermisosSegunRol(rol);
+    
+    CardLayout layout = (CardLayout) pBase.getLayout();
+    layout.show(pBase, "pantallaInicio");
+}
+
+public long getIdUsuarioLogueado() {
+    return this.idUsuarioLogueado;
+}
+
+public String getRolUsuarioLogueado() {
+    return this.rolUsuarioLogueado;
+}
 }

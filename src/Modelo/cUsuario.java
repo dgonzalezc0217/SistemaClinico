@@ -13,6 +13,10 @@ public class cUsuario {
     private long idUsuario;
     private String nombres;
     private String apellidos;
+    private String rol;
+    public String getNombreCompleto() {
+    return (nombres != null ? nombres : "") + " " + (apellidos != null ? apellidos : "");
+}
 
     // Permite crear el objeto que realizará la consulta.
     public cUsuario() {
@@ -24,7 +28,8 @@ public class cUsuario {
         this.nombres = nombres;
         this.apellidos = apellidos;
     }
-
+    
+    
     // Permiten leer los datos de cada usuario.
     public long getIdUsuario() {
         return idUsuario;
@@ -36,6 +41,10 @@ public class cUsuario {
 
     public String getApellidos() {
         return apellidos;
+    }
+    
+    public String getRol() {
+        return rol;
     }
 
     public ArrayList<cUsuario> listarActivos() throws SQLException {
@@ -487,4 +496,38 @@ public class cUsuario {
 
         return lista;
     }
+    
+   public cUsuario validarLogin(String documento, String contrasena, String perfil) {
+    String sql = "SELECT u.id_usuario, u.nombres, u.apellidos, r.nombre AS rol_nombre "
+               + "FROM Usuario u "
+               + "INNER JOIN Usuario_Rol ur ON u.id_usuario = ur.id_usuario "
+               + "INNER JOIN Rol r ON ur.id_rol = r.id_rol "
+               + "WHERE u.numero_documento = ? AND u.contrasena = ? AND r.nombre LIKE ?";
+
+    cConexion conexion = new cConexion(); 
+
+    try (Connection con = conexion.conectar(); 
+         PreparedStatement pst = con.prepareStatement(sql)) {
+        
+        pst.setString(1, documento);
+        pst.setString(2, contrasena);
+        pst.setString(3, perfil + "%");
+        
+        ResultSet rs = pst.executeQuery();
+        
+        if (rs.next()) {
+            this.idUsuario = rs.getLong("id_usuario");
+            this.nombres = rs.getString("nombres");
+            this.apellidos = rs.getString("apellidos");
+            this.rol = rs.getString("rol_nombre");
+            return this; // Retornamos el objeto usuario con todos sus datos cargados
+        }
+        
+    } catch (SQLException e) {
+        System.err.println("Error al validar login: " + e.getMessage());
+    }
+    
+    return null;
+}
+
 }
