@@ -75,15 +75,12 @@ public class dlgNuevaCita extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         jLabel1.setText("Ingrese los siguientes datos para agendar la cita");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         jLabel2.setText("Cedula Paciente:");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 59, -1, -1));
 
         txtCedula.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         txtCedula.addActionListener(new java.awt.event.ActionListener() {
@@ -91,11 +88,9 @@ public class dlgNuevaCita extends javax.swing.JDialog {
                 txtCedulaActionPerformed(evt);
             }
         });
-        getContentPane().add(txtCedula, new org.netbeans.lib.awtextra.AbsoluteConstraints(158, 56, 221, -1));
 
         jLabel3.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         jLabel3.setText("Nombre Paciente:");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 95, -1, -1));
 
         cbPacientes.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         cbPacientes.addActionListener(new java.awt.event.ActionListener() {
@@ -103,26 +98,20 @@ public class dlgNuevaCita extends javax.swing.JDialog {
                 cbPacientesActionPerformed(evt);
             }
         });
-        getContentPane().add(cbPacientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(159, 92, 220, -1));
 
         jLabel4.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         jLabel4.setText("Fecha:");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("SansSerif", 0, 10)); // NOI18N
         jLabel5.setText("AAAA-MM-DD");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, -1, -1));
 
         txtFecha.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        getContentPane().add(txtFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(161, 130, 220, -1));
 
         jLabel6.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         jLabel6.setText("Hora de inicio:");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, -1, -1));
 
         jLabel7.setFont(new java.awt.Font("SansSerif", 0, 10)); // NOI18N
         jLabel7.setText("HH:MM");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 400, -1, -1));
 
         txtHora.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         txtHora.addActionListener(new java.awt.event.ActionListener() {
@@ -130,21 +119,16 @@ public class dlgNuevaCita extends javax.swing.JDialog {
                 txtHoraActionPerformed(evt);
             }
         });
-        getContentPane().add(txtHora, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 170, 221, -1));
 
         jLabel8.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         jLabel8.setText("Especialidad:");
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 210, -1, -1));
 
         cbEspecialidad.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        getContentPane().add(cbEspecialidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 210, 221, -1));
 
         jLabel9.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         jLabel9.setText("Medico:");
-        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, -1, -1));
 
         cbMedico.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        getContentPane().add(cbMedico, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 250, 221, -1));
 
         btGuardar.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         btGuardar.setText("Guardar Cita");
@@ -153,7 +137,6 @@ public class dlgNuevaCita extends javax.swing.JDialog {
                 btGuardarActionPerformed(evt);
             }
         });
-        getContentPane().add(btGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 440, -1, -1));
 
         btCancelar.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         btCancelar.setText("Cancelar");
@@ -162,7 +145,6 @@ public class dlgNuevaCita extends javax.swing.JDialog {
                 btCancelarActionPerformed(evt);
             }
         });
-        getContentPane().add(btCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 440, -1, -1));
 
         btLimpiar.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         btLimpiar.setText("Limpiar");
@@ -171,25 +153,19 @@ public class dlgNuevaCita extends javax.swing.JDialog {
                 btLimpiarActionPerformed(evt);
             }
         });
-        getContentPane().add(btLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 440, -1, -1));
 
         cbServicio.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        getContentPane().add(cbServicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 300, 221, -1));
 
         jLabel10.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         jLabel10.setText("Servicio de la cita:");
-        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 300, -1, -1));
 
         jLabel11.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         jLabel11.setText("Finalización Automática:");
-        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 380, -1, -1));
 
         cbAgenda.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        getContentPane().add(cbAgenda, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 340, 220, -1));
 
         jLabel12.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         jLabel12.setText("Agenda asignada:");
-        getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, -1, -1));
 
         txtHoraFin.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         txtHoraFin.addActionListener(new java.awt.event.ActionListener() {
@@ -197,7 +173,6 @@ public class dlgNuevaCita extends javax.swing.JDialog {
                 txtHoraFinActionPerformed(evt);
             }
         });
-        getContentPane().add(txtHoraFin, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 380, 170, -1));
 
         btConsultarAgendas.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         btConsultarAgendas.setText("Consultar Agendas");
@@ -206,12 +181,138 @@ public class dlgNuevaCita extends javax.swing.JDialog {
                 btConsultarAgendasActionPerformed(evt);
             }
         });
-        getContentPane().add(btConsultarAgendas, new org.netbeans.lib.awtextra.AbsoluteConstraints(419, 208, -1, -1));
 
         jLabel13.setFont(new java.awt.Font("SansSerif", 0, 10)); // NOI18N
         jLabel13.setText("HH:MM");
-        getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, -1, -1));
-        getContentPane().add(lblEstadoCita, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 40, 30));
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(65, 65, 65)
+                                .addComponent(jLabel1))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(lblEstadoCita, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 113, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel10)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(jLabel7)
+                                            .addGap(48, 48, 48)))
+                                    .addComponent(jLabel12)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel13)
+                                    .addComponent(jLabel8)
+                                    .addComponent(jLabel9))
+                                .addGap(50, 50, 50)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(cbPacientes, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(cbAgenda, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtHoraFin, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(cbServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(cbMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(cbEspecialidad, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtHora, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btConsultarAgendas))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btGuardar)
+                                .addGap(163, 163, 163)
+                                .addComponent(btLimpiar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btCancelar)))))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addGap(1, 1, 1)
+                .addComponent(lblEstadoCita, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(cbPacientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addComponent(jLabel5))
+                            .addComponent(jLabel4))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addComponent(jLabel13)))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel8)
+                            .addComponent(cbEspecialidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btConsultarAgendas))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel9)
+                            .addComponent(cbMedico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtHora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(24, 24, 24)
+                                .addComponent(cbAgenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel12)
+                                .addGap(19, 19, 19)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtHoraFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel11)
+                                .addGap(0, 0, 0)
+                                .addComponent(jLabel7)))
+                        .addGap(24, 24, 24)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btGuardar)
+                            .addComponent(btLimpiar)
+                            .addComponent(btCancelar))
+                        .addContainerGap(50, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(cbServicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -679,11 +780,11 @@ public class dlgNuevaCita extends javax.swing.JDialog {
         });
         cargarCatalogos();
         actualizarEstadoGuardar();
-        this.setPreferredSize(new java.awt.Dimension(680, 540));
-        this.setMinimumSize(new java.awt.Dimension(680, 540));
+        this.setPreferredSize(new java.awt.Dimension(725, 650));
+        this.setMinimumSize(new java.awt.Dimension(760, 670));
         this.setResizable(false);
         pack();
         setLocationRelativeTo(parent);
-    
+
     }
 }

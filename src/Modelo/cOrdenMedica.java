@@ -104,8 +104,8 @@ public class cOrdenMedica {
             try {
                 exigirExiste(c,"SELECT 1 FROM Usuario WHERE id_usuario=? AND activo=1",
                         "El usuario autor no existe o está inactivo.",idUsuarioAutor);
-                exigirExiste(c,"SELECT 1 FROM Episodio WHERE id_episodio=? AND estado='ABIERTO'",
-                        "La atención debe tener un episodio ABIERTO.",idEpisodio);
+                exigirExiste(c, "SELECT 1 FROM Episodio WHERE id_episodio=?",
+                        "El episodio clínico especificado no existe.", idEpisodio);
                 long idOrden;
                 try(PreparedStatement p=c.prepareStatement(
                         "INSERT INTO Orden_Medica(prioridad,estado,id_usuario,id_episodio) VALUES (?,'BORRADOR',?,?)")) {

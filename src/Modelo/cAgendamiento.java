@@ -731,4 +731,20 @@ public class cAgendamiento {
             }
         }
     }
+
+    public long obtenerEspecialidadPorMedico(long idMedico) throws SQLException {
+        String sql = "SELECT id_especialidad FROM Usuario_Especialidad WHERE id_usuario = ?";
+
+        try (Connection conexion = new cConexion().conectar(); PreparedStatement consulta = conexion.prepareStatement(sql)) {
+
+            consulta.setLong(1, idMedico);
+
+            try (ResultSet resultado = consulta.executeQuery()) {
+                if (resultado.next()) {
+                    return resultado.getLong("id_especialidad");
+                }
+            }
+        }
+        return 0; // Retorna 0 si no encuentra ninguna especialidad
+    }
 }

@@ -523,9 +523,9 @@ public class vAgendamiento extends javax.swing.JPanel {
             Modelo.cAgendamiento modeloAgenda = new Modelo.cAgendamiento();
 
             // Consultar antes de limpiar la tabla.
-            ArrayList<Object[]> filas = modeloAgenda.listarCitas();
+            java.util.ArrayList<Object[]> filas = modeloAgenda.listarCitas();
 
-            DefaultTableModel modeloTabla = (DefaultTableModel) tblCitas.getModel();
+            javax.swing.table.DefaultTableModel modeloTabla = (javax.swing.table.DefaultTableModel) tblCitas.getModel();
 
             // Quitar filtros anteriores para mostrar lo recién cargado.
             if (sorter != null) {
@@ -534,33 +534,75 @@ public class vAgendamiento extends javax.swing.JPanel {
             tblCitas.clearSelection();
             modeloTabla.setRowCount(0);
 
-            int pendientes = 0;
-            int atendidas = 0;
+            // 1. Identificar el usuario y rol actual
+            long idUsuarioLogueado = 0;
+            boolean esMedico = false;
 
-            for (Object[] fila : filas) {
-                modeloTabla.addRow(fila);
-
-                String estado = String.valueOf(fila[7]);
-
-                if ("PENDIENTE".equals(estado)) {
-                    pendientes++;
-                }
-
-                if ("ATENDIDA".equals(estado)) {
-                    atendidas++;
+            java.awt.Window ventana = javax.swing.SwingUtilities.getWindowAncestor(this);
+            if (ventana instanceof vPrincipal principal) {
+                idUsuarioLogueado = principal.getIdUsuarioLogueado();
+                String rol = principal.getRolUsuarioLogueado();
+                if (rol != null && rol.toLowerCase().contains("medic")) {
+                    esMedico = true;
                 }
             }
 
-            lbCitasT.setText(String.valueOf(filas.size()));
+            // 2. Contadores para las tarjetas
+            int totalCitas = 0;
+            int pendientes = 0;
+            int completadas = 0;
+
+            // Obtener la fecha de hoy para el filtro del médico
+            String fechaHoy = java.time.LocalDate.now(java.time.ZoneId.of("America/Bogota")).toString();
+
+            // 3. Recorrer y contar según la lógica solicitada
+            for (Object[] fila : filas) {
+                modeloTabla.addRow(fila);
+
+                String fechaFila = String.valueOf(fila[1]);
+                String estado = String.valueOf(fila[7]);
+                long idMedicoFila = ((Number) fila[8]).longValue();
+
+                if (esMedico) {
+                    // LÓGICA MÉDICO: Solo sus citas
+                    if (idMedicoFila == idUsuarioLogueado) {
+                        if (fechaFila.equals(fechaHoy)) {
+                            totalCitas++; // Solo total del día
+                        }
+                        if ("PENDIENTE".equals(estado)) {
+                            pendientes++;
+                        } else if ("ATENDIDA".equals(estado) || "CANCELADA".equals(estado)) {
+                            completadas++;
+                        }
+                    }
+                } else {
+                    // LÓGICA ADMIN/RECEPCIÓN: Todas las citas
+                    totalCitas++; // Todo el histórico
+                    if ("PENDIENTE".equals(estado)) {
+                        pendientes++;
+                    } else if ("ATENDIDA".equals(estado) || "CANCELADA".equals(estado)) {
+                        completadas++;
+                    }
+                }
+            }
+
+            // 4. Actualizar visualmente las tarjetas y el título
+            lbCitasT.setText(String.valueOf(totalCitas));
             lbCitasP.setText(String.valueOf(pendientes));
-            lbCitasC.setText(String.valueOf(atendidas));
+            lbCitasC.setText(String.valueOf(completadas));
+
+            if (esMedico) {
+                jLabel2.setText("Tus citas de hoy");
+            } else {
+                jLabel2.setText("Total de citas");
+            }
 
             txtFecha.setText("");
             txtCedula.setText("");
 
             configurarComboBoxes();
 
-            // --- FILTRADO AUTOMÁTICO SEGÚN ROL DEL USUARIO LOGUEADO ---
+            // Aplicar el filtro de la tabla para que coincida visualmente
             aplicarFiltroSegunRol();
 
         } catch (java.sql.SQLException | RuntimeException error) {
@@ -580,7 +622,6 @@ public class vAgendamiento extends javax.swing.JPanel {
             long idUsuarioLogueado = principal.getIdUsuarioLogueado();
             String rol = principal.getRolUsuarioLogueado();
 
-            // Detecta cualquier variación del rol médico
             if (rol != null && rol.toLowerCase().contains("medic")) {
                 DefaultComboBoxModel modelMedicos = (DefaultComboBoxModel) cbMedico.getModel();
 
@@ -594,13 +635,13 @@ public class vAgendamiento extends javax.swing.JPanel {
                     }
                 }
 
-                // Deshabilita el selector para bloquear la consulta de otros médicos
                 cbMedico.setEnabled(false);
 
-                // Aplica la filtración de inmediato
+                // Synchronize specialty for the logged doctor
+                actualizarEspecialidadSegunMedico();
+
                 filtrarTabla();
             } else {
-                // Administradores y recepcionistas pueden seleccionar cualquier médico
                 cbMedico.setEnabled(true);
             }
         }
@@ -829,6 +870,48 @@ public class vAgendamiento extends javax.swing.JPanel {
 
         return ((Number) tblCitas.getModel()
                 .getValueAt(filaModelo, 0)).longValue();
-    
+
     }
+
+    private void actualizarEspecialidadSegunMedico() {
+        Object item = cbMedico.getSelectedItem();
+        if (!(item instanceof Modelo.cAgendamiento.Opcion)) {
+            return;
+        }
+
+        Modelo.cAgendamiento.Opcion medicoSel = (Modelo.cAgendamiento.Opcion) item;
+        long idMedico = medicoSel.getId();
+
+        // Si se selecciona "Todos los médicos", restablecer a "Todas las especialidades"
+        if (idMedico == 0) {
+            if (cbEspecialidad.getItemCount() > 0) {
+                cbEspecialidad.setSelectedIndex(0);
+            }
+            return;
+        }
+
+        try {
+            // Llamamos al método del modelo
+            Modelo.cAgendamiento modeloAgenda = new Modelo.cAgendamiento();
+            long idEspecialidadMedico = modeloAgenda.obtenerEspecialidadPorMedico(idMedico);
+
+            // Si encontró una especialidad, la seleccionamos en el combobox
+            if (idEspecialidadMedico > 0) {
+                DefaultComboBoxModel modelEsp = (DefaultComboBoxModel) cbEspecialidad.getModel();
+                for (int i = 0; i < modelEsp.getSize(); i++) {
+                    Object espItem = modelEsp.getElementAt(i);
+                    if (espItem instanceof Modelo.cAgendamiento.Opcion) {
+                        Modelo.cAgendamiento.Opcion espOp = (Modelo.cAgendamiento.Opcion) espItem;
+                        if (espOp.getId() == idEspecialidadMedico) {
+                            cbEspecialidad.setSelectedIndex(i);
+                            break;
+                        }
+                    }
+                }
+            }
+        } catch (java.sql.SQLException error) {
+            System.err.println("Error al sincronizar la especialidad: " + error.getMessage());
+        }
+    }
+
 }

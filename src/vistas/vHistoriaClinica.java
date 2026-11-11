@@ -638,6 +638,7 @@ public class vHistoriaClinica extends javax.swing.JPanel {
             javax.swing.JOptionPane.showMessageDialog(this, "Debe seleccionar el Tipo de Atención y el Nivel de Triage.", "Datos incompletos", javax.swing.JOptionPane.WARNING_MESSAGE);
             return;
         }
+        
         // 2. Validar diagnósticos
         if (!modelo.tieneDiagnosticos(this.idEpisodioActivo)) {
             javax.swing.JOptionPane.showMessageDialog(this,
@@ -662,13 +663,20 @@ public class vHistoriaClinica extends javax.swing.JPanel {
             return;
         }
 
+        long idUsuarioReal = 0;
+        java.awt.Window parentWindow = javax.swing.SwingUtilities.getWindowAncestor(this);
+        if (parentWindow instanceof vPrincipal principal) {
+            idUsuarioReal = principal.getIdUsuarioLogueado();
+        }
+
         String examenFisico = txtExamen.getText().trim();
         String notaClinica = txtNotaClinica.getText().trim();
-        long idUsuarioLogueado = 1;
 
+        // 5. Guardar nota clínica usando el ID real
         if (!examenFisico.isEmpty() || !notaClinica.isEmpty()) {
-            modelo.agregarNotaClinica(this.idEpisodioActivo, idUsuarioLogueado, examenFisico, notaClinica);
+            modelo.agregarNotaClinica(this.idEpisodioActivo, idUsuarioReal, examenFisico, notaClinica);
         }
+        
         // --------------------------------------------------
         String tipoAtencion = cmbTipo.getSelectedItem().toString();
         int nivelTriage = Integer.parseInt(cmbTriage.getSelectedItem().toString().substring(0, 1));
@@ -684,11 +692,30 @@ public class vHistoriaClinica extends javax.swing.JPanel {
                 txtConsulta.getText().trim()
         );
 
-        // 6. Finalizar
+        // 6. Finalizar y Preguntar por Orden Médica
         if (exito) {
             javax.swing.JOptionPane.showMessageDialog(this, "Episodio guardado exitosamente. La cita ha sido marcada como ATENDIDA.", "Proceso Finalizado", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            
+            // Preguntar por medicamentos/exámenes
+            int respuestaOrden = javax.swing.JOptionPane.showConfirmDialog(
+                    this,
+                    "¿El paciente requiere medicamentos o exámenes de laboratorio?\n¿Desea generar la Orden Médica ahora?",
+                    "Generar Orden Médica",
+                    javax.swing.JOptionPane.YES_NO_OPTION,
+                    javax.swing.JOptionPane.QUESTION_MESSAGE
+            );
+
+            if (respuestaOrden == javax.swing.JOptionPane.YES_OPTION) {
+                java.awt.Frame parentFrame = (parentWindow instanceof java.awt.Frame) ? (java.awt.Frame) parentWindow : null;
+                
+                // Abrimos dlgOrdenMedica usando el mismo idUsuarioReal
+                dlgOrdenMedica dialogoOrden = new dlgOrdenMedica(parentFrame, true, this.idEpisodioActivo, idUsuarioReal);
+                dialogoOrden.setVisible(true);
+            }
+            
             this.idEpisodioActivo = 0; // Liberamos la ventana
             limpiarFormulario(true);
+            
         } else {
             javax.swing.JOptionPane.showMessageDialog(this, "Ocurrió un error al guardar los datos en el sistema.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
