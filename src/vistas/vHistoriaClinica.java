@@ -57,6 +57,7 @@ public class vHistoriaClinica extends javax.swing.JPanel {
         jLabel7 = new javax.swing.JLabel();
         txtIngreso = new javax.swing.JTextField();
         btVerHistorial = new javax.swing.JButton();
+        btVerAntedecentes = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         pSignos = new javax.swing.JPanel();
@@ -176,6 +177,14 @@ public class vHistoriaClinica extends javax.swing.JPanel {
             }
         });
 
+        btVerAntedecentes.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        btVerAntedecentes.setText("Ver Antecedentes");
+        btVerAntedecentes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btVerAntedecentesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pPacienteLayout = new javax.swing.GroupLayout(pPaciente);
         pPaciente.setLayout(pPacienteLayout);
         pPacienteLayout.setHorizontalGroup(
@@ -210,8 +219,7 @@ public class vHistoriaClinica extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel4)
                                 .addGap(18, 18, 18)
-                                .addComponent(txtEdad, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(123, 123, 123))
+                                .addComponent(txtEdad, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(pPacienteLayout.createSequentialGroup()
                         .addGap(2, 2, 2)
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -221,7 +229,9 @@ public class vHistoriaClinica extends javax.swing.JPanel {
                         .addComponent(btBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btVerHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(115, 115, 115))))
+                        .addGap(62, 62, 62)
+                        .addComponent(btVerAntedecentes)))
+                .addGap(123, 123, 123))
         );
         pPacienteLayout.setVerticalGroup(
             pPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -230,15 +240,12 @@ public class vHistoriaClinica extends javax.swing.JPanel {
                 .addGroup(pPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pPacienteLayout.createSequentialGroup()
                         .addGroup(pPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pPacienteLayout.createSequentialGroup()
-                                .addGroup(pPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btBuscar))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pPacienteLayout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(btVerHistorial)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(pPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btBuscar)
+                                .addComponent(btVerHistorial)
+                                .addComponent(btVerAntedecentes)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(pPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(pPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -638,7 +645,7 @@ public class vHistoriaClinica extends javax.swing.JPanel {
             javax.swing.JOptionPane.showMessageDialog(this, "Debe seleccionar el Tipo de Atención y el Nivel de Triage.", "Datos incompletos", javax.swing.JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
+
         // 2. Validar diagnósticos
         if (!modelo.tieneDiagnosticos(this.idEpisodioActivo)) {
             javax.swing.JOptionPane.showMessageDialog(this,
@@ -676,7 +683,7 @@ public class vHistoriaClinica extends javax.swing.JPanel {
         if (!examenFisico.isEmpty() || !notaClinica.isEmpty()) {
             modelo.agregarNotaClinica(this.idEpisodioActivo, idUsuarioReal, examenFisico, notaClinica);
         }
-        
+
         // --------------------------------------------------
         String tipoAtencion = cmbTipo.getSelectedItem().toString();
         int nivelTriage = Integer.parseInt(cmbTriage.getSelectedItem().toString().substring(0, 1));
@@ -695,7 +702,7 @@ public class vHistoriaClinica extends javax.swing.JPanel {
         // 6. Finalizar y Preguntar por Orden Médica
         if (exito) {
             javax.swing.JOptionPane.showMessageDialog(this, "Episodio guardado exitosamente. La cita ha sido marcada como ATENDIDA.", "Proceso Finalizado", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-            
+
             // Preguntar por medicamentos/exámenes
             int respuestaOrden = javax.swing.JOptionPane.showConfirmDialog(
                     this,
@@ -707,15 +714,15 @@ public class vHistoriaClinica extends javax.swing.JPanel {
 
             if (respuestaOrden == javax.swing.JOptionPane.YES_OPTION) {
                 java.awt.Frame parentFrame = (parentWindow instanceof java.awt.Frame) ? (java.awt.Frame) parentWindow : null;
-                
+
                 // Abrimos dlgOrdenMedica usando el mismo idUsuarioReal
                 dlgOrdenMedica dialogoOrden = new dlgOrdenMedica(parentFrame, true, this.idEpisodioActivo, idUsuarioReal);
                 dialogoOrden.setVisible(true);
             }
-            
+
             this.idEpisodioActivo = 0; // Liberamos la ventana
             limpiarFormulario(true);
-            
+
         } else {
             javax.swing.JOptionPane.showMessageDialog(this, "Ocurrió un error al guardar los datos en el sistema.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
@@ -767,6 +774,7 @@ public class vHistoriaClinica extends javax.swing.JPanel {
                 this.idPacienteActivo = paciente.idPaciente; //
                 btAbrir.setEnabled(true);
                 btVerHistorial.setEnabled(true);
+                btVerAntedecentes.setEnabled(true);
                 btBuscar.setEnabled(false);
                 txtIngreso.setEditable(false);
 
@@ -892,6 +900,30 @@ public class vHistoriaClinica extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btNotaActionPerformed
 
+    private void btVerAntedecentesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btVerAntedecentesActionPerformed
+// 1. Validar que haya un paciente cargado
+        if (this.idHistoriaActiva <= 0) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Debe cargar un paciente primero.");
+            return;
+        }
+
+        // 2. Obtener el Frame padre
+        java.awt.Window parentWindow = javax.swing.SwingUtilities.getWindowAncestor(this);
+        java.awt.Frame parentFrame = (parentWindow instanceof java.awt.Frame) ? (java.awt.Frame) parentWindow : null;
+
+        // Extraemos el nombre directamente de la caja de texto
+        String nombrePaciente = txtNombre.getText();
+
+        // Pasamos 0 como idUsuario porque en modo lectura no se usa para guardar en la BD
+        int idUsuario = 0;
+
+        // 3. Abrir la ventana en Modo Lectura (el último parámetro en 'true')
+        dlgAntecedente ventana = new dlgAntecedente(parentFrame, true, nombrePaciente, this.idHistoriaActiva, idUsuario, true);
+
+        ventana.setLocationRelativeTo(this);
+        ventana.setVisible(true);
+    }//GEN-LAST:event_btVerAntedecentesActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btAbrir;
@@ -900,6 +932,7 @@ public class vHistoriaClinica extends javax.swing.JPanel {
     private javax.swing.JButton btGuardar;
     private javax.swing.JButton btLimpiar;
     private javax.swing.JButton btNota;
+    private javax.swing.JButton btVerAntedecentes;
     private javax.swing.JButton btVerHistorial;
     private javax.swing.JComboBox<String> cmbTipo;
     private javax.swing.JComboBox<String> cmbTriage;
@@ -953,6 +986,7 @@ public class vHistoriaClinica extends javax.swing.JPanel {
         btAbrir.setBackground(Color.decode("#A3C9A8"));
         btLimpiar.setBackground(Color.decode("#A3C9A8"));
         btNota.setBackground(Color.decode("#A3C9A8"));
+        btVerAntedecentes.setBackground(Color.decode("#A3C9A8"));
     }
 
     public void numeros() {
@@ -1018,6 +1052,7 @@ public class vHistoriaClinica extends javax.swing.JPanel {
         ));
         //desabilita el boton de ver historial al abrir la ventana
         btVerHistorial.setEnabled(false);
+        btVerAntedecentes.setEnabled(false);
         // Bloquear la edición manual por teclado
         txtNombre.setEditable(false);
         txtCedula.setEditable(false);
@@ -1146,7 +1181,8 @@ public class vHistoriaClinica extends javax.swing.JPanel {
         txtCedula.setEditable(false);
 
         // HABILITAMOS SOLO LO NECESARIO PARA EMPEZAR
-        btVerHistorial.setEnabled(true); // Podrá entrar en modo lectura
+        btVerHistorial.setEnabled(true);
+        btVerAntedecentes.setEnabled(true);// Podrá entrar en modo lectura
         btAbrir.setEnabled(true);        // Podrá abrir el episodio cuando esté listo
         btLimpiar.setEnabled(true);      // Por si quiere cancelar y limpiar la pantalla
     }

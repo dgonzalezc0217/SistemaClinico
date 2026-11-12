@@ -411,4 +411,92 @@ public class cPaciente {
             JOptionPane.showMessageDialog(null, "Error al cargar los pacientes de la base de datos: " + er.getMessage());
         }
     }
+
+    public boolean registrarAntecedente(String tipo, String descripcion, long idHistoria, long idUsuario) {
+        String sql = "INSERT INTO Antecedente (tipo, descripcion, registrado_en, activo, id_usuario, id_historia_clinica) "
+                + "VALUES (?, ?, ?, 1, ?, ?)";
+
+        try (Connection conexion = new cConexion().conectar(); PreparedStatement consulta = conexion.prepareStatement(sql)) {
+
+            consulta.setString(1, tipo);
+            consulta.setString(2, descripcion);
+
+            // Generar fecha y hora actual para 'registrado_en'
+            java.time.LocalDateTime ahora = java.time.LocalDateTime.now();
+            java.time.format.DateTimeFormatter formato = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            consulta.setString(3, ahora.format(formato));
+
+            consulta.setLong(4, idUsuario);
+            consulta.setLong(5, idHistoria);
+
+            int filasAfectadas = consulta.executeUpdate();
+            return filasAfectadas > 0;
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al registrar el antecedente: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public void mostrarAntecedentes(JTable tabla, long idHistoria) {
+        DefaultTableModel modelo = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // La tabla no es editable directamente
+            }
+        };
+
+        modelo.addColumn("ID");
+        modelo.addColumn("Tipo");
+        modelo.addColumn("Descripción");
+        modelo.addColumn("Fecha Registro");
+
+        tabla.setModel(modelo);
+
+        // Ocultar la columna ID visualmente (la necesitamos para poder actualizar después)
+        tabla.getColumnModel().getColumn(0).setMinWidth(0);
+        tabla.getColumnModel().getColumn(0).setMaxWidth(0);
+        tabla.getColumnModel().getColumn(0).setWidth(0);
+
+        // Consultar solo antecedentes activos (activo = 1) de la historia seleccionada
+        String sql = "SELECT id_antecedente, tipo, descripcion, registrado_en "
+                + "FROM Antecedente WHERE id_historia_clinica = ? AND activo = 1";
+
+        String[] datos = new String[4];
+
+        try (Connection conexion = new cConexion().conectar(); PreparedStatement consulta = conexion.prepareStatement(sql)) {
+
+            consulta.setLong(1, idHistoria);
+
+            try (ResultSet rs = consulta.executeQuery()) {
+                while (rs.next()) {
+                    datos[0] = rs.getString("id_antecedente");
+                    datos[1] = rs.getString("tipo");
+                    datos[2] = rs.getString("descripcion");
+                    datos[3] = rs.getString("registrado_en");
+                    modelo.addRow(datos);
+                }
+            }
+        } catch (SQLException er) {
+            JOptionPane.showMessageDialog(null, "Error al cargar los antecedentes: " + er.getMessage());
+        }
+    }
+
+    public boolean actualizarAntecedente(long idAntecedente, String tipo, String descripcion) {
+        String sql = "UPDATE Antecedente SET tipo = ?, descripcion = ? WHERE id_antecedente = ?";
+
+        try (Connection conexion = new cConexion().conectar(); PreparedStatement consulta = conexion.prepareStatement(sql)) {
+
+            consulta.setString(1, tipo);
+            consulta.setString(2, descripcion);
+            consulta.setLong(3, idAntecedente);
+
+            int filasAfectadas = consulta.executeUpdate();
+            return filasAfectadas > 0;
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al actualizar el antecedente: " + e.getMessage());
+            return false;
+        }
+    }
 }

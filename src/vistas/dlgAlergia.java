@@ -58,6 +58,7 @@ public class dlgAlergia extends javax.swing.JDialog {
         btActualizar = new javax.swing.JButton();
         btCancelar = new javax.swing.JButton();
         cbReaccion = new javax.swing.JComboBox<>();
+        jLabel7 = new javax.swing.JLabel();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -92,7 +93,7 @@ public class dlgAlergia extends javax.swing.JDialog {
         lbNombre.setBackground(new java.awt.Color(255, 255, 255));
         lbNombre.setFont(new java.awt.Font("SansSerif", 1, 28)); // NOI18N
         lbNombre.setText("Nombre del paciente");
-        getContentPane().add(lbNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 10, -1, -1));
+        getContentPane().add(lbNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 10, -1, -1));
 
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
         jLabel2.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
@@ -184,6 +185,11 @@ public class dlgAlergia extends javax.swing.JDialog {
 
         cbReaccion.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         getContentPane().add(cbReaccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(144, 119, 525, -1));
+
+        jLabel7.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel7.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        jLabel7.setText("Alergias");
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(295, 382, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -304,6 +310,7 @@ public class dlgAlergia extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;

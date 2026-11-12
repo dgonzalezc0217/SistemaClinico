@@ -18,7 +18,7 @@ public class vLaboratorio extends javax.swing.JPanel {
     public vLaboratorio() {
         initComponents();
         estilo();
-
+        
     }
 
     /**
@@ -185,9 +185,8 @@ public class vLaboratorio extends javax.swing.JPanel {
                         .addComponent(txtIngreso, javax.swing.GroupLayout.PREFERRED_SIZE, 588, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btSincronizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(149, 149, 149)))
+                        .addGap(167, 167, 167)
+                        .addComponent(btSincronizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(123, 123, 123))
         );
         pPacienteLayout.setVerticalGroup(
@@ -328,30 +327,49 @@ public class vLaboratorio extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBuscarActionPerformed
-        //Se guarda el texto de cedula
-        String cedula = txtIngreso.getText().trim();
+    String cedula = txtIngreso.getText().trim();
 
-        //Se compara si la variabel cedula contiene texto
         if (cedula.isEmpty()) {
             javax.swing.JOptionPane.showMessageDialog(this,
                     "Ingrese una cédula válida para realizar la búsqueda.",
                     "Cédula requerida",
                     javax.swing.JOptionPane.WARNING_MESSAGE);
-
-            btSincronizar.setEnabled(false); // Se asegura de mantenerlo bloqueado
-
+            btSincronizar.setEnabled(false);
             return;
         }
-        //PruebaAquí se cargan los datos del paciente encontrado
-        txtNombre.setText("Carlos Mendoza"); // Ejemplo de carga
-        txtCedula.setText(cedula);
-        txtCelular.setText("0991234567");
-        txtEdad.setText("34");
-        txtSangre.setText("O+");
-        txtAlergias.setText("Penicilina");
 
-        //Se desbloquea el botón de historial
-        btSincronizar.setEnabled(true);
+        // Instanciar el modelo y ejecutar la búsqueda
+        Modelo.cLaboratorio modelo = new Modelo.cLaboratorio();
+        String[] pacienteEncontrado = modelo.buscarPacientePorCedula(cedula);
+
+        // 2. Llenar la vista con los resultados
+        if (pacienteEncontrado != null) {
+            txtNombre.setText(pacienteEncontrado[0]);
+            txtCedula.setText(pacienteEncontrado[1]);
+            txtCelular.setText(pacienteEncontrado[2]);
+            txtEdad.setText(pacienteEncontrado[3]); 
+            txtSangre.setText(pacienteEncontrado[4]);
+            
+            // Las alergias se consultarán luego de otra tabla
+            txtAlergias.setText(pacienteEncontrado[5]); 
+
+            btSincronizar.setEnabled(true);
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "No se encontró un paciente con la cédula: " + cedula,
+                    "Sin resultados",
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            
+            // Limpiar campos si no se encuentra al paciente
+            txtNombre.setText("");
+            txtCedula.setText("");
+            txtCelular.setText("");
+            txtEdad.setText("");
+            txtSangre.setText("");
+            txtAlergias.setText("");
+            
+            btSincronizar.setEnabled(true);
+        }
     }//GEN-LAST:event_btBuscarActionPerformed
 
     private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
@@ -379,11 +397,71 @@ public class vLaboratorio extends javax.swing.JPanel {
     }//GEN-LAST:event_txtAlergiasActionPerformed
 
     private void btSincronizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSincronizarActionPerformed
-        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tblOrdenes.getModel();
-        model.setRowCount(0); // Limpia filas previas
-        // Simulación de carga de órdenes REST
-        model.addRow(new Object[]{"ORD-101", "16/09/2026", "Hemograma Completo", "Hematología", "Completado"});
-        model.addRow(new Object[]{"ORD-102", "15/09/2026", "Perfil Lipídico", "Bioquímica", "Completado"});
+        String cedula = txtCedula.getText().trim();
+        if (cedula.isEmpty()) {
+            return; // Seguridad extra
+        }
+
+        // 1. Construir la ventana emergente de carga
+        javax.swing.JDialog dialogoCarga = new javax.swing.JDialog(
+                (java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(this), 
+                "Sincronización REST", true);
+        
+        javax.swing.JLabel lblMensaje = new javax.swing.JLabel(
+                "Sincronizando con el servidor externo... Por favor espere.", 
+                javax.swing.SwingConstants.CENTER);
+        lblMensaje.setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 14));
+        
+        dialogoCarga.add(lblMensaje);
+        dialogoCarga.setSize(450, 150);
+        dialogoCarga.setLocationRelativeTo(this);
+        dialogoCarga.setDefaultCloseOperation(javax.swing.JDialog.DO_NOTHING_ON_CLOSE); // Evita que la cierren con la 'X'
+
+        // 2. Hilo en segundo plano para fingir los 5 segundos y consultar la BD
+        javax.swing.SwingWorker<java.util.List<String[]>, Void> worker = new javax.swing.SwingWorker<>() {
+            @Override
+            protected java.util.List<String[]> doInBackground() throws Exception {
+                // FINGIR LA DEMORA DE 5 SEGUNDOS
+                Thread.sleep(5000);
+                
+                // CONSULTAR SQL REAL
+                Modelo.cLaboratorio modelo = new Modelo.cLaboratorio();
+                return modelo.obtenerOrdenesLaboratorio(cedula);
+            }
+
+            @Override
+            protected void done() {
+                // Cerrar el diálogo de carga al terminar
+                dialogoCarga.dispose(); 
+                
+                try {
+                    // Obtener la lista de resultados del SQL
+                    java.util.List<String[]> ordenes = get();
+                    
+                    javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tblOrdenes.getModel();
+                    model.setRowCount(0); // Limpiar filas previas
+                    
+                    // Llenar la tabla
+                    for (String[] fila : ordenes) {
+                        model.addRow(fila);
+                    }
+                    
+                    if (ordenes.isEmpty()) {
+                        javax.swing.JOptionPane.showMessageDialog(vLaboratorio.this, 
+                                "La sincronización finalizó, pero no se encontraron órdenes de laboratorio para este paciente.",
+                                "Sin resultados", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    
+                } catch (Exception e) {
+                    javax.swing.JOptionPane.showMessageDialog(vLaboratorio.this, 
+                            "Error durante la sincronización: " + e.getMessage());
+                }
+            }
+        };
+
+        // 3. Ejecutar el hilo y mostrar la ventana de carga bloqueante
+        worker.execute();
+        dialogoCarga.setVisible(true); // Esta línea pausa la interfaz principal hasta que done() cierre el diálogo
     }//GEN-LAST:event_btSincronizarActionPerformed
 
     private void btVerPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btVerPDFActionPerformed
@@ -458,21 +536,36 @@ public class vLaboratorio extends javax.swing.JPanel {
 
     }
 
-    private void cargarDetalle(int fila) {
-        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tblDetalle.getModel();
-        model.setRowCount(0);
-
-        if (fila == 0) { // Fila de Hemograma
-            model.addRow(new Object[]{"Hemograma", "Leucocitos", "11.2", "10^3/uL", "4.0 - 10.0", "Ref. Normal", "ALTO"});
-            model.addRow(new Object[]{"Hemograma", "Hemoglobina", "14.5", "g/dL", "12.0 - 16.0", "Ref. Normal", "Normal"});
-        } else if (fila == 1) { // Fila de Perfil Lipídico
-            model.addRow(new Object[]{"Lipídico", "Colesterol Total", "220", "mg/dL", "< 200", "Ref. Deseable", "ALTO"});
-            model.addRow(new Object[]{"Lipídico", "Triglicéridos", "140", "mg/dL", "< 150", "Ref. Deseable", "Normal"});
-        }
-    }
 
 //Funcion para configurar el estilo del panel    
     public void estilo() {
+        tblOrdenes.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int fila = tblOrdenes.getSelectedRow();
+                
+                if (fila >= 0) {
+                    // Extraer el valor de la primera columna (ID Orden)
+                    Object valorCelda = tblOrdenes.getValueAt(fila, 0);
+                    
+                    if (valorCelda != null && !valorCelda.toString().trim().isEmpty()) {
+                        String idOrden = valorCelda.toString();
+                        
+                        // Instanciar el modelo y traer los datos
+                        Modelo.cLaboratorio modelo = new Modelo.cLaboratorio();
+                        java.util.List<String[]> detalles = modelo.obtenerResultadosPorOrden(idOrden);
+                        
+                        // Llenar la tabla de la derecha (asegúrate de que tu JTable se llame tblDetalleExamen)
+                        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tblDetalle.getModel();
+                        model.setRowCount(0); // Limpiar los detalles de la orden anterior
+                        
+                        for (String[] filaDetalle : detalles) {
+                            model.addRow(filaDetalle);
+                        }
+                    }
+                }
+            }
+        });
         color();
 
         //Bloquear celdas de las tablas y que las filas esten vacias
@@ -513,7 +606,6 @@ public class vLaboratorio extends javax.swing.JPanel {
         // Listener para selección en la tabla de órdenes
         tblOrdenes.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting() && tblOrdenes.getSelectedRow() != -1) {
-                cargarDetalle(tblOrdenes.getSelectedRow());
                 btVerPDF.setEnabled(true);
                 btAnexar.setEnabled(true);
             }
@@ -527,7 +619,9 @@ public class vLaboratorio extends javax.swing.JPanel {
                     evt.consume();
                 }
             }
-        });
+        }
+        
+        );
     }
 
 }
