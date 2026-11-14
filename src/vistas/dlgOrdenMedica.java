@@ -314,7 +314,8 @@ public class dlgOrdenMedica extends javax.swing.JDialog {
                 String via = cmbVia.getSelectedItem() != null ? cmbVia.getSelectedItem().toString().trim() : "";
                 String frecuencia = txtFrecuencia.getText().trim();
 
-                if (unidad.isEmpty() || via.isEmpty() || frecuencia.isEmpty()) {
+                if (cmbUnidadDosis.getSelectedIndex() <= 0 || cmbVia.getSelectedIndex() <= 0
+                        || unidad.isEmpty() || via.isEmpty() || frecuencia.isEmpty()) {
                     javax.swing.JOptionPane.showMessageDialog(this, "Debe llenar dosis, unidad, vía y frecuencia para medicamentos.");
                     return;
                 }
@@ -329,6 +330,19 @@ public class dlgOrdenMedica extends javax.swing.JDialog {
                 prescripcion = new cOrdenMedica.DatosPrescripcion(dosis, unidad, via, frecuencia, inicioUTC, finUTC);
             }
 
+            // Confirmación antes de agregar a la lista y a la tabla
+            int confirmacion = javax.swing.JOptionPane.showConfirmDialog(
+                    this,
+                    "¿Desea agregar \"" + servicioSel.nombre() + "\" (Cantidad: " + cantidad + ") a la orden médica?",
+                    "Confirmar ítem",
+                    javax.swing.JOptionPane.YES_NO_OPTION,
+                    javax.swing.JOptionPane.QUESTION_MESSAGE
+            );
+
+            if (confirmacion != javax.swing.JOptionPane.YES_OPTION) {
+                return;
+            }
+
             // Agregar a la lista temporal
             DetalleEntrada nuevoDetalle = new DetalleEntrada(servicioSel.idServicio(), cantidad, indicaciones, prescripcion);
             listaDetalles.add(nuevoDetalle);
@@ -337,9 +351,9 @@ public class dlgOrdenMedica extends javax.swing.JDialog {
             javax.swing.table.DefaultTableModel modeloTabla = (javax.swing.table.DefaultTableModel) tblDetalles.getModel();
             if (esMedicamento) {
                 String dosisCompleta = txtDosis.getText().trim() + " " + cmbUnidadDosis.getSelectedItem();
-                modeloTabla.addRow(new Object[]{ servicioSel.nombre(), cantidad, dosisCompleta, cmbVia.getSelectedItem(), txtFrecuencia.getText().trim() });
+                modeloTabla.addRow(new Object[]{servicioSel.nombre(), cantidad, dosisCompleta, cmbVia.getSelectedItem(), txtFrecuencia.getText().trim()});
             } else {
-                modeloTabla.addRow(new Object[]{ servicioSel.nombre(), cantidad, "N/A", "N/A", "N/A" });
+                modeloTabla.addRow(new Object[]{servicioSel.nombre(), cantidad, "N/A", "N/A", "N/A"});
             }
 
             // Limpiar formulario para el siguiente ítem
@@ -404,7 +418,7 @@ public class dlgOrdenMedica extends javax.swing.JDialog {
                 return;
             }
 
-            String prioridadSeleccionada = cmbPrioridad.getSelectedItem().toString().toUpperCase();
+            String prioridadSeleccionada = cmbPrioridad.getSelectedItem().toString().trim();
 
             // 3. Confirmación del usuario
             int confirmacion = javax.swing.JOptionPane.showConfirmDialog(
@@ -529,7 +543,7 @@ public class dlgOrdenMedica extends javax.swing.JDialog {
 private void color(){
     this.getContentPane().setBackground(Color.WHITE);
     btLimpiar.setBackground(Color.decode("#A3C9A8"));
-    btFinalizar.setBackground(Color.decode("#A3C9A8"));
+    btAgregar.setBackground(Color.decode("#A3C9A8"));
     btFinalizar.setBackground(Color.decode("#A3C9A8"));
     jScrollPane1.getViewport().setBackground(java.awt.Color.WHITE);
     //Cambiar el color de cuando se seleciona una fila

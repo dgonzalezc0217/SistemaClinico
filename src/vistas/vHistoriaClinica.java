@@ -29,6 +29,14 @@ public class vHistoriaClinica extends javax.swing.JPanel {
     public vHistoriaClinica() {
         initComponents();
         estilo();
+        this.addComponentListener(new java.awt.event.ComponentAdapter() {
+        @Override
+        public void componentShown(java.awt.event.ComponentEvent evt) {
+            if (idPacienteActivo <= 0 && idCitaActiva <= 0 && idEpisodioActivo <= 0) {
+                limpiarFormulario(true);
+            }
+        }
+    });
     }
 
     /**
@@ -849,7 +857,37 @@ public class vHistoriaClinica extends javax.swing.JPanel {
     }//GEN-LAST:event_btAbrirActionPerformed
 
     private void btLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLimpiarActionPerformed
-        limpiarFormulario(false);
+        // 1. Primera confirmación: limpiar los datos ingresados de la consulta
+    String mensajeLimpiar = (this.idEpisodioActivo > 0)
+            ? "¿Desea limpiar los datos clínicos ingresados?\n(Se perderán los cambios no guardados del episodio actual en pantalla)."
+            : "¿Desea limpiar los datos ingresados en el formulario?";
+
+    int confDatos = javax.swing.JOptionPane.showConfirmDialog(
+            this,
+            mensajeLimpiar,
+            "Confirmar limpieza",
+            javax.swing.JOptionPane.YES_NO_OPTION,
+            javax.swing.JOptionPane.QUESTION_MESSAGE
+    );
+
+    if (confDatos != javax.swing.JOptionPane.YES_OPTION) {
+        return; // Si responde No, no se hace nada
+    }
+
+    // 2. Segunda confirmación: cancelar también al paciente buscado o traído de cita
+    boolean cancelarPaciente = false;
+    if (this.idPacienteActivo > 0 || this.idCitaActiva > 0) {
+        int confPaciente = javax.swing.JOptionPane.showConfirmDialog(
+                this,
+                "¿Desea cancelar también al paciente cargado (buscado o traído de cita) para ingresar uno nuevo?",
+                "Cancelar paciente actual",
+                javax.swing.JOptionPane.YES_NO_OPTION,
+                javax.swing.JOptionPane.WARNING_MESSAGE
+        );
+        cancelarPaciente = (confPaciente == javax.swing.JOptionPane.YES_OPTION);
+    }
+
+    limpiarFormulario(cancelarPaciente);
     }//GEN-LAST:event_btLimpiarActionPerformed
 
     private void btNotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNotaActionPerformed
@@ -1146,7 +1184,6 @@ public class vHistoriaClinica extends javax.swing.JPanel {
     }
 
     public void cargarDesdeCita(long idCita) throws java.sql.SQLException {
-
         if (idEpisodioActivo > 0) {
             if (idCitaActiva == idCita) {
                 return;
@@ -1155,12 +1192,17 @@ public class vHistoriaClinica extends javax.swing.JPanel {
         }
 
         cHistoriaClinica.DatosPaciente paciente = modelo.obtenerPacientePorCita(idCita);
+
+        // 1. Limpiar primero los campos de consulta
+        limpiarFormulario(false);
+
+        // 2. Guardar identificadores
         idCitaActiva = idCita;
         idEpisodioActivo = 0;
         idPacienteActivo = paciente.idPaciente;
         idHistoriaActiva = paciente.idHistoriaClinica;
 
-        // Mostrar los datos del paciente
+        // 3. Mostrar los datos del paciente
         txtIngreso.setText(paciente.numeroDocumento);
         txtCedula.setText(paciente.numeroDocumento);
         txtNombre.setText(paciente.nombreCompleto);
@@ -1172,19 +1214,15 @@ public class vHistoriaClinica extends javax.swing.JPanel {
         txtSangre.setText(grupo + rh);
         txtAlergias.setText(paciente.alergias);
 
-        // Asegurarse de que los campos de consulta estén limpios y bloqueados
-        limpiarFormulario(false);
-
-        // Bloquear cambio de paciente
+        // 4. Bloquear cambio de paciente y habilitar botones iniciales
         txtIngreso.setEnabled(false);
         btBuscar.setEnabled(false);
         txtCedula.setEditable(false);
 
-        // HABILITAMOS SOLO LO NECESARIO PARA EMPEZAR
         btVerHistorial.setEnabled(true);
-        btVerAntedecentes.setEnabled(true);// Podrá entrar en modo lectura
-        btAbrir.setEnabled(true);        // Podrá abrir el episodio cuando esté listo
-        btLimpiar.setEnabled(true);      // Por si quiere cancelar y limpiar la pantalla
+        btVerAntedecentes.setEnabled(true);
+        btAbrir.setEnabled(true);
+        btLimpiar.setEnabled(true);
     }
 
     public void limpiarFormulario(boolean limpiarPaciente) {
@@ -1229,8 +1267,10 @@ public class vHistoriaClinica extends javax.swing.JPanel {
 
         // 2. EVALUAR SI SE DEBE BORRAR TAMBIÉN AL PACIENTE
         if (limpiarPaciente) {
-            // Borrado total (para cuando se guarda el episodio o se inicia desde cero)
+            // Borrado total (al cancelar paciente o finalizar/guardar el episodio)
             this.idPacienteActivo = 0;
+            this.idHistoriaActiva = -1;
+            this.idCitaActiva = 0;
 
             txtCedula.setText("");
             txtIngreso.setText("");
@@ -1240,17 +1280,29 @@ public class vHistoriaClinica extends javax.swing.JPanel {
             txtSangre.setText("");
             txtAlergias.setText("");
 
-            txtCedula.setEditable(true); // Habilita la cédula para buscar al siguiente paciente
+            // Mantener campos informativos en solo lectura y desbloquear búsqueda
+            txtCedula.setEditable(false);
+            txtIngreso.setEnabled(true);
+            txtIngreso.setEditable(true);
+            btBuscar.setEnabled(true);
+
             btVerHistorial.setEnabled(false);
+            btVerAntedecentes.setEnabled(false);
             btAbrir.setEnabled(false);
+            txtIngreso.requestFocus();
         } else {
-            // Mantener paciente en pantalla (al presionar el botón Limpiar manualmente)
+            // Mantener paciente en pantalla (solo se limpiaron los datos clínicos)
             if (this.idPacienteActivo > 0) {
-                btAbrir.setEnabled(true);          // Listo para abrir un nuevo episodio
-                btVerHistorial.setEnabled(true);   // Acceso a su historial
+                btAbrir.setEnabled(true);
+                btVerHistorial.setEnabled(true);
+                btVerAntedecentes.setEnabled(true);
             } else {
-                txtCedula.setEditable(true);
+                txtCedula.setEditable(false);
+                txtIngreso.setEnabled(true);
+                txtIngreso.setEditable(true);
+                btBuscar.setEnabled(true);
                 btVerHistorial.setEnabled(false);
+                btVerAntedecentes.setEnabled(false);
                 btAbrir.setEnabled(false);
             }
         }

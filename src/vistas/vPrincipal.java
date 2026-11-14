@@ -838,12 +838,12 @@ public class vPrincipal extends javax.swing.JFrame {
     public void abrirAtencionDesdeCita(long idCita)
             throws java.sql.SQLException {
 
-        vistaHistoria.cargarDesdeCita(idCita);
-
         ((java.awt.CardLayout) pBase.getLayout()).show(
                 pBase,
                 "pantallaHistoriaClinica"
         );
+
+        vistaHistoria.cargarDesdeCita(idCita);
     }
 
     public void iniciarSesionExitosa(long idUsuario, String nombreCompleto, String rol) {

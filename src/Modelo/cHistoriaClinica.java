@@ -136,57 +136,81 @@ public class cHistoriaClinica {
     // La sobrecarga usa la misma conexión y transacción de quien abre la atención.
     private long obtenerOCrearEpisodio(Connection con, long idHistoriaClinica,
             long idSede, Long idCita, String tipoAtencion, String motivoConsulta) throws SQLException {
-        if (idHistoriaClinica <= 0 || idSede <= 0) {
+        // 1. Si idCita viene en 0 o negativo, se trata como atención sin cita (null)
+        Long citaValida = (idCita != null && idCita > 0) ? idCita : null;
+        long sedeEfectiva = idSede;
+
+        if (idHistoriaClinica <= 0 || (citaValida == null && sedeEfectiva <= 0)) {
             throw new IllegalArgumentException(
                     "El paciente necesita historia clínica y una sede válida.");
         }
-        if (idCita != null) {
-            // Reserva el acceso de escritura y valida la relación antes de crear el episodio.
+
+        if (citaValida != null) {
+            // 2. Bloquea la cita PENDIENTE verificando que pertenezca al mismo paciente
             String bloqueo = "UPDATE Cita SET estado=estado WHERE id_cita=? AND estado='PENDIENTE' "
                     + "AND EXISTS (SELECT 1 FROM Historia_Clinica h WHERE "
-                    + "h.id_historia_clinica=? AND h.id_paciente=Cita.id_paciente) "
-                    + "AND EXISTS (SELECT 1 FROM Agenda a WHERE a.id_agenda=Cita.id_agenda AND a.id_sede=?)";
+                    + "h.id_historia_clinica=? AND h.id_paciente=Cita.id_paciente)";
             try (PreparedStatement ps = con.prepareStatement(bloqueo)) {
-                ps.setLong(1, idCita);
+                ps.setLong(1, citaValida);
                 ps.setLong(2, idHistoriaClinica);
-                ps.setLong(3, idSede);
                 if (ps.executeUpdate() != 1) {
                     throw new IllegalArgumentException(
-                            "La cita ya no está pendiente o no coincide con el paciente y la sede.");
+                            "La cita ya no está pendiente o no coincide con el paciente.");
                 }
             }
+
+            // 3. Obtiene la sede real de la agenda asociada a esa cita
+            String sqlSedeCita = "SELECT a.id_sede FROM Cita c "
+                    + "JOIN Agenda a ON a.id_agenda = c.id_agenda "
+                    + "WHERE c.id_cita = ?";
+            try (PreparedStatement ps = con.prepareStatement(sqlSedeCita)) {
+                ps.setLong(1, citaValida);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (!rs.next()) {
+                        throw new IllegalArgumentException("La cita no tiene una agenda o sede válida.");
+                    }
+                    sedeEfectiva = rs.getLong("id_sede");
+                }
+            }
+
+            // 4. Idempotencia: si ya existe un episodio abierto para esta cita, lo devuelve
             try (PreparedStatement ps = con.prepareStatement(
                     "SELECT id_episodio, estado, id_historia_clinica, id_sede FROM Episodio WHERE id_cita=?")) {
-                ps.setLong(1, idCita);
+                ps.setLong(1, citaValida);
                 try (ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
                         if (!"ABIERTO".equals(rs.getString("estado"))
                                 || rs.getLong("id_historia_clinica") != idHistoriaClinica
-                                || rs.getLong("id_sede") != idSede) {
-                            throw new IllegalArgumentException("El episodio de esta cita está cerrado o no coincide con sus datos.");
+                                || rs.getLong("id_sede") != sedeEfectiva) {
+                            throw new IllegalArgumentException(
+                                    "El episodio de esta cita está cerrado o no coincide con sus datos.");
                         }
                         return rs.getLong("id_episodio");
                     }
                 }
             }
         }
+
         String tipo = tipoAtencion == null || tipoAtencion.isBlank() ? "Ambulatoria" : tipoAtencion.trim();
         String motivo = motivoConsulta == null || motivoConsulta.isBlank() ? "Consulta iniciada" : motivoConsulta.trim();
+
         try (PreparedStatement ps = con.prepareStatement(
                 "INSERT INTO Episodio (tipo_atencion,motivo_consulta,estado,ingreso_en,id_sede,id_historia_clinica,id_cita) "
                 + "VALUES (?,?,'ABIERTO',CURRENT_TIMESTAMP,?,?,?)")) {
             ps.setString(1, tipo);
             ps.setString(2, motivo);
-            ps.setLong(3, idSede);
+            ps.setLong(3, sedeEfectiva);
             ps.setLong(4, idHistoriaClinica);
-            if (idCita == null) {
+            if (citaValida == null) {
                 ps.setNull(5, java.sql.Types.INTEGER);
             } else {
-                ps.setLong(5, idCita);
+                ps.setLong(5, citaValida);
             }
             ps.executeUpdate();
         }
-        try (PreparedStatement ps = con.prepareStatement("SELECT last_insert_rowid()"); ResultSet rs = ps.executeQuery()) {
+
+        try (PreparedStatement ps = con.prepareStatement("SELECT last_insert_rowid()");
+             ResultSet rs = ps.executeQuery()) {
             if (!rs.next()) {
                 throw new SQLException("No se pudo recuperar el episodio.");
             }
