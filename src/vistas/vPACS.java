@@ -17,9 +17,14 @@ public class vPACS extends javax.swing.JPanel {
     /**
      * Creates new form vPACS
      */
+    private IntegracionPacs integracionPacs;
     public vPACS() {
         initComponents();
-        estilo();
+        color();
+        integracionPacs = new IntegracionPacs(
+                this, tblEstudio, txtIngreso, txtNombre, txtCedula,
+                txtCelular, txtEdad, txtSangre, txtAlergias,
+                txtInforme, lbImagenVisor, btVerPDF, btAnexar);
     }
 
     /**
@@ -353,21 +358,7 @@ public class vPACS extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBuscarActionPerformed
-        //Se guarda el texto de cedula
-        String cedula = txtIngreso.getText().trim();
-        if (cedula.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ingrese un número de cédula para buscar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        //Se compara si la variabel cedula contiene texto
-        //PruebaAquí se cargan los datos del paciente encontrado
-        txtNombre.setText("Carlos Mendoza"); // Ejemplo de carga
-        txtCedula.setText(cedula);
-        txtCelular.setText("0991234567");
-        txtEdad.setText("34");
-        txtSangre.setText("O+");
-        txtAlergias.setText("Penicilina");
-        cargarEstudios();
+        integracionPacs.buscar();
     }//GEN-LAST:event_btBuscarActionPerformed
 
     private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
@@ -395,14 +386,7 @@ public class vPACS extends javax.swing.JPanel {
     }//GEN-LAST:event_txtAlergiasActionPerformed
 
     private void btAnexarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAnexarActionPerformed
-        int fila = tblEstudio.getSelectedRow();
-        if (fila != -1) {
-            String modalidad = tblEstudio.getValueAt(fila, 2).toString();
-            String descripcion = tblEstudio.getValueAt(fila, 3).toString();
-            javax.swing.JOptionPane.showMessageDialog(this,
-                    "El estudio '" + modalidad + " - " + descripcion + "' se anexó correctamente a la consulta.",
-                    "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-        }        // TODO add your handling code here:
+        integracionPacs.anexar();
     }//GEN-LAST:event_btAnexarActionPerformed
 
 

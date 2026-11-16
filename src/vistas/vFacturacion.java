@@ -16,9 +16,17 @@ public class vFacturacion extends javax.swing.JPanel {
     /**
      * Creates new form vFacturacion
      */
+    private IntegracionFacturacion integracionFacturacion;
     public vFacturacion() {
         initComponents();
-        estilo();
+        color();
+        jLabel2.setText("Total emitido");
+        jLabel1.setText("Facturas con saldo");
+        jLabel3.setText("Saldo por cobrar");
+        jLabel8.setText("Fecha emisión:");
+        integracionFacturacion = new IntegracionFacturacion(
+                this, tblFacturas, txtIngreso, txtFecha,
+                lbTotal, lbFactura, lbPromedio, btCambiar, btExportar);
     }
 
     /**
@@ -355,138 +363,23 @@ public class vFacturacion extends javax.swing.JPanel {
 
     private void btBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBuscarActionPerformed
         //Se va utilizar el siguiente metodo sorter que sirver para encontrar datos en especificos en la tabla
-        if (tblFacturas.getRowSorter() == null) {
-            return;
-        }
-        @SuppressWarnings("unchecked")
-        javax.swing.table.TableRowSorter<javax.swing.table.DefaultTableModel> sorter
-                = (javax.swing.table.TableRowSorter<javax.swing.table.DefaultTableModel>) tblFacturas.getRowSorter();
-        //Se van a utilizar el campo de fecha y el de cedula
-        String cedula = txtIngreso.getText().trim();
-        String fecha = txtFecha.getText().trim();
-
-        java.util.List<javax.swing.RowFilter<Object, Object>> filtros = new java.util.ArrayList<>();
-
-        // Filtrar por cedula
-        if (!cedula.isEmpty()) {
-            filtros.add(javax.swing.RowFilter.regexFilter("(?i)" + cedula, 3));
-        }
-        // Filtrar por fecha 
-        if (!fecha.isEmpty()) {
-            filtros.add(javax.swing.RowFilter.regexFilter("(?i)" + fecha, 1));
-        }
-
-        //Aplicar filtro combinado o limpia si los campos estan vacios
-        if (filtros.isEmpty()) {
-            sorter.setRowFilter(null); // Muestra todos los datos
-            btGenerar.setEnabled(false); // Deshabilita el botón porque no hay una búsqueda activa
-        } else {
-            sorter.setRowFilter(javax.swing.RowFilter.andFilter(filtros));
-            // Habilita el botón SOLO si se buscó algo Y se encontraron resultados
-            btGenerar.setEnabled(tblFacturas.getRowCount() > 0);
-        }
+        integracionFacturacion.buscar();
     }//GEN-LAST:event_btBuscarActionPerformed
 
     private void btNuevaFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNuevaFacturaActionPerformed
-
+        integracionFacturacion.nuevaFactura();
     }//GEN-LAST:event_btNuevaFacturaActionPerformed
 
     private void btCambiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCambiarActionPerformed
-        int fila = tblFacturas.getSelectedRow();
-
-        //Mensaje para el usuario 
-        if (fila == -1) {
-            JOptionPane.showMessageDialog(this,
-                    "Seleccione una factura de la tabla para cambiar su estado.",
-                    "Atención", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        String numFactura = tblFacturas.getValueAt(fila, 0).toString();
-        String estadoActual = tblFacturas.getValueAt(fila, 6).toString();
-
-        //Opciones disponibles para el usuario
-        String[] opciones = {"Pagado", "Anulado", "Pendiente"};
-
-        String nuevoEstado = (String) JOptionPane.showInputDialog(
-                this,
-                "Seleccione el nuevo estado para la factura " + numFactura + ":\n(Estado actual: " + estadoActual + ")",
-                "Cambiar Estado de Factura",
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                opciones,
-                estadoActual
-        );
-
-        if (nuevoEstado != null && !nuevoEstado.equals(estadoActual)) {
-            // Actualizar la tabla
-            tblFacturas.setValueAt(nuevoEstado, fila, 6);
-
-            JOptionPane.showMessageDialog(this,
-                    "El estado de la factura " + numFactura + " cambió a '" + nuevoEstado + "'.",
-                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
-
-            // (Opcional) Aquí puedes llamar a un método para recalcular los KPIs superiores
-            // actualizarKPIs();
-        }
+        integracionFacturacion.cambiarEstado();
     }//GEN-LAST:event_btCambiarActionPerformed
 
     private void btExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExportarActionPerformed
-        try {
-            java.io.File pdfLocal = new java.io.File("src/archivos/reporte_ejemplo.pdf");
-            if (pdfLocal.exists()) {
-                java.awt.Desktop.getDesktop().open(pdfLocal);
-            } else {
-                javax.swing.JOptionPane.showMessageDialog(this,
-                        "Cree la carpeta 'src/archivos' y coloque 'reporte_ejemplo.pdf' para la prueba.");
-            }
-        } catch (Exception e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Error al abrir el PDF: " + e.getMessage());
-        }
+        integracionFacturacion.exportar();
     }//GEN-LAST:event_btExportarActionPerformed
 
     private void btGenerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btGenerarActionPerformed
-        int filasVisibles = tblFacturas.getRowCount();
-
-        if (filasVisibles == 0) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                    "No hay facturas visibles para generar el reporte.",
-                    "Sin datos", javax.swing.JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        double sumaTotal = 0;
-        int pendientes = 0;
-
-        for (int i = 0; i < filasVisibles; i++) {
-            // Obtener el monto (Columna 5) quitando el símbolo 
-            String montoTexto = tblFacturas.getValueAt(i, 5).toString().replace("$", "").trim();
-            String estado = tblFacturas.getValueAt(i, 6).toString();
-
-            try {
-                sumaTotal += Double.parseDouble(montoTexto);
-            } catch (NumberFormatException e) {
-                // Ignorar errores de conversión si el formato varía
-            }
-
-            if (estado.equalsIgnoreCase("Pendiente")) {
-                pendientes++;
-            }
-        }
-
-        double promedio = sumaTotal / filasVisibles;
-
-        // Mostrar el resumen del reporte
-        String mensaje = String.format(
-                "=== REPORTE DE FACTURACIÓN ===\n\n"
-                + "• Total de registros procesados: %d\n"
-                + "• Facturas pendientes: %d\n"
-                + "• Monto total acumulado: $%.2f\n"
-                + "• Promedio por consulta: $%.2f",
-                filasVisibles, pendientes, sumaTotal, promedio
-        );
-
-        javax.swing.JOptionPane.showMessageDialog(this, mensaje, "Reporte Generado", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        integracionFacturacion.reporte();
     }//GEN-LAST:event_btGenerarActionPerformed
 
 
