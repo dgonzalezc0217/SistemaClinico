@@ -24,7 +24,7 @@ public class IntegracionFacturacion {
         @Override public Class<?> getColumnClass(int c){return c==0?Long.class:(c>=7?BigDecimal.class:String.class);}
     };
     public IntegracionFacturacion(JPanel vista,JTable tabla,JTextField documento,JTextField fecha,
-            JLabel total,JLabel pendientes,JLabel saldo,JButton cambiar,JButton exportar){
+            JLabel total,JLabel pendientes,JLabel saldo,JButton exportar){
         this.vista=vista;this.tabla=tabla;this.documento=documento;this.fecha=fecha;
         this.total=total;this.pendientes=pendientes;this.saldo=saldo;
         tabla.setModel(datos);tabla.setAutoCreateRowSorter(true);tabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -33,7 +33,6 @@ public class IntegracionFacturacion {
         fecha.setToolTipText("Fecha de emisión en Colombia: AAAA-MM-DD. Vacío: todas.");
         documento.setToolTipText("Documento exacto. Vacío: todos los pacientes.");
         documento.addActionListener(e->buscar());fecha.addActionListener(e->buscar());
-        cambiar.setEnabled(false);cambiar.setToolTipText("Emitir, pagar o anular requiere su operación específica; no se cambia solo el texto de la tabla.");
         exportar.setText("Exportar CSV");
         buscar();
     }

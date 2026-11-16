@@ -26,7 +26,7 @@ public class vFacturacion extends javax.swing.JPanel {
         jLabel8.setText("Fecha emisión:");
         integracionFacturacion = new IntegracionFacturacion(
                 this, tblFacturas, txtIngreso, txtFecha,
-                lbTotal, lbFactura, lbPromedio, btCambiar, btExportar);
+                lbTotal, lbFactura, lbPromedio,btExportar);
     }
 
     /**
@@ -55,13 +55,10 @@ public class vFacturacion extends javax.swing.JPanel {
         jPanel5 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         lbPromedio = new javax.swing.JLabel();
-        pGrafica = new javax.swing.JPanel();
-        jLabel12 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblFacturas = new javax.swing.JTable();
         jLabel13 = new javax.swing.JLabel();
         btNuevaFactura = new javax.swing.JButton();
-        btCambiar = new javax.swing.JButton();
         btExportar = new javax.swing.JButton();
         btGenerar = new javax.swing.JButton();
 
@@ -141,12 +138,12 @@ public class vFacturacion extends javax.swing.JPanel {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lbTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lbTotal, javax.swing.GroupLayout.DEFAULT_SIZE, 494, Short.MAX_VALUE)
                 .addContainerGap())
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(119, 119, 119)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2)
-                .addContainerGap(124, Short.MAX_VALUE))
+                .addGap(113, 113, 113))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -232,23 +229,6 @@ public class vFacturacion extends javax.swing.JPanel {
 
         jPanel2.add(jPanel5);
 
-        pGrafica.setBackground(new java.awt.Color(255, 255, 255));
-        pGrafica.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        javax.swing.GroupLayout pGraficaLayout = new javax.swing.GroupLayout(pGrafica);
-        pGrafica.setLayout(pGraficaLayout);
-        pGraficaLayout.setHorizontalGroup(
-            pGraficaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 758, Short.MAX_VALUE)
-        );
-        pGraficaLayout.setVerticalGroup(
-            pGraficaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        jLabel12.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
-        jLabel12.setText("Grafica de ingresos mensuales");
-
         tblFacturas.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         tblFacturas.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         tblFacturas.setModel(new javax.swing.table.DefaultTableModel(
@@ -276,14 +256,6 @@ public class vFacturacion extends javax.swing.JPanel {
             }
         });
 
-        btCambiar.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
-        btCambiar.setText("Cambiar estado");
-        btCambiar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btCambiarActionPerformed(evt);
-            }
-        });
-
         btExportar.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         btExportar.setText("Exportar Excel");
         btExportar.addActionListener(new java.awt.event.ActionListener() {
@@ -307,29 +279,23 @@ public class vFacturacion extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(btGenerar, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(160, 160, 160)
-                                .addComponent(btExportar, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(pGrafica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel11)
-                                .addComponent(jLabel12)))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel13)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jScrollPane1)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btCambiar, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btNuevaFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(314, 314, 314)
+                                .addComponent(btExportar, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btNuevaFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(642, 642, 642)
+                .addComponent(jLabel13)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -340,21 +306,16 @@ public class vFacturacion extends javax.swing.JPanel {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel13)
-                    .addComponent(jLabel12))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel13)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
-                    .addComponent(pGrafica, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btNuevaFactura)
-                    .addComponent(btCambiar)
                     .addComponent(btGenerar)
                     .addComponent(btExportar))
-                .addContainerGap(127, Short.MAX_VALUE))
+                .addContainerGap(133, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -367,10 +328,6 @@ public class vFacturacion extends javax.swing.JPanel {
         integracionFacturacion.nuevaFactura();
     }//GEN-LAST:event_btNuevaFacturaActionPerformed
 
-    private void btCambiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCambiarActionPerformed
-        integracionFacturacion.cambiarEstado();
-    }//GEN-LAST:event_btCambiarActionPerformed
-
     private void btExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExportarActionPerformed
         integracionFacturacion.exportar();
     }//GEN-LAST:event_btExportarActionPerformed
@@ -382,13 +339,11 @@ public class vFacturacion extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btBuscar;
-    private javax.swing.JButton btCambiar;
     private javax.swing.JButton btExportar;
     private javax.swing.JButton btGenerar;
     private javax.swing.JButton btNuevaFactura;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -403,7 +358,6 @@ public class vFacturacion extends javax.swing.JPanel {
     private javax.swing.JLabel lbFactura;
     private javax.swing.JLabel lbPromedio;
     private javax.swing.JLabel lbTotal;
-    private javax.swing.JPanel pGrafica;
     private javax.swing.JTable tblFacturas;
     private javax.swing.JTextField txtFecha;
     private javax.swing.JTextField txtIngreso;
@@ -418,7 +372,6 @@ public class vFacturacion extends javax.swing.JPanel {
         //Cambiar el color de las letras en la selecccion de fila
         tblFacturas.setSelectionForeground(Color.BLACK);
         btBuscar.setBackground(java.awt.Color.decode("#A3C9A8"));
-        btCambiar.setBackground(java.awt.Color.decode("#A3C9A8"));
         btExportar.setBackground(java.awt.Color.decode("#A3C9A8"));
         btGenerar.setBackground(java.awt.Color.decode("#A3C9A8"));
         btNuevaFactura.setBackground(java.awt.Color.decode("#A3C9A8"));
@@ -427,7 +380,6 @@ public class vFacturacion extends javax.swing.JPanel {
 
     public void estilo() {
         color();
-        btCambiar.setEnabled(false);
         btGenerar.setEnabled(false);
 
         //Bloquear celdas de las tablas y que las filas esten vacias
@@ -447,7 +399,6 @@ public class vFacturacion extends javax.swing.JPanel {
         tblFacturas.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 boolean seleccionada = tblFacturas.getSelectedRow() != -1;
-                btCambiar.setEnabled(seleccionada);
             }
         });
         // Insertar cedula y fecha cuando se hace clic en la tabla
