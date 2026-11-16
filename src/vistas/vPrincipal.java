@@ -793,6 +793,10 @@ public class vPrincipal extends javax.swing.JFrame {
 //Funcion para guardar la configuracion de todo el panel
     public void estilo() {
         this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+        pBase.setMinimumSize(new java.awt.Dimension(0, 0));
+        pBase.setPreferredSize(new java.awt.Dimension(0, 0));
+        pPerfil.setMinimumSize(new java.awt.Dimension(0, 0));
+        pPerfil.setPreferredSize(new java.awt.Dimension(0, 0));
         menu.setBackground(Color.decode("#A3C9A8"));
         iconos();
         configurarBienvenida();

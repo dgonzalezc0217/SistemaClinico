@@ -479,7 +479,6 @@ public class vHistoriaClinica extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3)
-                    .addComponent(pPaciente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(pSignos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
@@ -500,7 +499,8 @@ public class vHistoriaClinica extends javax.swing.JPanel {
                             .addComponent(jLabel16)
                             .addComponent(jLabel17)
                             .addComponent(jLabel18))
-                        .addGap(0, 1329, Short.MAX_VALUE)))
+                        .addGap(0, 1329, Short.MAX_VALUE))
+                    .addComponent(pPaciente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
