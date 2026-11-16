@@ -102,9 +102,20 @@ public String[] buscarPacientePorCedula(String numeroDocumento) {
    
    public java.util.List<String[]> obtenerOrdenesLaboratorio(String cedula) {
         java.util.List<String[]> listaOrdenes = new java.util.ArrayList<>();
-        
-        // Consulta cruzando desde Orden_Medica hasta Paciente, filtrando solo por LABORATORIO
-        String sql = "SELECT o.id_orden_medica, o.emitida_en, s.nombre AS examen, s.tipo AS area, d.estado "
+
+        String sql = "SELECT o.id_orden_medica, o.emitida_en, s.nombre AS examen, s.tipo AS area, "
+                   + "CASE "
+                   + "  WHEN EXISTS ( "
+                   + "    SELECT 1 FROM Resultado_Lab r "
+                   + "    JOIN Episodio_Resultado_Lab erl ON erl.id_resultado_lab = r.id_resultado_lab "
+                   + "    WHERE r.id_detalle_orden = d.id_detalle_orden "
+                   + "  ) THEN 'ANEXADO' "
+                   + "  WHEN EXISTS ( "
+                   + "    SELECT 1 FROM Resultado_Lab r "
+                   + "    WHERE r.id_detalle_orden = d.id_detalle_orden "
+                   + "  ) THEN 'CON RESULTADOS' "
+                   + "  ELSE d.estado "
+                   + "END AS estado "
                    + "FROM Orden_Medica o "
                    + "JOIN Detalle_Orden d ON o.id_orden_medica = d.id_orden_medica "
                    + "JOIN Servicio s ON d.id_servicio = s.id_servicio "
@@ -116,18 +127,15 @@ public String[] buscarPacientePorCedula(String numeroDocumento) {
 
         try (java.sql.Connection conn = new Conexion.cConexion().conectar();
              java.sql.PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            
+
             pstmt.setString(1, cedula);
-            
+
             try (java.sql.ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
                     String[] fila = new String[5];
                     fila[0] = "ORD-" + rs.getString("id_orden_medica");
-                    
-                    // Formatear la fecha si existe, o dejarla en N/A
                     String fecha = rs.getString("emitida_en");
-                    fila[1] = (fecha != null) ? fecha.split(" ")[0] : "N/A"; 
-                    
+                    fila[1] = (fecha != null) ? fecha.split(" ")[0] : "N/A";
                     fila[2] = rs.getString("examen");
                     fila[3] = rs.getString("area");
                     fila[4] = rs.getString("estado");
@@ -137,7 +145,7 @@ public String[] buscarPacientePorCedula(String numeroDocumento) {
         } catch (java.sql.SQLException e) {
             System.err.println("Error al consultar órdenes: " + e.getMessage());
         }
-        
+
         return listaOrdenes;
     }
    
@@ -188,5 +196,78 @@ public String[] buscarPacientePorCedula(String numeroDocumento) {
         }
 
         return listaDetalles;
+    }
+   
+   public Integer obtenerEpisodioAbierto(String cedula) {
+        String sql = "SELECT e.id_episodio "
+                   + "FROM Episodio e "
+                   + "JOIN Historia_Clinica hc ON e.id_historia_clinica = hc.id_historia_clinica "
+                   + "JOIN Paciente p ON hc.id_paciente = p.id_paciente "
+                   + "WHERE p.numero_documento = ? AND e.estado = 'ABIERTO' "
+                   + "ORDER BY e.ingreso_en DESC LIMIT 1";
+
+        try (Connection conn = new cConexion().conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, cedula.trim());
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("id_episodio");
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al buscar episodio abierto: " + e.getMessage());
+        }
+        return null;
+    }
+   
+   public int anexarResultadosAEpisodio(int idEpisodio, String idOrdenFormateado) {
+        String idReal = idOrdenFormateado.replace("ORD-", "").trim();
+        int idOrden = Integer.parseInt(idReal);
+
+        String sqlVincular = "INSERT OR IGNORE INTO Episodio_Resultado_Lab (id_episodio, id_resultado_lab) "
+                           + "SELECT ?, r.id_resultado_lab "
+                           + "FROM Resultado_Lab r "
+                           + "JOIN Detalle_Orden d ON r.id_detalle_orden = d.id_detalle_orden "
+                           + "WHERE d.id_orden_medica = ?";
+
+        try (Connection conn = new cConexion().conectar();
+             PreparedStatement psVincular = conn.prepareStatement(sqlVincular)) {
+
+            psVincular.setInt(1, idEpisodio);
+            psVincular.setInt(2, idOrden);
+            return psVincular.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println("Error SQL al anexar resultados: " + e.getMessage());
+            return -1;
+        }
+    }
+   
+   public String obtenerReferenciaPdf(String idOrdenFormateado, String nombreExamen) {
+        String idReal = idOrdenFormateado.replace("ORD-", "").trim();
+        String sql = "SELECT r.referencia_pdf "
+                   + "FROM Detalle_Orden d "
+                   + "JOIN Servicio s ON d.id_servicio = s.id_servicio "
+                   + "JOIN Resultado_Lab r ON d.id_detalle_orden = r.id_detalle_orden "
+                   + "WHERE d.id_orden_medica = ? AND s.nombre = ? "
+                   + "AND r.referencia_pdf IS NOT NULL "
+                   + "LIMIT 1";
+
+        try (Connection conn = new cConexion().conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, Integer.parseInt(idReal));
+            pstmt.setString(2, nombreExamen);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("referencia_pdf");
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Error al consultar referencia PDF: " + e.getMessage());
+        }
+        return null;
     }
 }

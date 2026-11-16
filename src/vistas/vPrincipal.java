@@ -53,9 +53,6 @@ public class vPrincipal extends javax.swing.JFrame {
         pAlerta = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         lbCantidadAlerta = new javax.swing.JLabel();
-        pPendiente = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        lbCantidadIA = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblPacientes = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
@@ -273,12 +270,12 @@ public class vPrincipal extends javax.swing.JFrame {
             .addGroup(pPacienteHoyLayout.createSequentialGroup()
                 .addGroup(pPacienteHoyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pPacienteHoyLayout.createSequentialGroup()
-                        .addGap(150, 150, 150)
-                        .addComponent(lbCantidadDia, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(141, 141, 141)
+                        .addComponent(jLabel1))
                     .addGroup(pPacienteHoyLayout.createSequentialGroup()
-                        .addGap(74, 74, 74)
-                        .addComponent(jLabel1)))
-                .addContainerGap(92, Short.MAX_VALUE))
+                        .addGap(204, 204, 204)
+                        .addComponent(lbCantidadDia, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(155, Short.MAX_VALUE))
         );
         pPacienteHoyLayout.setVerticalGroup(
             pPacienteHoyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -314,7 +311,7 @@ public class vPrincipal extends javax.swing.JFrame {
                     .addGroup(pPacientesEsperaLayout.createSequentialGroup()
                         .addGap(170, 170, 170)
                         .addComponent(lbCantidadPendientes, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(102, Short.MAX_VALUE))
+                .addContainerGap(232, Short.MAX_VALUE))
         );
         pPacientesEsperaLayout.setVerticalGroup(
             pPacientesEsperaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -333,7 +330,7 @@ public class vPrincipal extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font("SansSerif", 1, 36)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Alertas laboratorio");
+        jLabel4.setText("Episodios Abiertos");
 
         lbCantidadAlerta.setFont(new java.awt.Font("SansSerif", 1, 48)); // NOI18N
         lbCantidadAlerta.setText("Cantidad Alertas");
@@ -343,14 +340,13 @@ public class vPrincipal extends javax.swing.JFrame {
         pAlertaLayout.setHorizontalGroup(
             pAlertaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pAlertaLayout.createSequentialGroup()
-                .addGroup(pAlertaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pAlertaLayout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addComponent(jLabel4))
-                    .addGroup(pAlertaLayout.createSequentialGroup()
-                        .addGap(181, 181, 181)
-                        .addComponent(lbCantidadAlerta, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addGap(181, 181, 181)
+                .addComponent(lbCantidadAlerta, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(244, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pAlertaLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addGap(88, 88, 88))
         );
         pAlertaLayout.setVerticalGroup(
             pAlertaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -363,41 +359,6 @@ public class vPrincipal extends javax.swing.JFrame {
         );
 
         jPanel1.add(pAlerta);
-
-        pPendiente.setBackground(new java.awt.Color(255, 255, 255));
-        pPendiente.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        jLabel3.setFont(new java.awt.Font("SansSerif", 1, 36)); // NOI18N
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("IA Pendientes");
-
-        lbCantidadIA.setFont(new java.awt.Font("SansSerif", 1, 48)); // NOI18N
-        lbCantidadIA.setText("Cantidad IA");
-
-        javax.swing.GroupLayout pPendienteLayout = new javax.swing.GroupLayout(pPendiente);
-        pPendiente.setLayout(pPendienteLayout);
-        pPendienteLayout.setHorizontalGroup(
-            pPendienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pPendienteLayout.createSequentialGroup()
-                .addGap(60, 60, 60)
-                .addComponent(jLabel3)
-                .addContainerGap(84, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pPendienteLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lbCantidadIA, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(141, 141, 141))
-        );
-        pPendienteLayout.setVerticalGroup(
-            pPendienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pPendienteLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lbCantidadIA)
-                .addContainerGap(85, Short.MAX_VALUE))
-        );
-
-        jPanel1.add(pPendiente);
 
         tblPacientes.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         tblPacientes.setModel(new javax.swing.table.DefaultTableModel(
@@ -422,7 +383,7 @@ public class vPrincipal extends javax.swing.JFrame {
             .addGroup(pInicioLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1544, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane1)
                     .addGroup(pInicioLayout.createSequentialGroup()
                         .addComponent(jLabel5)
@@ -510,6 +471,7 @@ public class vPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btInicioActionPerformed
+        cargarDashboard();
         java.awt.CardLayout layout = (java.awt.CardLayout) pBase.getLayout();
         layout.show(pBase, "pantallaInicio");
     }//GEN-LAST:event_btInicioActionPerformed
@@ -619,7 +581,6 @@ public class vPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel image;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
@@ -627,7 +588,6 @@ public class vPrincipal extends javax.swing.JFrame {
     public javax.swing.JLabel lbBienvenida;
     private javax.swing.JLabel lbCantidadAlerta;
     private javax.swing.JLabel lbCantidadDia;
-    private javax.swing.JLabel lbCantidadIA;
     private javax.swing.JLabel lbCantidadPendientes;
     public javax.swing.JLabel lbFechaHora;
     private javax.swing.JPanel menu;
@@ -636,7 +596,6 @@ public class vPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel pInicio;
     private javax.swing.JPanel pPacienteHoy;
     private javax.swing.JPanel pPacientesEspera;
-    private javax.swing.JPanel pPendiente;
     private javax.swing.JPanel pPerfil;
     private javax.swing.JTable tblPacientes;
     // End of variables declaration//GEN-END:variables
@@ -762,16 +721,27 @@ public class vPrincipal extends javax.swing.JFrame {
 
 //Metodo para la configuracion de las tarjetas de resumen
     private void configurarTarjetas() {
-        //Agregar metodos
-        //Datos de prueba
-        int pacientesHoy = 12;
-        int enEspera = 3;
-        String alertasLab = "1";
-        int sugerenciasIA = 2;
-        lbCantidadDia.setText(String.valueOf(pacientesHoy));
-        lbCantidadPendientes.setText(String.valueOf(enEspera));
-        lbCantidadAlerta.setText(alertasLab);
-        lbCantidadIA.setText(String.valueOf(sugerenciasIA));
+        lbCantidadDia.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbCantidadPendientes.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbCantidadAlerta.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        lbCantidadDia.setText("0");
+        lbCantidadPendientes.setText("0");
+        lbCantidadAlerta.setText("0");
+
+        // Bloquear edición en la tabla de citas y aplicar color de selección uniforme
+        javax.swing.table.DefaultTableModel modeloCitas = new javax.swing.table.DefaultTableModel(
+                new Object[][]{},
+                new String[]{"Hora", "Pacientes", "Cedula", "Motivo", "Estado"}
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        tblPacientes.setModel(modeloCitas);
+        tblPacientes.setSelectionBackground(Color.decode("#C8E6C9"));
+        tblPacientes.setSelectionForeground(Color.BLACK);
     }
 
     public void configurarPermisosSegunRol(String rol) {
@@ -849,11 +819,12 @@ public class vPrincipal extends javax.swing.JFrame {
     public void iniciarSesionExitosa(long idUsuario, String nombreCompleto, String rol) {
         this.idUsuarioLogueado = idUsuario;
         this.nombreUsuarioLogueado = nombreCompleto;
-        this.rolUsuarioLogueado = rol; // <-- ESTA LÍNEA FALTABA
+        this.rolUsuarioLogueado = rol;
 
         mostrarBarraYMenu(true);
         lbBienvenida.setText("<html>¡Bienvenido!<br>" + nombreCompleto + " | " + rol + "</html>");
         configurarPermisosSegunRol(rol);
+        cargarDashboard(); // Carga los contadores y citas reales del usuario que ingresó
 
         CardLayout layout = (CardLayout) pBase.getLayout();
         layout.show(pBase, "pantallaInicio");
@@ -866,5 +837,24 @@ public class vPrincipal extends javax.swing.JFrame {
     public String getRolUsuarioLogueado() {
         return this.rolUsuarioLogueado;
     
+    }
+    
+    public void cargarDashboard() {
+        Modelo.cInicio modeloInicio = new Modelo.cInicio();
+
+        // 1. Actualizar las 3 tarjetas superiores
+        int[] contadores = modeloInicio.obtenerContadoresDashboard(idUsuarioLogueado, rolUsuarioLogueado);
+        lbCantidadDia.setText(String.valueOf(contadores[0]));
+        lbCantidadPendientes.setText(String.valueOf(contadores[1]));
+        lbCantidadAlerta.setText(String.valueOf(contadores[2]));
+
+        // 2. Llenar la tabla de Citas del día
+        javax.swing.table.DefaultTableModel modeloTabla =
+                (javax.swing.table.DefaultTableModel) tblPacientes.getModel();
+        modeloTabla.setRowCount(0);
+
+        for (Object[] fila : modeloInicio.obtenerCitasDelDia(idUsuarioLogueado, rolUsuarioLogueado)) {
+            modeloTabla.addRow(fila);
+        }
     }
 }

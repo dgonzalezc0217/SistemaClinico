@@ -362,7 +362,7 @@
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jPanel1" pref="1544" max="32767" attributes="0"/>
+                          <Component id="jPanel1" max="32767" attributes="0"/>
                           <Component id="jScrollPane1" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
@@ -419,15 +419,15 @@
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
-                                      <EmptySpace min="-2" pref="150" max="-2" attributes="0"/>
-                                      <Component id="lbCantidadDia" min="-2" pref="89" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="-2" pref="74" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="141" max="-2" attributes="0"/>
                                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                                   </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace min="-2" pref="204" max="-2" attributes="0"/>
+                                      <Component id="lbCantidadDia" min="-2" pref="89" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
-                              <EmptySpace pref="92" max="32767" attributes="0"/>
+                              <EmptySpace pref="155" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -489,7 +489,7 @@
                                       <Component id="lbCantidadPendientes" min="-2" pref="84" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
-                              <EmptySpace pref="102" max="32767" attributes="0"/>
+                              <EmptySpace pref="232" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -541,17 +541,14 @@
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
-                                      <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="-2" pref="181" max="-2" attributes="0"/>
-                                      <Component id="lbCantidadAlerta" min="-2" pref="81" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <EmptySpace pref="35" max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="181" max="-2" attributes="0"/>
+                              <Component id="lbCantidadAlerta" min="-2" pref="81" max="-2" attributes="0"/>
+                              <EmptySpace pref="244" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="88" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -574,7 +571,7 @@
                           <Font name="SansSerif" size="36" style="1"/>
                         </Property>
                         <Property name="horizontalAlignment" type="int" value="0"/>
-                        <Property name="text" type="java.lang.String" value="Alertas laboratorio"/>
+                        <Property name="text" type="java.lang.String" value="Episodios Abiertos"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="lbCantidadAlerta">
@@ -583,65 +580,6 @@
                           <Font name="SansSerif" size="48" style="1"/>
                         </Property>
                         <Property name="text" type="java.lang.String" value="Cantidad Alertas"/>
-                      </Properties>
-                    </Component>
-                  </SubComponents>
-                </Container>
-                <Container class="javax.swing.JPanel" name="pPendiente">
-                  <Properties>
-                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                    </Property>
-                    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                      <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                        <LineBorder/>
-                      </Border>
-                    </Property>
-                  </Properties>
-
-                  <Layout>
-                    <DimensionLayout dim="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
-                              <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="84" max="32767" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="lbCantidadIA" min="-2" pref="77" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="141" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                    </DimensionLayout>
-                    <DimensionLayout dim="1">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="lbCantidadIA" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="85" max="32767" attributes="0"/>
-                          </Group>
-                      </Group>
-                    </DimensionLayout>
-                  </Layout>
-                  <SubComponents>
-                    <Component class="javax.swing.JLabel" name="jLabel3">
-                      <Properties>
-                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                          <Font name="SansSerif" size="36" style="1"/>
-                        </Property>
-                        <Property name="horizontalAlignment" type="int" value="0"/>
-                        <Property name="text" type="java.lang.String" value="IA Pendientes"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="lbCantidadIA">
-                      <Properties>
-                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                          <Font name="SansSerif" size="48" style="1"/>
-                        </Property>
-                        <Property name="text" type="java.lang.String" value="Cantidad IA"/>
                       </Properties>
                     </Component>
                   </SubComponents>

@@ -1,0 +1,49 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R /F2 6 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 1060 >>
+stream
+BT
+/F2 16 Tf 50 740 Td (MEDICAL CENTER - REPORTE DE LABORATORIO CLINICO) Tj
+/F1 10 Tf 0 -18 Td (Referencia sistema: demo://lab/resultados/PRUEBA-01.pdf) Tj
+/F2 11 Tf 0 -28 Td (DATOS DEL PACIENTE) Tj
+/F1 10 Tf 0 -16 Td (Paciente: Carlos Gómez Ruiz   |   Documento: 1010000001) Tj
+0 -15 Td (Edad: 41   |   Grupo RH: O+   |   Telefono: 3001000001) Tj
+/F2 11 Tf 0 -26 Td (ORDEN: ORD-27 - Cuadro Hemático Completo   |   Fecha: 2026-11-16) Tj
+/F2 10 Tf 0 -24 Td (PARAMETRO                  RESULTADO        RANGO REF.           OBSERVACION) Tj
+/F1 10 Tf 0 -12 Td (--------------------------------------------------------------------------------------) Tj
+0 -16 Td (Hemoglobina                14.1 g/dL        13.5 - 17.5 g/dL     DENTRO_DE_REFERENCIA | Ale..) Tj
+0 -16 Td (Leucocitos                 13.8 10^3/uL     4.5 - 11.0 10^3/uL   ELEVADO | Alerta: ALTO) Tj
+0 -16 Td (Glucosa Basal              148.0 mg/dL      70 - 100 mg/dL       ELEVADO | Alerta: ALTO) Tj
+/F1 9 Tf 0 -36 Td (Documento generado automaticamente por el modulo de Laboratorio Clinico.) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+6 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>
+endobj
+xref
+0 7
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000251 00000 n 
+0000001362 00000 n 
+0000001459 00000 n 
+trailer
+<< /Size 7 /Root 1 0 R >>
+startxref
+1561
+%%EOF

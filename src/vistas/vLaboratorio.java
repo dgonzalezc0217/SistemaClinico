@@ -235,13 +235,13 @@ public class vLaboratorio extends javax.swing.JPanel {
         tblOrdenes.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         tblOrdenes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "ID Orden", "Fecha", "Examen", "Area", "Estado"
+
             }
         ));
         jScrollPane1.setViewportView(tblOrdenes);
@@ -250,13 +250,13 @@ public class vLaboratorio extends javax.swing.JPanel {
         tblDetalle.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         tblDetalle.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Prueba", "Parametro", "Resultado", "Unidad", "Rango", "Referenc", "Alerta"
+
             }
         ));
         jScrollPane2.setViewportView(tblDetalle);
@@ -328,6 +328,10 @@ public class vLaboratorio extends javax.swing.JPanel {
 
     private void btBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBuscarActionPerformed
     String cedula = txtIngreso.getText().trim();
+    ((javax.swing.table.DefaultTableModel) tblOrdenes.getModel()).setRowCount(0);
+    ((javax.swing.table.DefaultTableModel) tblDetalle.getModel()).setRowCount(0);
+    btVerPDF.setEnabled(false);
+    btAnexar.setEnabled(false);
 
         if (cedula.isEmpty()) {
             javax.swing.JOptionPane.showMessageDialog(this,
@@ -399,9 +403,14 @@ public class vLaboratorio extends javax.swing.JPanel {
     private void btSincronizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSincronizarActionPerformed
         String cedula = txtCedula.getText().trim();
         if (cedula.isEmpty()) {
+            btSincronizar.setEnabled(false);
             return; // Seguridad extra
         }
-
+        
+        btSincronizar.setEnabled(false);
+        ((javax.swing.table.DefaultTableModel) tblDetalle.getModel()).setRowCount(0);
+        btVerPDF.setEnabled(false);
+        btAnexar.setEnabled(false);
         // 1. Construir la ventana emergente de carga
         javax.swing.JDialog dialogoCarga = new javax.swing.JDialog(
                 (java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(this), 
@@ -465,27 +474,155 @@ public class vLaboratorio extends javax.swing.JPanel {
     }//GEN-LAST:event_btSincronizarActionPerformed
 
     private void btVerPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btVerPDFActionPerformed
-        try {
-            java.io.File pdfLocal = new java.io.File("src/archivos/reporte_ejemplo.pdf");
-            if (pdfLocal.exists()) {
-                java.awt.Desktop.getDesktop().open(pdfLocal);
-            } else {
-                javax.swing.JOptionPane.showMessageDialog(this,
-                        "Cree la carpeta 'src/archivos' y coloque 'reporte_ejemplo.pdf' para la prueba.");
+        int fila = tblOrdenes.getSelectedRow();
+        if (fila == -1) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Seleccione primero una orden de laboratorio.",
+                    "Selección requerida",
+                    javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (tblDetalle.getRowCount() == 0) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Esta orden aún no tiene resultados cargados para generar el reporte PDF.",
+                    "Sin resultados",
+                    javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String idOrden = String.valueOf(tblOrdenes.getValueAt(fila, 0));
+        String fecha = String.valueOf(tblOrdenes.getValueAt(fila, 1));
+        String examen = String.valueOf(tblOrdenes.getValueAt(fila, 2));
+
+        Modelo.cLaboratorio modelo = new Modelo.cLaboratorio();
+        String refPdf = modelo.obtenerReferenciaPdf(idOrden, examen);
+
+        // Extraer el nombre del archivo desde referencia_pdf (ej. "demo://lab/resultados/LAB-2026-022.pdf" -> "LAB-2026-022.pdf")
+        String nombreArchivo;
+        if (refPdf != null && !refPdf.isBlank()) {
+            int idx = refPdf.lastIndexOf('/');
+            nombreArchivo = (idx != -1) ? refPdf.substring(idx + 1) : refPdf;
+            if (!nombreArchivo.toLowerCase().endsWith(".pdf")) {
+                nombreArchivo += ".pdf";
             }
+        } else {
+            nombreArchivo = idOrden + "_" + examen.replaceAll("[^a-zA-Z0-9]", "_") + ".pdf";
+        }
+
+        try {
+            java.io.File carpetaArchivos = new java.io.File("src/archivos");
+            if (!carpetaArchivos.exists()) {
+                carpetaArchivos.mkdirs();
+            }
+
+            java.io.File archivoObjetivo = new java.io.File(carpetaArchivos, nombreArchivo);
+            java.io.File archivoEjemplo = new java.io.File(carpetaArchivos, "reporte_ejemplo.pdf");
+
+            // 1. Si existe el PDF específico de la BD o el ejemplo local, abrirlo
+            if (archivoObjetivo.exists()) {
+                java.awt.Desktop.getDesktop().open(archivoObjetivo);
+                return;
+            } else if (archivoEjemplo.exists()) {
+                java.awt.Desktop.getDesktop().open(archivoEjemplo);
+                return;
+            }
+
+            // 2. Si no existe ningún PDF previo, generar el reporte real de la orden y abrirlo
+            generarPdfReporte(archivoObjetivo, idOrden, fecha, examen, refPdf);
+            java.awt.Desktop.getDesktop().open(archivoObjetivo);
+
         } catch (Exception e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Error al abrir el PDF: " + e.getMessage());
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "No se pudo abrir el archivo PDF: " + e.getMessage(),
+                    "Error al abrir PDF",
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btVerPDFActionPerformed
 
     private void btAnexarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAnexarActionPerformed
         int fila = tblOrdenes.getSelectedRow();
-        if (fila != -1) {
-            String examen = tblOrdenes.getValueAt(fila, 2).toString();
+        if (fila == -1) {
             javax.swing.JOptionPane.showMessageDialog(this,
-                    "Los resultados de '" + examen + "' se anexaron correctamente a la consulta.",
-                    "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                    "Seleccione primero una orden de laboratorio.",
+                    "Selección requerida",
+                    javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
         }
+
+        if (tblDetalle.getRowCount() == 0) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Esta orden aún no tiene resultados cargados para anexar.",
+                    "Sin resultados",
+                    javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String cedula = txtCedula.getText().trim();
+        String idOrden = tblOrdenes.getValueAt(fila, 0).toString();
+        String examen = tblOrdenes.getValueAt(fila, 2).toString();
+
+        Modelo.cLaboratorio modelo = new Modelo.cLaboratorio();
+        Integer idEpisodioActivo = modelo.obtenerEpisodioAbierto(cedula);
+
+        if (idEpisodioActivo == null) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "El paciente no tiene una consulta (episodio) ABIERTA en curso.\n"
+                    + "Abra primero la atención en Historia Clínica antes de anexar resultados.",
+                    "Sin consulta activa",
+                    javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int resultado = modelo.anexarResultadosAEpisodio(idEpisodioActivo, idOrden);
+
+        if (resultado == -1) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Ocurrió un error al intentar anexar los resultados a la base de datos.",
+                    "Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Recopilar alertas de la tabla de detalles para informar al médico
+        StringBuilder alertas = new StringBuilder();
+        for (int i = 0; i < tblDetalle.getRowCount(); i++) {
+            String parametro = String.valueOf(tblDetalle.getValueAt(i, 1));
+            String valor = String.valueOf(tblDetalle.getValueAt(i, 2));
+            String unidad = String.valueOf(tblDetalle.getValueAt(i, 3));
+            String obs = String.valueOf(tblDetalle.getValueAt(i, 5));
+
+            boolean esNormal = obs.equalsIgnoreCase("Normal")
+                    || obs.equalsIgnoreCase("DENTRO_DE_REFERENCIA")
+                    || (obs.contains("DENTRO_DE_REFERENCIA") && obs.contains("Alerta: NORMAL"))
+                    || obs.equals("null");
+
+            if (!esNormal) {
+                alertas.append("\n • ").append(parametro).append(": ")
+                       .append(valor).append(" ").append(unidad)
+                       .append(" (").append(obs).append(")");
+            }
+        }
+        
+        int colEstado = tblOrdenes.getColumnCount() - 1;
+        for (int i = 0; i < tblOrdenes.getRowCount(); i++) {
+            if (idOrden.equals(String.valueOf(tblOrdenes.getValueAt(i, 0)))) {
+                tblOrdenes.setValueAt("ANEXADO", i, colEstado);
+            }
+        }
+
+        String mensaje = (resultado == 0)
+                ? "Los resultados de '" + examen + "' ya estaban anexados al Episodio #" + idEpisodioActivo + "."
+                : "Resultados de '" + examen + "' anexados correctamente al Episodio #" + idEpisodioActivo + ".";
+
+        if (alertas.length() > 0) {
+            mensaje += "\n\nHallazgos fuera de rango detectados:" + alertas;
+        }
+
+        javax.swing.JOptionPane.showMessageDialog(this,
+                mensaje,
+                "Anexado a consulta",
+                javax.swing.JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_btAnexarActionPerformed
 
 
@@ -539,53 +676,27 @@ public class vLaboratorio extends javax.swing.JPanel {
 
 //Funcion para configurar el estilo del panel    
     public void estilo() {
-        tblOrdenes.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                int fila = tblOrdenes.getSelectedRow();
-                
-                if (fila >= 0) {
-                    // Extraer el valor de la primera columna (ID Orden)
-                    Object valorCelda = tblOrdenes.getValueAt(fila, 0);
-                    
-                    if (valorCelda != null && !valorCelda.toString().trim().isEmpty()) {
-                        String idOrden = valorCelda.toString();
-                        
-                        // Instanciar el modelo y traer los datos
-                        Modelo.cLaboratorio modelo = new Modelo.cLaboratorio();
-                        java.util.List<String[]> detalles = modelo.obtenerResultadosPorOrden(idOrden);
-                        
-                        // Llenar la tabla de la derecha (asegúrate de que tu JTable se llame tblDetalleExamen)
-                        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tblDetalle.getModel();
-                        model.setRowCount(0); // Limpiar los detalles de la orden anterior
-                        
-                        for (String[] filaDetalle : detalles) {
-                            model.addRow(filaDetalle);
-                        }
-                    }
-                }
-            }
-        });
-        color();
+    color();
 
-        //Bloquear celdas de las tablas y que las filas esten vacias
+        // 5 columnas exactas para que coincidan con cLaboratorio.obtenerOrdenesLaboratorio()
         javax.swing.table.DefaultTableModel modelOrdenes = new javax.swing.table.DefaultTableModel(
                 new Object[][]{},
-                new String[]{"ID Orden", "Fecha", "Examen Solicitado", "Estado"}
+                new String[]{"ID Orden", "Fecha", "Examen Solicitado", "Área", "Estado"}
         ) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // Bloquea la edición
+                return false;
             }
         };
         tblOrdenes.setModel(modelOrdenes);
+
         javax.swing.table.DefaultTableModel modelDetalle = new javax.swing.table.DefaultTableModel(
                 new Object[][]{},
                 new String[]{"Examen", "Parámetro", "Resultado", "Unidades", "Valores Referencia", "Observación", "Estado"}
         ) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // Bloquea la edición
+                return false;
             }
         };
         tblDetalle.setModel(modelDetalle);
@@ -603,15 +714,33 @@ public class vLaboratorio extends javax.swing.JPanel {
         btVerPDF.setEnabled(false);
         btAnexar.setEnabled(false);
 
-        // Listener para selección en la tabla de órdenes
+        // Unificar selección (clic y teclado) para cargar detalles y activar botones
         tblOrdenes.getSelectionModel().addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting() && tblOrdenes.getSelectedRow() != -1) {
-                btVerPDF.setEnabled(true);
-                btAnexar.setEnabled(true);
+            if (!e.getValueIsAdjusting()) {
+                int fila = tblOrdenes.getSelectedRow();
+                boolean haySeleccion = (fila != -1);
+                btVerPDF.setEnabled(haySeleccion);
+                btAnexar.setEnabled(haySeleccion);
+
+                if (haySeleccion) {
+                    Object valorCelda = tblOrdenes.getValueAt(fila, 0);
+                    if (valorCelda != null && !valorCelda.toString().trim().isEmpty()) {
+                        Modelo.cLaboratorio modelo = new Modelo.cLaboratorio();
+                        java.util.List<String[]> detalles = modelo.obtenerResultadosPorOrden(valorCelda.toString());
+
+                        javax.swing.table.DefaultTableModel modelDet =
+                                (javax.swing.table.DefaultTableModel) tblDetalle.getModel();
+                        modelDet.setRowCount(0);
+
+                        for (String[] filaDetalle : detalles) {
+                            modelDet.addRow(filaDetalle);
+                        }
+                    }
+                }
             }
         });
 
-        // Validar solo números en el campo de cédula 
+        // Validar solo números en el campo de cédula
         txtIngreso.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -619,9 +748,101 @@ public class vLaboratorio extends javax.swing.JPanel {
                     evt.consume();
                 }
             }
-        }
-        
-        );
+        });
     }
 
+    private void generarPdfReporte(
+            java.io.File destino,
+            String idOrden,
+            String fecha,
+            String examen,
+            String refPdf) throws java.io.IOException {
+
+        StringBuilder stream = new StringBuilder();
+        stream.append("BT\n");
+        stream.append("/F2 16 Tf 50 740 Td (MEDICAL CENTER - REPORTE DE LABORATORIO CLINICO) Tj\n");
+        stream.append("/F1 10 Tf 0 -18 Td (Referencia sistema: ")
+              .append(escaparTextoPdf(refPdf != null ? refPdf : "N/A")).append(") Tj\n");
+
+        stream.append("/F2 11 Tf 0 -28 Td (DATOS DEL PACIENTE) Tj\n");
+        stream.append("/F1 10 Tf 0 -16 Td (Paciente: ").append(escaparTextoPdf(txtNombre.getText()))
+              .append("   |   Documento: ").append(escaparTextoPdf(txtCedula.getText())).append(") Tj\n");
+        stream.append("0 -15 Td (Edad: ").append(escaparTextoPdf(txtEdad.getText()))
+              .append("   |   Grupo RH: ").append(escaparTextoPdf(txtSangre.getText()))
+              .append("   |   Telefono: ").append(escaparTextoPdf(txtCelular.getText())).append(") Tj\n");
+
+        stream.append("/F2 11 Tf 0 -26 Td (ORDEN: ").append(escaparTextoPdf(idOrden))
+              .append(" - ").append(escaparTextoPdf(examen))
+              .append("   |   Fecha: ").append(escaparTextoPdf(fecha)).append(") Tj\n");
+
+        stream.append("/F2 10 Tf 0 -24 Td (PARAMETRO                  RESULTADO        RANGO REF.           OBSERVACION) Tj\n");
+        stream.append("/F1 10 Tf 0 -12 Td (--------------------------------------------------------------------------------------) Tj\n");
+
+        for (int i = 0; i < tblDetalle.getRowCount(); i++) {
+            String param = String.valueOf(tblDetalle.getValueAt(i, 1));
+            String res = String.valueOf(tblDetalle.getValueAt(i, 2)) + " " + String.valueOf(tblDetalle.getValueAt(i, 3));
+            String rango = String.valueOf(tblDetalle.getValueAt(i, 4));
+            String obs = String.valueOf(tblDetalle.getValueAt(i, 5));
+
+            String linea = String.format("%-26s %-16s %-20s %s",
+                    recortar(param, 25), recortar(res, 15), recortar(rango, 19), recortar(obs, 28));
+            stream.append("0 -16 Td (").append(escaparTextoPdf(linea)).append(") Tj\n");
+        }
+
+        stream.append("/F1 9 Tf 0 -36 Td (Documento generado automaticamente por el modulo de Laboratorio Clinico.) Tj\n");
+        stream.append("ET\n");
+
+        byte[] contenidoBytes = stream.toString().getBytes(java.nio.charset.StandardCharsets.ISO_8859_1);
+        java.io.ByteArrayOutputStream pdfBytes = new java.io.ByteArrayOutputStream();
+        java.util.List<Integer> offsets = new java.util.ArrayList<>();
+
+        escribirAscii(pdfBytes, "%PDF-1.4\n");
+
+        offsets.add(pdfBytes.size());
+        escribirAscii(pdfBytes, "1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n");
+
+        offsets.add(pdfBytes.size());
+        escribirAscii(pdfBytes, "2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n");
+
+        offsets.add(pdfBytes.size());
+        escribirAscii(pdfBytes, "3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R "
+                + "/Resources << /Font << /F1 5 0 R /F2 6 0 R >> >> >>\nendobj\n");
+
+        offsets.add(pdfBytes.size());
+        escribirAscii(pdfBytes, "4 0 obj\n<< /Length " + contenidoBytes.length + " >>\nstream\n");
+        pdfBytes.write(contenidoBytes);
+        escribirAscii(pdfBytes, "endstream\nendobj\n");
+
+        offsets.add(pdfBytes.size());
+        escribirAscii(pdfBytes, "5 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>\nendobj\n");
+
+        offsets.add(pdfBytes.size());
+        escribirAscii(pdfBytes, "6 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>\nendobj\n");
+
+        int xrefPos = pdfBytes.size();
+        escribirAscii(pdfBytes, "xref\n0 " + (offsets.size() + 1) + "\n");
+        escribirAscii(pdfBytes, "0000000000 65535 f \n");
+        for (int off : offsets) {
+            escribirAscii(pdfBytes, String.format("%010d 00000 n \n", off));
+        }
+        escribirAscii(pdfBytes, "trailer\n<< /Size " + (offsets.size() + 1) + " /Root 1 0 R >>\nstartxref\n" + xrefPos + "\n%%EOF");
+
+        try (java.io.FileOutputStream fos = new java.io.FileOutputStream(destino)) {
+            fos.write(pdfBytes.toByteArray());
+        }
+    }
+
+    private void escribirAscii(java.io.OutputStream out, String texto) throws java.io.IOException {
+        out.write(texto.getBytes(java.nio.charset.StandardCharsets.ISO_8859_1));
+    }
+
+    private String escaparTextoPdf(String texto) {
+        if (texto == null) return "";
+        return texto.replace("\\", "\\\\").replace("(", "\\(").replace(")", "\\)");
+    }
+
+    private String recortar(String texto, int max) {
+        if (texto == null) return "";
+        return (texto.length() <= max) ? texto : texto.substring(0, max - 2) + "..";
+    }
 }
