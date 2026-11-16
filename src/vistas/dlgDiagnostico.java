@@ -16,6 +16,7 @@ public class dlgDiagnostico extends javax.swing.JDialog {
 
     cDiagnostico modelo = new cDiagnostico();
     private long idEpisodio = -1;
+    private long idUsuarioAutor = 0;
     private java.util.List<Long> diagnosticosAgregadosEnSesion = new java.util.ArrayList<>();
 
     /**
@@ -227,7 +228,15 @@ public class dlgDiagnostico extends javax.swing.JDialog {
         long idCatalogoSeleccionado = (long) tblDiagnosticos.getValueAt(filaSeleccionada, 0);
         String codigoDiagnostico = (String) tblDiagnosticos.getValueAt(filaSeleccionada, 1);
         String descripcionDiagnostico = (String) tblDiagnosticos.getValueAt(filaSeleccionada, 2);
-        long idUsuarioLogueado = 1;
+        long idUsuarioLogueado = idUsuarioAutor;
+
+        if (idUsuarioLogueado <= 0) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "No hay un usuario de sesión válido para registrar el diagnóstico."
+            );
+            return;
+        }
         // Pasamos idEpisodio al método
         if (modelo.existeDiagnosticoEnEpisodio(idEpisodio, idCatalogoSeleccionado)) {
             javax.swing.JOptionPane.showMessageDialog(this,
@@ -457,4 +466,7 @@ public class dlgDiagnostico extends javax.swing.JDialog {
 
     }
 
+    public void setUsuarioAutor(long idUsuario) {
+        this.idUsuarioAutor = idUsuario;
+    }
 }

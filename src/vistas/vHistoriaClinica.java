@@ -30,13 +30,13 @@ public class vHistoriaClinica extends javax.swing.JPanel {
         initComponents();
         estilo();
         this.addComponentListener(new java.awt.event.ComponentAdapter() {
-        @Override
-        public void componentShown(java.awt.event.ComponentEvent evt) {
-            if (idPacienteActivo <= 0 && idCitaActiva <= 0 && idEpisodioActivo <= 0) {
-                limpiarFormulario(true);
+            @Override
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                if (idPacienteActivo <= 0 && idCitaActiva <= 0 && idEpisodioActivo <= 0) {
+                    limpiarFormulario(true);
+                }
             }
-        }
-    });
+        });
     }
 
     /**
@@ -617,11 +617,15 @@ public class vHistoriaClinica extends javax.swing.JPanel {
                 return;
             }
         }
+        long idAutor = obtenerUsuarioSesion();
 
+        if (idAutor <= 0) {
+            return;
+        }
         // 3. Abrir e inicializar la ventana de diagnósticos
         dlgDiagnostico ventanaDiagnosticos = new dlgDiagnostico(null, true);
         ventanaDiagnosticos.setEpisodioActivo(idParaDialogo);
-
+        ventanaDiagnosticos.setUsuarioAutor(idAutor);
         // 4. Aplicar bloqueo de edición si es lectura del historial
         if (esModoLectura) {
             ventanaDiagnosticos.activarModoLectura();
@@ -678,11 +682,14 @@ public class vHistoriaClinica extends javax.swing.JPanel {
             return;
         }
 
-        long idUsuarioReal = 0;
-        java.awt.Window parentWindow = javax.swing.SwingUtilities.getWindowAncestor(this);
-        if (parentWindow instanceof vPrincipal principal) {
-            idUsuarioReal = principal.getIdUsuarioLogueado();
+        long idUsuarioReal = obtenerUsuarioSesion();
+
+        if (idUsuarioReal <= 0) {
+            return;
         }
+
+        java.awt.Window parentWindow
+                = javax.swing.SwingUtilities.getWindowAncestor(this);
 
         String examenFisico = txtExamen.getText().trim();
         String notaClinica = txtNotaClinica.getText().trim();
@@ -823,7 +830,8 @@ public class vHistoriaClinica extends javax.swing.JPanel {
             if (segundaRespuesta == javax.swing.JOptionPane.YES_OPTION) {
                 try {
                     btAbrir.setEnabled(false);
-                    Long idCitaEncontrada = modelo.buscarCitaPendiente(idPacienteActivo);
+                    Long idCitaEncontrada
+                            = idCitaActiva > 0 ? Long.valueOf(idCitaActiva) : null;
                     idEpisodioActivo = modelo.obtenerOCrearEpisodio(
                             idHistoriaActiva,
                             idSedeActual, // Será 1
@@ -842,7 +850,7 @@ public class vHistoriaClinica extends javax.swing.JPanel {
                     txtExamen.setEditable(true);
                     txtNotaClinica.setEditable(true);
                     btDiagnostico.setEnabled(true);
-                    btAbrir.setEnabled(true);
+                    btAbrir.setEnabled(false);
                     btNota.setEnabled(true);
                     cmbTriage.setEnabled(true);
                     cmbTipo.setEnabled(true);
@@ -850,6 +858,7 @@ public class vHistoriaClinica extends javax.swing.JPanel {
                     javax.swing.JOptionPane.showMessageDialog(null, "Episodio creado exitosamente. Puede continuar con la atención.");
 
                 } catch (Exception ex) {
+                    btAbrir.setEnabled(idEpisodioActivo <= 0);
                     javax.swing.JOptionPane.showMessageDialog(null, "Error al crear el episodio: " + ex.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
                 }
             }
@@ -858,36 +867,36 @@ public class vHistoriaClinica extends javax.swing.JPanel {
 
     private void btLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLimpiarActionPerformed
         // 1. Primera confirmación: limpiar los datos ingresados de la consulta
-    String mensajeLimpiar = (this.idEpisodioActivo > 0)
-            ? "¿Desea limpiar los datos clínicos ingresados?\n(Se perderán los cambios no guardados del episodio actual en pantalla)."
-            : "¿Desea limpiar los datos ingresados en el formulario?";
+        String mensajeLimpiar = (this.idEpisodioActivo > 0)
+                ? "¿Desea limpiar los datos clínicos ingresados?\n(Se perderán los cambios no guardados del episodio actual en pantalla)."
+                : "¿Desea limpiar los datos ingresados en el formulario?";
 
-    int confDatos = javax.swing.JOptionPane.showConfirmDialog(
-            this,
-            mensajeLimpiar,
-            "Confirmar limpieza",
-            javax.swing.JOptionPane.YES_NO_OPTION,
-            javax.swing.JOptionPane.QUESTION_MESSAGE
-    );
-
-    if (confDatos != javax.swing.JOptionPane.YES_OPTION) {
-        return; // Si responde No, no se hace nada
-    }
-
-    // 2. Segunda confirmación: cancelar también al paciente buscado o traído de cita
-    boolean cancelarPaciente = false;
-    if (this.idPacienteActivo > 0 || this.idCitaActiva > 0) {
-        int confPaciente = javax.swing.JOptionPane.showConfirmDialog(
+        int confDatos = javax.swing.JOptionPane.showConfirmDialog(
                 this,
-                "¿Desea cancelar también al paciente cargado (buscado o traído de cita) para ingresar uno nuevo?",
-                "Cancelar paciente actual",
+                mensajeLimpiar,
+                "Confirmar limpieza",
                 javax.swing.JOptionPane.YES_NO_OPTION,
-                javax.swing.JOptionPane.WARNING_MESSAGE
+                javax.swing.JOptionPane.QUESTION_MESSAGE
         );
-        cancelarPaciente = (confPaciente == javax.swing.JOptionPane.YES_OPTION);
-    }
 
-    limpiarFormulario(cancelarPaciente);
+        if (confDatos != javax.swing.JOptionPane.YES_OPTION) {
+            return; // Si responde No, no se hace nada
+        }
+
+        // 2. Segunda confirmación: cancelar también al paciente buscado o traído de cita
+        boolean cancelarPaciente = false;
+        if (this.idPacienteActivo > 0 || this.idCitaActiva > 0) {
+            int confPaciente = javax.swing.JOptionPane.showConfirmDialog(
+                    this,
+                    "¿Desea cancelar también al paciente cargado (buscado o traído de cita) para ingresar uno nuevo?",
+                    "Cancelar paciente actual",
+                    javax.swing.JOptionPane.YES_NO_OPTION,
+                    javax.swing.JOptionPane.WARNING_MESSAGE
+            );
+            cancelarPaciente = (confPaciente == javax.swing.JOptionPane.YES_OPTION);
+        }
+
+        limpiarFormulario(cancelarPaciente);
     }//GEN-LAST:event_btLimpiarActionPerformed
 
     private void btNotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNotaActionPerformed
@@ -913,7 +922,11 @@ public class vHistoriaClinica extends javax.swing.JPanel {
 
         if (confirmacion == javax.swing.JOptionPane.YES_OPTION) {
 
-            long idUsuarioLogueado = 1; // Ajusta esto con tu variable de sesión
+            long idUsuarioLogueado = obtenerUsuarioSesion();
+
+            if (idUsuarioLogueado <= 0) {
+                return;
+            } // Ajusta esto con tu variable de sesión
 
             // 4. Llamar al modelo para guardar SÓLO la nota
             boolean exito = modelo.agregarNotaClinica(
@@ -1333,4 +1346,23 @@ public class vHistoriaClinica extends javax.swing.JPanel {
         }
     }
 
+    private long obtenerUsuarioSesion() {
+        java.awt.Window ventana
+                = javax.swing.SwingUtilities.getWindowAncestor(this);
+
+        if (ventana instanceof vPrincipal principal) {
+            long idUsuario = principal.getIdUsuarioLogueado();
+
+            if (idUsuario > 0) {
+                return idUsuario;
+            }
+        }
+
+        javax.swing.JOptionPane.showMessageDialog(
+                this,
+                "No se encontró un usuario de sesión. Inicia sesión nuevamente."
+        );
+
+        return 0;
+    }
 }

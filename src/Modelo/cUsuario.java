@@ -283,7 +283,7 @@ public class cUsuario {
         } else {
             consulta.setLong(10, datos.idTurno);
         }
-        consulta.setString(11, datos.contrasena);
+        consulta.setString(11, cClaves.generar(datos.contrasena));
     }
 
     public void registrar(Datos datos) throws SQLException {
@@ -497,35 +497,75 @@ public class cUsuario {
         return lista;
     }
 
-    public cUsuario validarLogin(String documento, String contrasena, String perfil) {
-        String sql = "SELECT u.id_usuario, u.nombres, u.apellidos, r.nombre AS rol_nombre "
-                + "FROM Usuario u "
-                + "INNER JOIN Usuario_Rol ur ON u.id_usuario = ur.id_usuario "
-                + "INNER JOIN Rol r ON ur.id_rol = r.id_rol "
-                + "WHERE u.numero_documento = ? AND u.contrasena = ? AND r.nombre LIKE ?";
+    public cUsuario validarLogin(
+            String documento, String contrasena, String perfil) {
 
-        cConexion conexion = new cConexion();
-
-        try (Connection con = conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
-
-            pst.setString(1, documento);
-            pst.setString(2, contrasena);
-            pst.setString(3, perfil + "%");
-
-            ResultSet rs = pst.executeQuery();
-
-            if (rs.next()) {
-                this.idUsuario = rs.getLong("id_usuario");
-                this.nombres = rs.getString("nombres");
-                this.apellidos = rs.getString("apellidos");
-                this.rol = rs.getString("rol_nombre");
-                return this; // Retornamos el objeto usuario con todos sus datos cargados
-            }
-
-        } catch (SQLException e) {
-            System.err.println("Error al validar login: " + e.getMessage());
+        if (documento == null || contrasena == null || perfil == null) {
+            return null;
         }
 
-        return null;
+        String perfilNormalizado
+                = perfil.trim().toLowerCase(java.util.Locale.ROOT);
+
+        if (!java.util.Set.of(
+                "administrador", "medico", "recepcionista"
+        ).contains(perfilNormalizado)) {
+            return null;
+        }
+
+        String sql
+                = "SELECT u.id_usuario, u.nombres, u.apellidos, u.contrasena "
+                + "FROM Usuario u "
+                + "WHERE u.numero_documento = ? AND u.activo = 1 "
+                + "AND EXISTS ("
+                + " SELECT 1 FROM Usuario_Rol ur "
+                + " JOIN Rol r ON r.id_rol = ur.id_rol "
+                + " WHERE ur.id_usuario = u.id_usuario "
+                + " AND (lower(trim(r.nombre)) = ? "
+                + " OR lower(trim(r.nombre)) LIKE ?)"
+                + ")";
+
+        try (
+                Connection con = new cConexion().conectar(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, documento.trim());
+            ps.setString(2, perfilNormalizado);
+            ps.setString(3, perfilNormalizado + " %");
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (!rs.next()) {
+                    return null;
+                }
+
+                long idEncontrado = rs.getLong("id_usuario");
+                String nombresEncontrados = rs.getString("nombres");
+                String apellidosEncontrados = rs.getString("apellidos");
+                String hashGuardado = rs.getString("contrasena");
+
+                // No elegir arbitrariamente entre documentos repetidos
+                // de tipos distintos.
+                if (rs.next()) {
+                    return null;
+                }
+
+                if (!cClaves.verificar(contrasena, hashGuardado)) {
+                    return null;
+                }
+
+                cUsuario usuario = new cUsuario(
+                        idEncontrado,
+                        nombresEncontrados,
+                        apellidosEncontrados
+                );
+
+                usuario.rol = perfilNormalizado;
+                return usuario;
+            }
+
+        } catch (SQLException error) {
+            System.err.println(
+                    "Error al validar login: " + error.getMessage()
+            );
+            return null;
+        }
     }
 }

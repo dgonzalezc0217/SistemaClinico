@@ -386,6 +386,12 @@ public class cAgendamiento {
                 if (original != null) {
                     DatosCita actual = obtenerCita(conexion, original.idCita);
                     validarEditable(conexion, actual);
+                    if (!java.util.Objects.equals(actual.estado, original.estado)) {
+                        throw new IllegalArgumentException(
+                                "La cita cambió de estado mientras la estabas editando. "
+                                + "Cierra el diálogo y vuelve a seleccionarla."
+                        );
+                    }
                     if (actual.idPaciente != original.idPaciente
                             || actual.idAgenda != original.idAgenda
                             || actual.idEspecialidad != original.idEspecialidad
@@ -515,10 +521,23 @@ public class cAgendamiento {
 
                 // Reprogramar conserva el identificador, el paciente y la prioridad.
                 if (original != null) {
-                    String sql = "UPDATE Cita SET inicio=?, fin=?, id_agenda=?, "
-                            + "id_especialidad=?, id_servicio=? WHERE id_cita=? "
-                            + "AND estado='PENDIENTE' AND NOT EXISTS "
-                            + "(SELECT 1 FROM Episodio e WHERE e.id_cita=Cita.id_cita)";
+                    String sql
+                            = "UPDATE Cita SET "
+                            + "inicio=?, "
+                            + "fin=?, "
+                            + "id_agenda=?, "
+                            + "id_especialidad=?, "
+                            + "id_servicio=?, "
+                            + "estado='PENDIENTE', "
+                            + "motivo_cancelacion=NULL "
+                            + "WHERE id_cita=? "
+                            + "AND estado=? "
+                            + "AND estado IN ('PENDIENTE','CANCELADA') "
+                            + "AND NOT EXISTS ("
+                            + "SELECT 1 FROM Episodio e "
+                            + "WHERE e.id_cita=Cita.id_cita"
+                            + ")";
+
                     try (PreparedStatement ps = conexion.prepareStatement(sql)) {
                         ps.setString(1, inicioUTC);
                         ps.setString(2, finUTC);
@@ -526,12 +545,18 @@ public class cAgendamiento {
                         ps.setLong(4, idEspecialidad);
                         ps.setLong(5, idServicio);
                         ps.setLong(6, original.idCita);
+                        ps.setString(7, original.estado);
+
                         if (ps.executeUpdate() != 1) {
                             throw new SQLException(
-                                    "La cita ya no se puede reprogramar. Actualiza la lista.");
+                                    "No se pudo reprogramar. "
+                                    + "La cita cambió de estado o ya tiene una atención asociada."
+                            );
                         }
                     }
+
                     conexion.commit();
+
                     return original.idCita;
                 }
                 // 6. Guardar la cita después de superar las comprobaciones.
@@ -695,13 +720,29 @@ public class cAgendamiento {
         }
     }
 
-    private void validarEditable(Connection con, DatosCita d) throws SQLException {
-        if (!"PENDIENTE".equals(d.estado)) {
+    private void validarEditable(Connection con, DatosCita d)
+            throws SQLException {
+
+        boolean estadoPermitido
+                = "PENDIENTE".equals(d.estado)
+                || "CANCELADA".equals(d.estado);
+
+        if (!estadoPermitido) {
             throw new IllegalArgumentException(
-                    "Solo se pueden modificar citas PENDIENTES.");
+                    "Solo se pueden reprogramar citas PENDIENTES o CANCELADAS."
+            );
         }
-        if (existe(con, "SELECT 1 FROM Episodio WHERE id_cita=?", d.idCita)) {
-            throw new IllegalArgumentException("Esta cita ya tiene un episodio. No se puede cancelar ni reprogramar.");
+
+        if (existe(
+                con,
+                "SELECT 1 FROM Episodio WHERE id_cita=?",
+                d.idCita
+        )) {
+            throw new IllegalArgumentException(
+                    "Esta cita ya tiene una atención clínica asociada. "
+                    + "Para programar otra consulta, crea una cita nueva "
+                    + "para el mismo paciente."
+            );
         }
     }
 
